@@ -1,0 +1,255 @@
+```{r}
+# Код для загрузки данных
+library(dplyr)
+library(nycflights13)
+
+summarise(flights)
+
+flights %>% dplyr::filter(origin == "LGA" & dep_delay > 30)
+```
+
+```{r}
+a = flights %>% dplyr::filter(origin == "JFK")
+mean(a$distance)
+```
+
+```{r}
+
+flights %>% distinct(origin)
+flights  %>% group_by(carrier) %>% summarise(count = n()) %>% arrange(-count)
+```
+
+
+```{r}
+library(igraph)
+library(igraphdata)
+data(karate)
+```
+
+```{r}
+degree(karate) %>% sort()
+```
+
+```{r}
+library(igraph)
+library(igraphdata)
+data(kite)
+set.seed(234)
+walktrap.community(kite)
+```
+
+```{r}
+library(readr)
+money_data<-read_csv("https://stepik.org/media/attachments/lesson/188091/money.csv")
+```
+```{r}
+money_data = money_data %>% select(-customer_id)
+
+log.model = glm(gender~., data = money_data, family = binomial(link = 'logit'))
+
+summary(log.model)
+
+pred = predict(log.model, newdata = money_data, type = "response")
+
+```
+
+```{r}
+library(pROC)
+ROCfull = roc(response = money_data$gender, predictor = pred)
+plot(ROCfull)
+plot(ROCfull, legacy.axes=T)
+pROC::auc(ROCfull)
+```
+
+
+```{r}
+library(MASS)
+set.seed(150)
+Boston.exam<-Boston[sample(1:nrow(Boston), 0.7*nrow(Boston)),]
+
+```
+
+```{r}
+lm.model = lm(nox~., data = Boston.exam)
+summary(lm.model)
+```
+
+```{r}
+library(caret)
+set.seed(11)
+Boston.xval<-Boston[sample(1:nrow(Boston), 0.8*nrow(Boston)),] 
+
+set.seed(11)
+
+library("party")
+train_control <- trainControl(method="cv", number=11)
+model <- caret::train(age~., data=Boston.xval, trControl=train_control, method="lm")
+max(model$resample$RMSE) - min(model$resample$RMSE)
+```
+
+
+```{r}
+bike = read.csv("https://stepik.org/media/attachments/lesson/265920/bike-cut.csv")
+bike$season = as.factor(bike$season)
+bike$holiday = as.factor(bike$holiday)
+bike$workingday = as.factor(bike$workingday)
+bike$weather = as.factor(bike$weather)
+bike = bike %>% select(-casual, -registered)
+```
+
+```{r}
+library(caret)
+set.seed(1011180) 
+ind = createDataPartition(bike$count, p = 0.25, list = F) 
+bike.test = bike[ind,] 
+bike.train = bike[-ind,]
+
+bike.lm.model = lm(count~., data = bike.train)
+```
+```{r}
+
+
+```
+
+
+```{r}
+bike.pred.train = predict(bike.lm.model, data = bike.train)
+RMSE(bike.pred.train, bike.train$count)
+```
+
+```{r}
+bike.pred.test = predict(bike.lm.model, newdata = bike.test)
+length(bike.pred.test)
+RMSE(bike.pred.test, bike.test$count)
+```
+
+```{r}
+bike = read.csv("https://stepik.org/media/attachments/lesson/265920/bike-cut.csv")
+bike = bike %>% select(-casual, -registered)
+
+library(caret)
+set.seed(1011180) 
+ind = createDataPartition(bike$count, p = 0.25, list = F) 
+bike.test = bike[ind,] 
+bike.train = bike[-ind,]
+
+bike.tree.model = ctree(count~., data=bike.train)
+
+#summary(bike.tree.model)
+```
+```{r}
+bike.tree.pred.train = predict(bike.tree.model, data = bike.train)
+bike.tree.pred.test = predict(bike.tree.model, newdata = bike.test)
+
+RMSE(bike.tree.pred.train, bike.train$count) - RMSE(bike.tree.pred.test, bike.test$count)
+```
+
+
+
+```{r}
+spam = read.csv("https://stepik.org/media/attachments/lesson/265920/spam1.csv")
+
+set.seed(1011181)
+ind = createDataPartition(spam$yesno, p = 0.2, list = F)
+spam.test = spam[ind,]
+spam.train = spam[-ind,]
+```
+
+```{r}
+log.model = glm(yesno~., data = spam.train, family = binomial(link = 'logit'))
+
+pred = predict(log.model, newdata = spam.test)
+
+library(pROC)
+ROCfull = roc(response = spam.test$yesno, predictor = pred)
+plot(ROCfull)
+plot(ROCfull, legacy.axes=T)
+pROC::auc(ROCfull)
+```
+
+```{r}
+spam.test$yesno = as.factor(spam.test$yesno)
+
+acc_fun = function(cutoff) {
+pred_cutoff <- as.factor(ifelse(pred > cutoff,"y","n"))
+a = caret::confusionMatrix(pred_cutoff, spam.test$yesno)
+return(a$overall["Accuracy"])
+}
+
+
+acc_fun(0.35)
+acc_fun(0.5)
+acc_fun(0.55)
+```
+
+
+
+```{r}
+library(mlbench)
+data(PimaIndiansDiabetes2)
+diabetes = PimaIndiansDiabetes2
+
+```
+
+```{r}
+library(caret)
+set.seed(1234)
+diabetes = na.omit(diabetes)
+
+ind = createDataPartition(diabetes$diabetes, p = 0.8, list = F) 
+diabetes.test = diabetes[-ind,]
+diabetes.train = diabetes[ind, ]
+
+library(dplyr)
+diabetes.train %>% filter(diabetes=="pos") %>% summarise(n = n())
+```
+
+```{r}
+library(randomForest)
+set.seed(1567)
+model.rf=randomForest(diabetes~.,data=diabetes.train, ntree=100, mtry=5)
+pred.test.rf = predict(model.rf, diabetes.test)
+
+confusionMatrix(pred.test.rf, diabetes.test$diabetes)$overall["Accuracy"]
+```
+
+```{r}
+set.seed(1567)
+model.rf2=randomForest(diabetes~.,data=diabetes.train, ntree=300, mtry=5)
+pred.test.rf2 = predict(model.rf2, diabetes.test)
+
+confusionMatrix(pred.test.rf2, diabetes.test$diabetes)$overall["Accuracy"]
+```
+```{r}
+set.seed(1567)
+model.rf3=randomForest(diabetes~.,data=diabetes.train, ntree=100, mtry=3)
+pred.test.rf3 = predict(model.rf3, diabetes.test)
+
+confusionMatrix(pred.test.rf3, diabetes.test$diabetes)$overall["Accuracy"]
+```
+```{r}
+importance(model.rf)
+varImpPlot(model.rf)
+```
+
+```{r}
+library(gbm)
+
+set.seed(3446)
+model.boost=gbm((as.numeric(diabetes)-1)~., data=diabetes.train, distribution="bernoulli", n.trees=1000, interaction.depth=2)
+
+predTestProb.boost = predict(model.boost, diabetes.test, n.trees = 100, type = "response")
+
+
+
+library(pROC)
+ROCfull = roc(response = diabetes.test$diabetes, predictor = predTestProb.boost)
+pROC::auc(ROCfull)
+```
+```{r}
+pred.test = ifelse(predTestProb.boost > 0.5, "pos", "neg")
+
+confusionMatrix(as.factor(pred.test), as.factor(diabetes.test$diabetes))$overall["Accuracy"]
+```
+
+

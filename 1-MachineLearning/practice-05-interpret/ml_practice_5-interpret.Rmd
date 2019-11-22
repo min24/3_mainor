@@ -1,0 +1,357 @@
+---
+title: "ML practice 5: Интерпретация"
+output: html_document
+---
+
+О чем говорим сегодня:
+
+* снова о парадигме предсказание vs интерпретация (но в этот раз -- как интерпретировать то, что мы с вами получили)
+* вспомним про ансамбли моделей
+* вспомним о важности признаков и зачем это нужно
+
+И экспериментировать будем все том же датасете, который начали прошлый раз -- про кредиты и факторы, влияющие на выдачу кредита.
+
+В контексте этого занятия тот вариант, что модели сами по себе могут быть вполне интерпретируемыми (регрессия, деревья и т.д.) мы рассматривать подробно не будем. Остановимся на ситуации, что сложную модель мы уже построили, нужное качество получили, а теперь стараемся "вытащить" интерпретацию. Сразу отметим, что если простая интерпретируемая модель дает сравнительно схожее / подходящее качество предсказания, то лучше использовать ее. Любые методы интерпретации, построенные "поверх" модели, теряют в точности / несмещенности / обобщаемости объяснения
+
+```{r}
+library(caret)
+library(dplyr)
+credit = read.csv("~/shared/minor3_2019/1-MachineLearning/practice-04-recap-ensembles/CreditScore.csv")
+str(credit)
+```
+
+Для того, чтобы при объяснении сегодня все считалось быстрее, сократим наш датасет (но потом лучше все перезапустить на полном датасете, чтобы проверить, какие зависимости появляются там)
+```{r}
+set.seed(1000)
+credit = credit[sample(1:dim(credit)[1], size = 1000),]
+```
+
+
+Переменные:
+
+1 Status - статус по кредиту
+2 Seniority - опыт работы в годах
+3 Home - владельцы (тип) жилья
+4 Time - сроки запрошенного кредита
+5 Age - возраст
+6 Marital - семейный статус
+7 Records - есть ли предыдущая информация о задолженностях
+8 Job - тип занятости
+9 Expenses - траты
+10 Income	- доход
+11 Assets	- собственность
+12 Debt	- задолженность
+13 Amount	- размер запрошенного кредита
+14 Price - цена товара, на покупку которого запрашивается кредит
+
+
+Подготовим тренировочную и тестовую выборки:
+
+```{r}
+library(caret)
+set.seed(1)
+test_ind = createDataPartition(credit$Status, p = 0.2, list = FALSE)
+credit.test = credit[test_ind,]
+credit.train = credit[-test_ind,]
+```
+
+Мы хотим предсказать, каким будет скоринг. 
+ 
+Прошлый раз мы посмотрелм много разных алгоритмов, которые позволяют сделать такое предсказание.
+
+Построим некоторые из них еще раз (подробности -- в предыдущей лабораторной)
+
+Сегодня будем строить модели с помощью caret -- хотя они строятся дольше, но многие дальнейшие методы хорошо адаптированы именно для объектов caret::train, но требуют дополнительной настройки для других моделей
+ 
+#### Простые: Дерево
+
+```{r}
+ library(partykit)
+model.tree = train(Status~., data = credit.train, method = "ctree")
+predTrain.tree = predict(model.tree, credit.train)
+confusionMatrix(predTrain.tree, credit.train$Status, 
+                positive = "good", mode = "prec_recall")$overall["Accuracy"]
+predTest.tree = predict(model.tree, credit.test)
+confusionMatrix(predTest.tree, credit.test$Status, 
+                positive = "good", mode = "prec_recall")$overall["Accuracy"]
+plot(model.tree$finalModel)
+```
+
+#### Простые: логистическая регрессия
+
+```{r}
+model.log = train(Status~., data = credit.train, method = "glm", family = binomial(link = "logit"))
+predTrain.log = predict(model.log, credit.train)
+predTest.log = predict(model.log, credit.test)
+
+confusionMatrix(predTrain.log, credit.train$Status, positive = "good")$overall["Accuracy"]
+confusionMatrix(predTest.log, credit.test$Status, positive = "good")$overall["Accuracy"]
+
+```
+
+#### Сложная модель: Random forest
+
+```{r}
+library(randomForest)
+set.seed(1)
+model.rf=randomForest(Status~.,data=credit.train, mtry=5, importance=TRUE)
+predTrain.rf = predict(model.rf, credit.train)
+predTest.rf = predict(model.rf, credit.test)
+confusionMatrix(predTrain.rf, credit.train$Status, 
+                positive = "good", mode = "prec_recall")$overall["Accuracy"]
+confusionMatrix(predTest.rf, credit.test$Status, 
+                positive = "good", mode = "prec_recall")$overall["Accuracy"]
+```
+
+
+```{r}
+# set.seed(1)
+ #rf = train(Status~., data=credit.train, method = "rf", importance = T, tuneLength = 1) 
+ #pred.rf = predict(rf, newdata = credit.test)
+ #confusionMatrix(pred.rf, credit.test$Status, 
+  #               positive = "good", mode = "prec_recall")$overall["Accuracy"]
+```
+
+
+#### Сложная модель: Boosting
+
+```{r}
+#с помощью пакета caret
+set.seed(1)
+model.boost = train(Status~., data=credit.train, method = "gbm", verbose = F)
+predTest.gbm = predict(model.boost, newdata = credit.test)
+predTrain.gbm = predict(model.boost, newdata = credit.train)
+confusionMatrix(predTrain.gbm, credit.train$Status, positive = "good")$overall["Accuracy"]
+confusionMatrix(predTest.gbm, credit.test$Status, positive = "good")$overall["Accuracy"]
+```
+
+Итак, у нас есть несколько моделей для предсказания. Переходим к интерпретации
+
+## Глобальная интерпретация
+
+Глобальная интерпретация -- это выводы о взаимосвязях в модели в целом, о поведении и значимости переменных.
+
+Частично мы уже об этом говорили (см. лаб №4) -- различные методы оценки важности признаков (variableImportance)
+
+Эти методы делят на две группы:
+
+1) зависящие от модели (model-based) -- для каждой модели придумана своя мера важности (<https://topepo.github.io/caret/variable-importance.html>)
+2) не зависящие от модели
+
+### Важность признаков в зависимости от модели
+
+Вспомним random forest
+
+```{r}
+importance(model.rf)
+```
+
+Как считается важность? Из документации "Для каждого дерева считается точность предсказания. Затем случайно перемешивается переменная, важность которой нужно оценить, для обновленного датасета тоже считается точность предсказания. Разница в этих двух показателях усредняется по всем деревьям и нормируется по стандартному отклонению"
+
+Можно применить универсальную функцую из пакета caret
+
+```{r}
+varImp(model.rf)
+varImpPlot(model.rf)
+```
+
+Почему разница в цифрах? varImp использует на самом деле importance (которое вычисляется для каждого класса отдельно), но делает дополнительное преобразование. Рассуждение следующего вида: если у нас всего два класса, то важность признаков для каждого из классов должна быть одинакова (если мы предсказали один класс, то можем предсказать и другой). Поэтому varImp просто усредняет значения из importance. Подробнее можно почитать здесь <https://stackoverflow.com/questions/37888619/difference-between-varimp-caret-and-importance-randomforest-for-random-fores>
+
+Посмотрим на других моделях
+
+```{r}
+varImp(model.log)
+```
+
+Не все модели поддерживаются данной функцией (см. документацию, например, для SVM)
+
+#### Важность признаков, не зная структуру модели
+
+```{r eval = F}
+varImp(model.log, useModel = F)
+```
+
+```{r}
+impSVM = varImp(model.log, useModel = F, scale = F)
+impSVM
+```
+
+"For classification, ROC curve analysis is conducted on each predictor. For two class problems, a series of cutoffs is applied to the predictor data to predict the class. The sensitivity and specificity are computed for each cutoff and the ROC curve is computed. The trapezoidal rule is used to compute the area under the ROC curve. This area is used as the measure of variable importance."
+
+```{r}
+plot(impSVM)
+```
+
+Еще один удобный инструмент -- пакет vip <https://koalaverse.github.io/vip/articles/vip.html>
+
+```{r}
+library(vip)
+vi(model.rf)
+```
+Этот пакет умеет строить и графики
+```{r}
+vip(model.rf)
+```
+
+```{r}
+vip(model.log)
+```
+
+Cпособ (чтобы не пересчитывать модель), не привязанный к модели, а к ее качеству предсказания -- случайно перемешивать значения рассматриваемой переменной (убирая таким образом все зависимости) и посмотреть качество предсказания в этом случае.
+
+Еще один похожий подход, про который мы уже говорили -- RFE.
+
+Основная идея -- посмотрим, как уменьшится качество предсказания, если убрать эту переменную из рассмотрения. Вариант "в лоб" -- удалять последовательно переменные, перестраивать модель, считать снижение качества. 
+
+* определите значимость переменных согласно RFE в одной из моделей
+
+
+
+#### Визуальное исследование переменных: ICE
+
+Следующий подход -- инструменты, которые позволяют проследить изменение предсказания целевой переменной при изменении какого-то предиктора -- так называемые ICE графики (Individual Conditional Expectation). 
+
+Посмотрим, как изменяется предсказание при изменении переменной Income/ При вызове функции указываются параметры, которые необходимо указать в predict (n.trees, type и т.д.).
+
+Важно: модель должна уметь предсказывать вероятность (обратите внимание на параметры для predictfcn -- нужна функция, которая выдает в качестве результата вероятность good, а по умолчанию svm выдает матрицу с вероятностями и bad, и good)
+
+```{r}
+library(ICEbox)
+pred_boost_good = function(object, newdata){
+  return(predict(object, newdata, n.trees = 500, type = "prob")[,2])
+}
+modelICE_boost = ice(model.boost, X = credit.train,  
+               predictor = "Income", predictfcn = pred_boost_good)
+```
+
+Рисуем график. Желтая линия -- это PDP (Partial Dependency Plot) = усреднение значений, кружочки -- это реальные точки из данных. Т.е. точка -- это то значение дохода и соответствующей ему вероятности "хорошего статуса", которое есть в данных, а линия, на которой находится точка, показывает, как будет меняться предсказание для этого человека, если у него будет меняться доход, а значения всех остальных переменных не изменятся
+
+```{r}
+plot(modelICE_boost)
+```
+
+Какие выводы о предсказании при изменении дохода можно сделать?
+
+Когда данных много, точки только мешают, их лучше убрать
+
+```{r}
+plot(modelICE_boost, plot_orig_pts_preds = FALSE)
+```
+
+
+График можно раскрасить по какой-то еще переменной, чтобы оценить и ее влияние. Посмотрим, как, например, статус связан с тем, кто владелей жилья
+
+```{r}
+plot(modelICE_boost, plot_orig_pts_preds = F, color_by = "Home")
+```
+Легенду по цветам можно посмотреть в первом выводе:
+ Home       color
+    2  firebrick3
+    3 dodgerblue3
+    4       gold1
+    5 darkorchid4
+    6     orange4
+    
+Теперь посмотрим, каким значениям это соответствует
+
+```{r}
+levels(credit$Home)
+```
+Можно заметить, что в левой верхней части больше синих линий: dodgerblue3 -> 3 -> Home = owner. (или сиреневых - darkorchid4 -> 5 -> priv). Т.е. владельцы частных домов имеют более высокий кредитный статус даже при низком доходе
+
+
+Центрируем график.
+Центрирование позволяет посмотреть, как меняется вероятность хорошего статуса при увеличении дохода вне зависимости от исходного дохода, т.е. у каких групп скорость изменения выше
+
+```{r}
+plot(modelICE_boost, plot_orig_pts_preds = F, color_by = "Home",
+     centered = TRUE)
+```
+Здесь в верхней части оранжевые и желтые линии - 4, 6 -> parents, rent. Т.е. для тех, кто жилье снимает, увеличение дохода в большей степени сказывается на изменении кредитного статуса.
+
+Другие параметры графика можно посмотреть в документации <https://www.rdocumentation.org/packages/ICEbox/versions/1.1.2>
+
+## Локальная интерпретация: LIME
+
+Глобальная интерпретация важна и полезна, но она получается достаточно обобщенной "усредненной" по всем данным. Что, если мы хотим исследовать конкретный пример, понять, какие факторы привели к тому, что у клиента плохой кредитный статус (и как можно его изменить). Для ответа на такие вопросы существуют алгоритмы локальной интерпретации.
+
+Один из алгоритмов -- LIME (Local Interpretable Model-Agnostic Explanations) https://homes.cs.washington.edu/~marcotcr/blog/lime/. "Why Should I Trust You?": Explaining the Predictions of Any Classifier by M.Ribeiro. И интересное интервью c разработчиком метода: https://dataskeptic.com/blog/transcripts/2016/trusting-machine-learning-models-with-lime
+
+Основная идея -- давайте посмотрим на окрестности нашего примера. Т.е. будем изменять значения предикторов случайно и изучать, как это влияет на результат
+
+Алгоритм:
+
+1) генерируем искусственные данные вокруг примера
+2) получаем для них предсказание согласно нашей модели
+3) используем какую-нибудь интерпретируемую модель (дерево/регрессию), чтобы связать 1 и 2. Важно: данные мы взвешиваем -- те, что ближе к исходному примеру (согласно какой-нибудь метрике близости), весят больше
+4) интерпретируем результаты (справедливо **только** для окрестности примера)
+
+Как создается искусственный датасет: для непрерывных переменных делается случайная выборка из N(0,1), а затем значения обратно-масштабируются, чтобы получить среднее и дисперсию, соответсвующие обучающей выборке, для категориальных переменных осуществляется случайный выбор из обучающей выборки, а дальше получившееся значение преобразуется в бинарное (совпала или не совпала категория с категорией выбранного примера).
+
+```{r}
+library(lime)
+# создаем объект для дальнейшего объяснения с данными, на которых была построена модель, и самой моделью
+explain_boost = lime(x = credit.train, model = model.boost)
+
+# объясняем конкретный пример
+explain_ex_boost = lime::explain(x = credit.test[3,], 
+                           explainer = explain_boost,
+                           n_features = 8,
+                           n_labels = 2)
+```
+
+n_features = сколько признаков будет использовано для интерпретации
+n_labels = сколько классов объясняется для Status (важно, когда работаем с множественной классификацией)
+
+Изобразим результат на графике
+
+```{r}
+plot_features(explain_ex_boost)
+```
+
+Посмотрим на несколько примеров
+
+```{r}
+explain_ex_boost = lime::explain(x = credit.test[6:10,], 
+                           explainer = explain_boost,
+                           n_features = 8,
+                           n_labels = 1)
+```
+
+Изобразим результат на графике
+
+```{r}
+plot_features(explain_ex_boost)
+```
+
+Нарисуем сразу несколько в другой форме
+
+```{r}
+plot_explanations(explain_ex_boost)
+```
+
+# Ваша очередь
+
+Соберите последовательно все про модель gbm. 
+
+* Какие переменные самые важные?
+* Выберите пример клиента с плохим кредитным статусом. Что ему нужно изменить, чтобы получить кредит?
+
+Соберите последовательно все про модель rf. 
+
+* Какие переменные самые важные?
+* Выберите пример клиента с плохим кредитным статусом. Что ему нужно изменить, чтобы получить кредит?
+
+Постройте свой ансамбль
+
+* Какие переменные самые важные?
+* Выберите пример клиента с плохим кредитным статусом. Что ему нужно изменить, чтобы получить кредит?
+
+
+Что почитать 
+* <https://uc-r.github.io/lime>
+* <https://cran.r-project.org/web/packages/lime/vignettes/Understanding_lime.html>
+* <https://arxiv.org/pdf/1309.6392.pdf>
+
+
+

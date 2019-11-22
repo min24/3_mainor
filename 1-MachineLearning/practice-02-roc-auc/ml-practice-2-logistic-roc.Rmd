@@ -1,0 +1,378 @@
+---
+title: "ML practice 2: Regression, logistic regression. ROC-curve, AUC"
+output: html_document
+---
+
+В прошлый раз мы вспомнили деревья решений для задачи классификации. А что в случае регрессии? 
+
+* Задача регрессии -- это задача обучения с учителем или обучения без учителя?
+
+Вспомним о модели линейной регрессии. Только на этот раз мы не будем внимательно изучать взаимосвязи переменных, а используем модель для предказания.
+
+### Данные
+
+Работаем с данными про цены на жилье в Бостоне
+
+```{r}
+library(MASS)
+#?Boston
+```
+
+* `crim` per capita crime rate by town
+* `zn` proportion of residential land zoned for lots over 25,000 sq.ft
+* `indus` proportion of non-retail business acres per town
+* `chas` Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).
+* `nox` nitrogen oxides concentration (parts per 10 million).
+* `rm` average number of rooms per dwelling.
+* `age` proportion of owner-occupied units built prior to 1940.
+* `dis` weighted mean of distances to five Boston employment centres.
+* `rad` index of accessibility to radial highways.
+* `tax` full-value property-tax rate per \$10,000.
+* `ptratio` pupil-teacher ratio by town.
+* `black` 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town.
+* `lstat` lower status of the population (percent).
+* `medv` median value of owner-occupied homes in \$1000s.
+
+```{r results='asis'}
+data(Boston)
+pander::pandoc.table(head(Boston), split.tables=Inf)
+```
+
+### Обучающая и тестовая выборки
+
+Отделим 20\% от датасета. Так же, как и для классификации, эта часть не будет использоваться для обучения модели, но на ней мы будем проверять (тестировать), насколько  хороша наша модель. 
+
+```{r message = F, warning=FALSE}
+set.seed(6) 
+Boston.test.ind = sample(seq_len(nrow(Boston)), size = nrow(Boston)*0.2)
+Boston.test = Boston[Boston.test.ind,]
+Boston.train = Boston[-Boston.test.ind,]
+```
+
+Напомним, что задачу регрессии можно решать с помощью деревьев решений
+* в чем отличие регрессионных деревьев от классификационных?
+
+Одна из особенностей регрессионных деревьев -- в качестве предсказания используются всего несколько значений (средние по группам). Существуют и более гибкие инструменты для решения задач регрессии
+
+### Линейная регрессия
+
+Начнем с простой модели (**Simple Linear Regression**) -- когда у нас всего один предиктор. В частности, можем ли мы предсказать цену на жилье в районе на основе доли населения с низким социальным статусом (`lstat`)?
+
+В целом, мы хотим приблизить наши данные в виде зависимости $Y = a*X+b$ или в нашем случае $medv = a*lstat+b$, т.е. построить прямую
+
+```{r}
+library(ggplot2)
+ggplot()+geom_point(data = Boston.train, aes(x = lstat, y = medv))
+```
+
+
+```{r}
+lm.fit=lm(medv~lstat, data=Boston.train) 
+```
+
+Посмотрим на результат
+
+```{r}
+lm.fit
+```
+
+Более подробное представление результата
+
+```{r}
+summary(lm.fit)
+```
+
+Делаем предсказания и считаем ошибки
+
+```{r}
+lm.predictions <- predict(lm.fit, Boston.test)
+
+ggplot()+geom_point((aes(x=Boston.test$medv, y=lm.predictions))) + 
+  geom_abline(color="red") +
+  xlab("Real value") +
+  ylab("Predicted value")
+```
+
+Ошибка предсказания
+
+```{r}
+lm.test.RSS = sum((lm.predictions-Boston.test$medv)^2)
+lm.test.RSS
+
+lm.test.MSE = mean((lm.predictions-Boston.test$medv)^2)
+lm.test.MSE
+
+lm.test.RMSE = sqrt(lm.test.MSE)
+lm.test.RMSE
+```
+
+
+Переходим к более сложному случаю -- когда предикторов несколько (**Multiple Linear Regression**). Например, добавим все переменные
+
+```{r}
+lm.fit=lm(medv~.,data=Boston.train) 
+summary(lm.fit)
+```
+
+```{r}
+lm.predictions <- predict(lm.fit, Boston.test)
+
+lm.test.RSS = sum((lm.predictions-Boston.test$medv)^2)
+lm.test.RSS
+
+lm.test.MSE = mean((lm.predictions-Boston.test$medv)^2)
+lm.test.MSE
+
+lm.test.RMSE = sqrt(lm.test.MSE)
+lm.test.RMSE
+```
+
+**Трансформация предикторов**
+
+Вернемся с простой модели
+
+```{r}
+ggplot()+geom_point(data = Boston.train, aes(x = lstat, y = medv))
+```
+
+Можно заметить, что зависимость не линейная. Отразим это в модели
+
+```{r}
+lm.fit2=lm(medv~lstat+I(lstat^2), data=Boston.train) 
+summary(lm.fit2)
+```
+
+*Функция I() нужна для того, чтобы действительно произошло воведение в квадрат, т.к. символ ^ в формуле означает пересечение: (a + b)^2 = a + b + a:b*
+
+Сравним с первоначальной моделью на тестовой выборке
+```{r}
+lm.predictions2 <- predict(lm.fit2, Boston.test)
+lm.test.RSS2 = sum((lm.predictions2-Boston.test$medv)^2)
+lm.test.RSS2
+
+lm.test.MSE2 = mean((lm.predictions2-Boston.test$medv)^2)
+lm.test.MSE2
+
+lm.test.RMSE2= sqrt(lm.test.MSE2)
+lm.test.RMSE2
+```
+
+```{r}
+lm.fit3=lm(medv~lstat  + I(1/lstat^3) + I(lstat^2) , data=Boston.train) 
+summary(lm.fit3)
+```
+```{r}
+lm.predictions3 <- predict(lm.fit3, Boston.test)
+lm.test.RSS3 = sum((lm.predictions3-Boston.test$medv)^2)
+lm.test.RSS3
+
+lm.test.MSE3 = mean((lm.predictions3-Boston.test$medv)^2)
+lm.test.MSE3
+
+lm.test.RMSE3= sqrt(lm.test.MSE3)
+lm.test.RMSE3
+```
+
+
+А значение для первоначальной модели было
+```{r}
+lm.test.RSS
+```
+
+* Какая модель лучше с точки зрения качества предсказания?
+```{r}
+lm.fit2=lm(medv~lstat+I(lstat^2), data=Boston.train) 
+
+lm.predictions2 <- predict(lm.fit2, Boston.test)
+lm.test.RSS2 = sum((lm.predictions2-Boston.test$medv)^2)
+lm.test.RSS2
+
+lm.test.MSE2 = mean((lm.predictions2-Boston.test$medv)^2)
+lm.test.MSE2
+
+lm.test.RMSE2= sqrt(lm.test.MSE2)
+lm.test.RMSE2
+```
+
+## Логистическая регрессия
+
+Продолжаем изучать методы. Можно ли применить модель регрессии для решения задачи классификации?
+
+### Данные
+
+Датасет, с которым мы работаем в этой части -- результаты диагностики диабета. 
+
+
+```{r}
+library(mlbench)
+data(PimaIndiansDiabetes2)
+library(dplyr)
+Diabetes = na.omit(PimaIndiansDiabetes2)
+```
+
+
+## Регрессия для бинарных предсказаний
+
+Разбиение на тестовую и обучающую
+
+```{r message = F, warning=FALSE}
+library(caret)
+set.seed(100) #You shoud put here your own number
+test.ind = createDataPartition(Diabetes$diabetes, p = 0.2, list = FALSE)
+Diabetes.test = Diabetes[test.ind,]
+Diabetes.main = Diabetes[-test.ind,]
+```
+
+diabetes -- это фактор (neg/pos). 
+
+Давайте немного изменим датасет: 
+
+* введем новую переменную `db` = 1, если есть диабет, 0, если нет;  
+* удалим переменную diabetes (иначе предсказания однозначны)
+
+```{r}
+Diabetes.main2 = mutate(Diabetes.main, db = as.numeric(diabetes=="pos"))
+Diabetes.main2 = dplyr::select(Diabetes.main2, -diabetes)
+```
+
+Построение линейной модели
+```{r}
+lm.model <- lm(db~., data = Diabetes.main2)
+summary(lm.model)
+```
+
+Посмотрим на соответствие реальных и предсказанных значений
+
+```{r}
+ggplot() + geom_point(aes(x=Diabetes.main2$db, y = predict(lm.model, Diabetes.main2))) + 
+  geom_hline(yintercept = c(0,1), color = "red") +
+  xlab("Реальные значения")+
+  ylab("Предсказанные значения")
+```
+
+Как делать выводы о наличии или отсутствии диабета? Т.е. если значения от 0 до 1 еще можно было попробовать обосновать как некую "вероятность", то что делать со значениями, попадающими сильно за эти пределы
+
+Но аппарат регрессии все равно использовать хочется. Выход был найден следующий: давайте предсказывать не само значение, а вероятность попадания в класс = 1. Раз это вероятность, то она должна быть в промежутке от 0 до 1. Преобразуем немного наше значение с помощью сигмоидной функции -- какое бы значение мы ни использовали в Input, Output будет от 0 до 1. Формула для сигмоидной функции $f(x)=e^x/(e^x+1)$.
+
+![](http://blog.hackerearth.com/wp-content/uploads/2017/01/SigmoidPlot1.png)
+
+В контексте регрессии получаем (для любителей формул)
+
+![](http://blog.hackerearth.com/wp-content/uploads/2017/01/equateimage-e1483685096494.png)
+
+А отсюда получаем и интепретацию коэффициентов регрессии: увеличение значения на 1 приводит к увеличению шансов в $e^{коэффициент}$ раз.
+
+## Построение модели
+
+Теперь к тому, как получить логистическую регрессию в R (работает и с факторами!)
+
+```{r}
+log.model = glm(diabetes~., data = Diabetes.main, family = binomial(link = 'logit'))
+summary(log.model)
+
+log.model2 = glm(db~., data = Diabetes.main2, family = binomial(link = 'logit'))
+summary(log.model2)
+```
+
+## Еще раз про метрики
+
+![](https://images.nature.com/full/nature-assets/nmeth/journal/v13/n8/images_article/nmeth.3945-F1.jpg)
+
+Посмотрим на предсказание. Напомню -- предсказываем вероятность. Как по этим значениям отнести к тому или иному классу?
+
+```{r}
+pred = predict(log.model, newdata = Diabetes.test, type = "response")
+hist(pred)
+```
+
+**Обратите внимание**: по умолчанию выдается не вероятность, а значение функции. Которая, правда, легко преобразуется в вероятность подстановкой в сигмоидную функцию
+
+```{r}
+predLink = predict(log.model, newdata = Diabetes.test)
+head(predLink)
+head(exp(predLink)/(exp(predLink)+1))
+```
+
+Значение классов можем определить, задав границу разделения
+```{r}
+pred0.5 <- ifelse(pred > 0.5,"pos","neg")
+head(pred0.5)
+caret::confusionMatrix(pred0.5, Diabetes.test$diabetes)
+```
+
+А если поменять границу? 
+```{r}
+pred0.7 <- ifelse(pred > 0.7,"pos","neg")
+caret::confusionMatrix(pred0.7, Diabetes.test$diabetes)
+```
+
+Как выбрать? Более того, если у нас несколько подобных моделей, то как узнать, какая модель лучше?
+
+## ROC & AUC
+
+Метрики оценки качества в этом случае
+
+* ROC-кривая (Receiver Operating Characteristic) -- график, показывающий соотношение между долей объектов от общего количества носителей признака, верно классифицированных как несущих признак, (true positive rate, TPR, sensitivity, чувствительность алгоритма классификации) и долей объектов от общего количества объектов, не несущих признака, ошибочно классифицированных как несущих признак (англ. false positive rate, FPR, 1-FPR = specificity, специфичность алгоритма классификации) при разных значениях границы, разделяющей классы
+* AUC (Area Under ROC Curve) -- площадь под этой кривой
+
+```{r}
+library(pROC)
+ROCfull = roc(response = Diabetes.test$diabetes, predictor = pred)
+plot(ROCfull)
+plot(ROCfull, legacy.axes=T)
+pROC::auc(ROCfull)
+```
+
+Можно использовать не весь объект, а отдельно specificity и sensitivity и построить ROC с помощью, например, ggplot2
+
+```{r}
+ggplot() + geom_path(aes(y=ROCfull$sensitivities, x=1-ROCfull$specificities))+
+  xlab("FPR") + ylab("TPR")
+```
+
+Построим еще одну модель
+
+```{r}
+log.modelSmall = glm(diabetes~age, data = Diabetes.main, family = binomial(link = 'logit'))
+summary(log.modelSmall)
+predSmall = predict(log.modelSmall, newdata = Diabetes.test, type = "response")
+
+log.modelPressure = glm(diabetes~pressure, data = Diabetes.main, family = binomial(link = 'logit'))
+predPres = predict(log.modelPressure, newdata = Diabetes.test, type = "response")
+```
+
+```{r}
+ROCsmall = roc(response = Diabetes.test$diabetes, predictor = predSmall)
+pROC::auc(ROCsmall)
+ROCpres = roc(response = Diabetes.test$diabetes, predictor = predPres)
+pROC::auc(ROCpres)
+```
+
+```{r}
+
+ggplot() + geom_path(aes(y=ROCfull$sensitivities, x=1-ROCfull$specificities)) +
+  geom_path(aes(y=ROCsmall$sensitivities, x=1-ROCsmall$specificities), color = "blue") +
+  geom_path(aes(y=ROCpres$sensitivities, x=1-ROCpres$specificities), color = "green") +
+  
+  xlab("FPR") + ylab("TPR")
+```
+
+Какая модель лучше?
+
+**Ваша  очередь:** 
+
+Данные про успешность поста в Facebook на странице конкретного бренда. Последние 7 переменных -- показатели успешности поста:
+
+* UniqueViews - число уникальных пользователей, посмотревших пост
+* UniqueClicks - число уникальных пользователей, кликнувших где-то на посте
+* UniqueViewsFollowers - число уникальных пользователей из числа подписчиков, посмотревших пост
+* UniqueClicksFollowers - число уникальных пользователей из числа подписчиков, кликнувших где-то на посте
+
+Посчитайте отношение числа лайков к числу пользователей, кликнувших на посте (like / UniqueClicks). Предскажите посты, у которых этот показатель больше 15%. При вычислениях подумайте, нужно ли как-то преобразовывать предикторы (месяц, день, час категория публикации) -- объединять в группы, преобразовать в факторы и т.д.
+
+```{r}
+library(dplyr)
+fb= read.csv("Facebook.csv")
+```
+
+Постройте модели для предсказания других метрик успешности.

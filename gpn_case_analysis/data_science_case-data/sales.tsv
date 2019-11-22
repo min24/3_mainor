@@ -1,0 +1,1730 @@
+year	month	location	ira	product_category	brand	sku_id	item_per_bundle	shape	with_alcohol	filling	volume	price
+2017	1	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	4572.0	
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	8028.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6606.0	2.8664007976071773
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11688.0	2.093718843469591
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3582.0	2.8664007976071773
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5964.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1734.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	432.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	942.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1536.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	1926.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5736.0	2.093718843469591
+2017	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	3210.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	294.0	1.3958125623130608
+2017	1	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	738.0	1.3958125623130608
+2017	1	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	4158.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2256.0	1.2213359920239284
+2017	1	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	1914.0	
+2017	1	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	324.0	1.054054054054054
+2017	1	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	318.0	1.054054054054054
+2017	1	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	1842.0	1.1351351351351349
+2017	1	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	630.0	1.1351351351351349
+2017	1	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	216.0	1.1351351351351349
+2017	1	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	3648.0	1.1351351351351349
+2017	1	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	4500.0	
+2017	1	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	2718.0	
+2017	1	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	4128.0	
+2017	1	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	3924.0	
+2017	1	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	330.0	1.054054054054054
+2017	1	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	420.0	2.0270270270270268
+2017	1	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	240.0	2.0270270270270268
+2017	1	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	114.0	1.1216216216216215
+2017	1	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	528.0	1.1216216216216215
+2017	1	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	276.0	
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	2784.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	10494.0	2.8664007976071773
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11232.0	2.093718843469591
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	6156.0	2.8664007976071773
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	8322.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	894.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	408.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1998.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1296.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3594.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5604.0	2.093718843469591
+2017	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	690.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	270.0	1.3958125623130608
+2017	1	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	648.0	1.3958125623130608
+2017	1	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2202.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1494.0	1.2213359920239284
+2017	1	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	222.0	
+2017	2	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	4800.0	
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	9714.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7218.0	2.8721278721278725
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	8297.0	2.097902097902098
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2646.0	2.8721278721278725
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	9504.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1632.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	408.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	630.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1434.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2136.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5160.0	2.097902097902098
+2017	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	3390.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	258.0	1.398601398601399
+2017	2	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	558.0	1.398601398601399
+2017	2	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	4848.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2634.0	1.2237762237762235
+2017	2	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	2400.0	
+2017	2	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	372.0	1.0612822466528788
+2017	2	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	468.0	1.0612822466528788
+2017	2	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	2340.0	1.1429193425492543
+2017	2	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	858.0	1.1429193425492543
+2017	2	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	204.0	1.1429193425492543
+2017	2	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	3336.0	1.1429193425492543
+2017	2	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	6468.0	
+2017	2	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	4014.0	
+2017	2	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	3948.0	
+2017	2	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	4662.0	
+2017	2	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	426.0	1.0612822466528788
+2017	2	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	864.0	2.0409273974093827
+2017	2	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	552.0	2.0409273974093827
+2017	2	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	210.0	1.1293131598998585
+2017	2	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	666.0	1.1293131598998585
+2017	2	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	408.0	
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3738.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	10152.0	2.8721278721278725
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	7800.0	2.097902097902098
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5814.0	2.8721278721278725
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	11490.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	900.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	468.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1308.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1896.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3756.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5568.0	2.097902097902098
+2017	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	792.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	240.0	1.398601398601399
+2017	2	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	426.0	1.398601398601399
+2017	2	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2352.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1938.0	1.2237762237762235
+2017	2	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	294.0	
+2017	3	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	6594.0	
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	10614.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5526.0	2.8836509528585745
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	15420.0	2.106318956870612
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3636.0	2.8836509528585745
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7848.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2034.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	336.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	906.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2094.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2286.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6840.0	2.106318956870612
+2017	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4134.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	330.0	1.4042126379137412
+2017	3	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	684.0	1.4042126379137412
+2017	3	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	5634.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3252.0	1.2286860581745234
+2017	3	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	2958.0	
+2017	3	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	564.0	1.0805718718829658
+2017	3	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	642.0	1.0805718718829658
+2017	3	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	3084.0	1.1636927851047325
+2017	3	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	510.0	1.1636927851047325
+2017	3	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	648.0	1.1636927851047325
+2017	3	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	4152.0	1.1636927851047325
+2017	3	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	336.0	
+2017	3	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	3006.0	
+2017	3	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	4380.0	
+2017	3	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	4140.0	
+2017	3	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	636.0	1.0805718718829658
+2017	3	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	1200.0	2.0780228305441653
+2017	3	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	372.0	2.0780228305441653
+2017	3	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	294.0	1.1498392995677709
+2017	3	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	948.0	1.1498392995677709
+2017	3	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	426.0	
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	4062.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	12294.0	2.8836509528585745
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	16248.0	2.106318956870612
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	7722.0	2.8836509528585745
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	8748.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1470.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	444.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	2286.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2154.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4488.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	7140.0	2.106318956870612
+2017	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	738.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	222.0	1.4042126379137412
+2017	3	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	606.0	1.4042126379137412
+2017	3	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3048.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1776.0	1.2286860581745234
+2017	3	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	312.0	
+2017	4	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	8010.0	
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	11646.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6246.0	2.9113924050632924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	15780.0	2.1265822784810133
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3546.0	2.9113924050632924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	9024.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2184.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	402.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	990.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2406.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2520.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6744.0	2.1265822784810133
+2017	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4446.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	300.0	1.4177215189873418
+2017	4	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	624.0	1.4177215189873418
+2017	4	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	6684.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3894.0	1.240506329113924
+2017	4	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	3672.0	
+2017	4	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	720.0	1.0793756227167053
+2017	4	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	882.0	1.0793756227167053
+2017	4	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	5094.0	1.1624045167718366
+2017	4	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	1542.0	1.1624045167718366
+2017	4	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	282.0	1.1624045167718366
+2017	4	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	4986.0	1.1624045167718366
+2017	4	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	2388.0	
+2017	4	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	1404.0	
+2017	4	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	1872.0	
+2017	4	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	2610.0	
+2017	4	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	642.0	1.0793756227167053
+2017	4	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	768.0	2.07572235137828
+2017	4	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	156.0	2.07572235137828
+2017	4	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	696.0	1.148566367762648
+2017	4	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	1596.0	1.148566367762648
+2017	4	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	636.0	
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3360.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	9576.0	2.9113924050632924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	10944.0	2.1265822784810133
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	6138.0	2.9113924050632924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	6780.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	996.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	414.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1662.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1836.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4032.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5940.0	2.1265822784810133
+2017	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	954.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	132.0	1.4177215189873418
+2017	4	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	360.0	1.4177215189873418
+2017	4	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2922.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1638.0	1.240506329113924
+2017	4	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	294.0	
+2017	4	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	600.0	1.240506329113924
+2017	4	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	300.0	1.240506329113924
+2017	5	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	7950.0	
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	8700.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6750.0	2.9780401905945726
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	17220.0	2.175264139216905
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3899.0	2.9780401905945726
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	13200.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2436.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	468.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1050.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	3120.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3378.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6782.0	2.175264139216905
+2017	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4950.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	450.0	1.45017609281127
+2017	5	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	720.0	1.45017609281127
+2017	5	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	6744.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4242.0	1.2689040812098609
+2017	5	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	5820.0	
+2017	5	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	672.0	1.1029411764705883
+2017	5	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	576.0	1.1029411764705883
+2017	5	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	3792.0	1.187782805429864
+2017	5	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	990.0	1.187782805429864
+2017	5	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	342.0	1.187782805429864
+2017	5	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	7116.0	1.187782805429864
+2017	5	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	8052.0	
+2017	5	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	3744.0	
+2017	5	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	5940.0	
+2017	5	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	5382.0	
+2017	5	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	930.0	1.1029411764705883
+2017	5	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	552.0	2.1210407239819005
+2017	5	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	294.0	1.1736425339366514
+2017	5	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	2112.0	1.1736425339366514
+2017	5	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	354.0	
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	2664.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7164.0	2.9780401905945726
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	8112.0	2.175264139216905
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5382.0	2.9780401905945726
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5700.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1032.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	384.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1278.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1668.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3576.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4956.0	2.175264139216905
+2017	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	816.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	78.0	1.45017609281127
+2017	5	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	432.0	1.45017609281127
+2017	5	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2640.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1566.0	1.2689040812098609
+2017	5	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	336.0	
+2017	6	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	9078.0	
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	11664.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6390.0	3.0284365054922486
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	15912.0	2.271327379119187
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3852.0	3.0284365054922486
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	10434.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	3282.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	582.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	576.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2772.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2826.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6024.0	2.271327379119187
+2017	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4800.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	426.0	1.4372241043014065
+2017	6	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	756.0	1.4372241043014065
+2017	6	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	7434.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4410.0	1.2575710912637308
+2017	6	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	4500.0	
+2017	6	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	552.0	1.1059437386569877
+2017	6	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	678.0	1.1059437386569877
+2017	6	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	2814.0	1.1910163339382938
+2017	6	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	1206.0	1.1910163339382938
+2017	6	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	432.0	1.1910163339382938
+2017	6	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	7830.0	1.1910163339382938
+2017	6	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	9732.0	
+2017	6	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	4464.0	
+2017	6	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	7236.0	
+2017	6	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	5400.0	
+2017	6	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	516.0	1.1059437386569877
+2017	6	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	600.0	2.126814882032668
+2017	6	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	444.0	2.126814882032668
+2017	6	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	390.0	1.1768375680580765
+2017	6	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	924.0	1.1768375680580765
+2017	6	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	768.0	
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3606.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	9180.0	3.0284365054922486
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9924.0	2.271327379119187
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	7308.0	3.0284365054922486
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7386.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1050.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	312.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1434.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1944.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4296.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5604.0	2.271327379119187
+2017	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1050.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	288.0	1.4372241043014065
+2017	6	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	384.0	1.4372241043014065
+2017	6	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3576.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1944.0	1.2575710912637308
+2017	6	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	480.0	
+2017	6	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	900.0	1.2575710912637308
+2017	7	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	15882.0	
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	6846.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	10728.0	3.274268104776578
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	26952.0	2.306111967128916
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5652.0	3.274268104776578
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	24474.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	3264.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	684.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	2028.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	5340.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3876.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	10176.0	2.306111967128916
+2017	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	5448.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	732.0	1.4381099126861838
+2017	7	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	390.0	1.4381099126861838
+2017	7	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	11616.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	5508.0	1.28145865434001
+2017	7	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	6294.0	
+2017	7	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	1098.0	1.0969846984698468
+2017	7	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	1122.0	1.0969846984698468
+2017	7	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	4326.0	1.1813681368136817
+2017	7	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	1824.0	1.1813681368136817
+2017	7	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	414.0	1.1813681368136817
+2017	7	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	9642.0	1.1813681368136817
+2017	7	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	12036.0	
+2017	7	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	5634.0	
+2017	7	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	7536.0	
+2017	7	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	5904.0	
+2017	7	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	636.0	1.0969846984698468
+2017	7	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	1332.0	2.109585958595859
+2017	7	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	480.0	2.109585958595859
+2017	7	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	438.0	1.1673042304230423
+2017	7	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	2040.0	1.1673042304230423
+2017	7	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	1236.0	
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3648.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	11340.0	3.274268104776578
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	14268.0	2.306111967128916
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	8280.0	3.274268104776578
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	9570.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1140.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	648.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1668.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2670.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4860.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	8676.0	2.306111967128916
+2017	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1788.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	54.0	1.4381099126861838
+2017	7	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	144.0	1.4381099126861838
+2017	7	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	5346.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2664.0	1.28145865434001
+2017	7	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	666.0	
+2017	8	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	12240.0	
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	9324.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	8190.0	3.255540802778062
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	18984.0	2.2929220712899605
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3924.0	3.255540802778062
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	15276.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	3072.0	1.2511490144009807
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	702.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1116.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	3750.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3918.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	7836.0	2.2929220712899605
+2017	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4452.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	588.0	1.4298845878868351
+2017	8	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	762.0	1.4298845878868351
+2017	8	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	7044.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3792.0	1.2741293024205904
+2017	8	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	4764.0	
+2017	8	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	222.0	1.081770775546433
+2017	8	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	318.0	1.081770775546433
+2017	8	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	882.0	1.164983912126928
+2017	8	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	1398.0	1.164983912126928
+2017	8	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	1032.0	1.164983912126928
+2017	8	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	8586.0	1.164983912126928
+2017	8	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	12492.0	
+2017	8	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	4806.0	
+2017	8	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	1920.0	
+2017	8	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	2214.0	
+2017	8	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	378.0	1.081770775546433
+2017	8	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	1200.0	2.0803284145123717
+2017	8	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	540.0	2.0803284145123717
+2017	8	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	1524.0	1.1511150560301786
+2017	8	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	1176.0	1.1511150560301786
+2017	8	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	684.0	
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	5988.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7452.0	3.255540802778062
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11760.0	2.2929220712899605
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5652.0	3.255540802778062
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5928.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	978.0	1.2511490144009807
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	738.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1878.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2886.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4758.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	7596.0	2.2929220712899605
+2017	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2052.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	270.0	1.4298845878868351
+2017	8	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	378.0	1.4298845878868351
+2017	8	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	6.0	
+2017	8	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3702.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2340.0	1.2741293024205904
+2017	8	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	444.0	
+2017	8	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	1200.0	1.2741293024205904
+2017	8	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	1200.0	1.2741293024205904
+2017	9	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	10380.0	
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	336.0	
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	12162.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7146.0	3.276961036290738
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	17640.0	2.308008635756143
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3438.0	3.276961036290738
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	13134.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	3306.0	1.2593811041431069
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	396.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1584.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2964.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3292.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6996.0	2.308008635756143
+2017	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	5436.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	516.0	1.4392926904492649
+2017	9	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	690.0	1.4392926904492649
+2017	9	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	9216.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	5322.0	1.2825125938110409
+2017	9	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	5094.0	
+2017	9	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1254.0	1.2825125938110409
+2017	9	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	1266.0	1.2825125938110409
+2017	9	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	1440.0	
+2017	9	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	570.0	1.0896289673670092
+2017	9	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	600.0	1.0896289673670092
+2017	9	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	4170.0	1.1734465802413947
+2017	9	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	1044.0	1.1734465802413947
+2017	9	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	336.0	1.1734465802413947
+2017	9	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	7494.0	1.1734465802413947
+2017	9	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	10044.0	
+2017	9	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	4950.0	
+2017	9	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	6876.0	
+2017	9	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	7398.0	
+2017	9	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	1206.0	1.0896289673670092
+2017	9	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	1800.0	2.095440321859633
+2017	9	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	480.0	1.1594769780956635
+2017	9	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	1332.0	1.1594769780956635
+2017	9	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	894.0	
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	114.0	
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	7266.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7002.0	3.276961036290738
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	12480.0	2.308008635756143
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5220.0	3.276961036290738
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	4512.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1338.0	1.2593811041431069
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	432.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1596.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2070.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3054.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	7020.0	2.308008635756143
+2017	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2928.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	78.0	1.4392926904492649
+2017	9	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	450.0	1.4392926904492649
+2017	9	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3660.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2466.0	1.2825125938110409
+2017	9	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	504.0	
+2017	10	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	10734.0	
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2508.0	
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	8400.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6174.0	3.2672201722017227
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	15180.0	2.3011480114801146
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3096.0	3.2672201722017227
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	16194.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2928.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	48.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1176.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	3018.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3474.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6372.0	2.3011480114801146
+2017	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4638.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	432.0	1.4708897088970887
+2017	10	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	528.0	1.4708897088970887
+2017	10	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	8904.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4476.0	1.27870028700287
+2017	10	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	5064.0	
+2017	10	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1068.0	1.2556375563755633
+2017	10	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	1104.0	1.2556375563755633
+2017	10	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	1296.0	
+2017	10	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	594.0	1.0928043039677202
+2017	10	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	798.0	1.0928043039677202
+2017	10	Moon	MN	Chocolates	Ferrero Rocher	sku #27	1	Standart	No	Nothing	2868.0	1.1768661735036987
+2017	10	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	888.0	1.1768661735036987
+2017	10	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	294.0	1.1768661735036987
+2017	10	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	6888.0	1.1768661735036987
+2017	10	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	8628.0	
+2017	10	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	4392.0	
+2017	10	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	5412.0	
+2017	10	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	5184.0	
+2017	10	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	822.0	1.0928043039677202
+2017	10	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	1428.0	2.101546738399462
+2017	10	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	1206.0	1.1628558619143692
+2017	10	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	936.0	
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	306.0	
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	6054.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6966.0	3.2672201722017227
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	10956.0	2.3011480114801146
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4914.0	3.2672201722017227
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	4146.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1134.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #33	1	Standart	No	Nothing	66.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1638.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2004.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3120.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6396.0	2.3011480114801146
+2017	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2466.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	168.0	1.4708897088970887
+2017	10	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	462.0	1.4708897088970887
+2017	10	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3600.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2292.0	1.27870028700287
+2017	10	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	426.0	
+2017	11	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	5802.0	
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2082.0	
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	6912.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5094.0	3.2452657299938927
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	10344.0	2.2856851964976577
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	1998.0	3.2452657299938927
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	10860.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2112.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1158.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1704.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2298.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5484.0	2.2856851964976577
+2017	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4044.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	456.0	1.4610059051109752
+2017	11	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	570.0	1.4610059051109752
+2017	11	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	6.0	
+2017	11	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	5454.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3558.0	1.2701079209936874
+2017	11	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	2994.0	
+2017	11	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1146.0	1.2472001628996132
+2017	11	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	1170.0	1.2472001628996132
+2017	11	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	1596.0	
+2017	11	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	498.0	1.0820108755964928
+2017	11	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	534.0	1.0820108755964928
+2017	11	Moon	MN	Chocolates	Ferrero Rocher	sku #44	1	Standart	No	Nothing	288.0	1.1652424814116078
+2017	11	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	6990.0	1.1652424814116078
+2017	11	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	6000.0	
+2017	11	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	3348.0	
+2017	11	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	4104.0	
+2017	11	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	4842.0	
+2017	11	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	120.0	1.0820108755964928
+2017	11	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	876.0	2.0807901453778714
+2017	11	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	744.0	1.1513705471090891
+2017	11	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	372.0	
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	648.0	
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	5322.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	4698.0	3.2452657299938927
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	8472.0	2.2856851964976577
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3708.0	3.2452657299938927
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	3330.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	888.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1092.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1644.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2490.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4632.0	2.2856851964976577
+2017	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1842.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	192.0	1.4610059051109752
+2017	11	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	420.0	1.4610059051109752
+2017	11	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2310.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1380.0	1.2701079209936874
+2017	11	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	294.0	
+2017	12	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	8994.0	
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2460.0	
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	10128.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6948.0	3.2132056451612896
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	13200.0	2.263104838709677
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3996.0	3.2132056451612896
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	11922.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2424.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1284.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2148.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2634.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	7968.0	2.263104838709677
+2017	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4896.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	468.0	1.4465725806451617
+2017	12	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	474.0	1.4465725806451617
+2017	12	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	222.0	
+2017	12	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	6024.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3408.0	1.2575604838709675
+2017	12	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	3336.0	
+2017	12	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	714.0	
+2017	12	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1776.0	1.2575604838709675
+2017	12	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	1782.0	1.2575604838709675
+2017	12	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	2406.0	
+2017	12	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	618.0	1.059322033898305
+2017	12	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	498.0	1.059322033898305
+2017	12	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	1008.0	1.1408083441981751
+2017	12	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	7944.0	1.1408083441981751
+2017	12	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	7404.0	
+2017	12	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	3996.0	
+2017	12	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	5040.0	
+2017	12	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	7164.0	
+2017	12	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	402.0	1.059322033898305
+2017	12	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	888.0	2.037157757496741
+2017	12	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	690.0	1.1272272924815296
+2017	12	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	660.0	
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1188.0	
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	6138.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7434.0	3.2132056451612896
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	12252.0	2.263104838709677
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	7002.0	3.2132056451612896
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	3888.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1506.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1710.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2118.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3366.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	7716.0	2.263104838709677
+2017	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2448.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	258.0	1.4465725806451617
+2017	12	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	330.0	1.4465725806451617
+2017	12	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3174.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2196.0	1.2575604838709675
+2017	12	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	336.0	
+2018	1	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	5058.0	1.1701081612586035
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1884.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	7128.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5184.0	3.134218289085545
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9504.0	2.207472959685349
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	1962.0	3.134218289085545
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7740.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1644.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1032.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1410.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	1776.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4548.0	2.207472959685349
+2018	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	3894.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	312.0	1.4110127826941992
+2018	1	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	516.0	1.4110127826941992
+2018	1	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	300.0	1.1553588987217307
+2018	1	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	4422.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2796.0	1.2266470009832842
+2018	1	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	2340.0	1.2266470009832842
+2018	1	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	978.0	1.2266470009832842
+2018	1	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1086.0	1.2266470009832842
+2018	1	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	1578.0	1.2266470009832842
+2018	1	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	2304.0	1.2266470009832842
+2018	1	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	348.0	1.0322922181048173
+2018	1	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	174.0	1.0322922181048173
+2018	1	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	2856.0	1.1646373742721017
+2018	1	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	702.0	1.1646373742721017
+2018	1	Moon	MN	Chocolates	Ferrero Rocher	sku #55	1	Standart	No	Nothing	2106.0	1.1646373742721017
+2018	1	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	714.0	1.1646373742721017
+2018	1	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	5040.0	2.10428798305982
+2018	1	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	2898.0	2.977766013763895
+2018	1	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	3624.0	2.10428798305982
+2018	1	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	6606.0	2.977766013763895
+2018	1	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	84.0	1.0322922181048173
+2018	1	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	288.0	1.985177342509264
+2018	1	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	252.0	1.1646373742721017
+2018	1	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	378.0	1.1701081612586035
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1218.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	4944.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	8226.0	3.134218289085545
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	12660.0	2.207472959685349
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5094.0	3.134218289085545
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	4422.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1104.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1854.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1584.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2568.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4872.0	2.207472959685349
+2018	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1596.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	276.0	1.4110127826941992
+2018	1	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	552.0	1.4110127826941992
+2018	1	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	24.0	1.1553588987217307
+2018	1	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	1938.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1452.0	1.2266470009832842
+2018	1	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	216.0	1.2266470009832842
+2018	1	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	900.0	1.2266470009832842
+2018	1	Village	VL	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	300.0	1.2266470009832842
+2018	2	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	5076.0	1.1724137931034484
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1884.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	9054.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5076.0	3.14039408866995
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9312.0	2.2118226600985227
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	1908.0	3.14039408866995
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	8310.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1608.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1074.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1518.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	1842.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4224.0	2.2118226600985227
+2018	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	3762.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	384.0	1.413793103448276
+2018	2	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	588.0	1.413793103448276
+2018	2	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	378.0	1.1576354679802958
+2018	2	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	5010.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2700.0	1.229064039408867
+2018	2	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	2640.0	1.229064039408867
+2018	2	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1248.0	1.229064039408867
+2018	2	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1098.0	1.229064039408867
+2018	2	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2376.0	1.229064039408867
+2018	2	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	1824.0	1.229064039408867
+2018	2	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	126.0	1.031200423056584
+2018	2	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	4272.0	1.1634056054997357
+2018	2	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	762.0	1.1634056054997357
+2018	2	Moon	MN	Chocolates	Ferrero Rocher	sku #55	1	Standart	No	Nothing	2214.0	1.1634056054997357
+2018	2	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	6084.0	2.102062400846113
+2018	2	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	2844.0	2.974616604970916
+2018	2	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	3888.0	2.102062400846113
+2018	2	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	7254.0	2.974616604970916
+2018	2	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	48.0	1.031200423056584
+2018	2	Moon	MN	Chocolates	Toblerone	sku #11	2	Standart	No	Nothing	60.0	1.9830777366472767
+2018	2	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	42.0	1.1634056054997357
+2018	2	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	384.0	1.1724137931034484
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1314.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	5076.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	8622.0	3.14039408866995
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11568.0	2.2118226600985227
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5058.0	3.14039408866995
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	4242.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1092.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1722.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1842.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2556.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5424.0	2.2118226600985227
+2018	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1884.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	198.0	1.413793103448276
+2018	2	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	306.0	1.413793103448276
+2018	2	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	504.0	1.1576354679802958
+2018	2	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2172.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1458.0	1.229064039408867
+2018	2	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	252.0	1.229064039408867
+2018	3	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	6246.0	1.19
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1782.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	10434.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5400.0	3.1875
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11064.0	2.245
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	1944.0	3.1875
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	10020.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2034.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1524.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1752.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2124.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4992.0	2.245
+2018	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4320.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	432.0	1.435
+2018	3	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	552.0	1.435
+2018	3	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	918.0	1.175
+2018	3	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	5388.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3180.0	1.2475
+2018	3	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	3324.0	1.2475
+2018	3	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1704.0	1.2475
+2018	3	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1590.0	1.2475
+2018	3	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2640.0	1.2475
+2018	3	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	2676.0	1.2475
+2018	3	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	48.0	1.0421120136810609
+2018	3	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	948.0	1.175716117999145
+2018	3	Moon	MN	Chocolates	Ferrero Rocher	sku #55	1	Standart	No	Nothing	2886.0	1.175716117999145
+2018	3	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	4884.0	1.175716117999145
+2018	3	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	6252.0	2.1243052586575457
+2018	3	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	3276.0	3.0060923471569048
+2018	3	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	5142.0	2.1243052586575457
+2018	3	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	5886.0	3.0060923471569048
+2018	3	Moon	MN	Chocolates	Ferrero Rocher	sku #98	1	Square	No	Nothing	1152.0	1.175716117999145
+2018	3	Moon	MN	Chocolates	Snickers	sku #7	1	Standart	No	Nothing	12.0	1.0421120136810609
+2018	3	Moon	MN	Chocolates	Toblerone	sku #3	1	Standart	No	Nothing	30.0	1.175716117999145
+2018	3	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	360.0	1.19
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1338.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	5070.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	10692.0	3.1875
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	15276.0	2.245
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5544.0	3.1875
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	6918.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1704.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	2346.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1764.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3744.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5568.0	2.245
+2018	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1548.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	276.0	1.435
+2018	3	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	378.0	1.435
+2018	3	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	348.0	1.175
+2018	3	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3012.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1686.0	1.2475
+2018	3	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	438.0	1.2475
+2018	3	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1140.0	1.2475
+2018	3	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	666.0	1.2475
+2018	3	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	1068.0	1.2475
+2018	3	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	1830.0	1.2475
+2018	4	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	9444.0	1.1840796019900501
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	3078.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	12936.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6606.0	3.1716417910447747
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	14364.0	2.233830845771144
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3150.0	3.1716417910447747
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	11586.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2538.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1176.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2106.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2232.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6900.0	2.233830845771144
+2018	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4824.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	354.0	1.4278606965174128
+2018	4	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	426.0	1.4278606965174128
+2018	4	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1212.0	1.1691542288557213
+2018	4	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	7968.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4560.0	1.2412935323383079
+2018	4	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	4734.0	1.2412935323383079
+2018	4	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1740.0	1.2412935323383079
+2018	4	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1386.0	1.2412935323383079
+2018	4	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2376.0	1.2412935323383079
+2018	4	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	3462.0	1.2412935323383079
+2018	4	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	942.0	1.1714589989350377
+2018	4	Moon	MN	Chocolates	Ferrero Rocher	sku #55	1	Standart	No	Nothing	2958.0	1.1714589989350377
+2018	4	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	5988.0	1.1714589989350377
+2018	4	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	6864.0	2.116613418530352
+2018	4	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	1272.0	2.9952076677316297
+2018	4	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	6168.0	2.116613418530352
+2018	4	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	1902.0	2.9952076677316297
+2018	4	Moon	MN	Chocolates	Ferrero Rocher	sku #98	1	Square	No	Nothing	660.0	1.1714589989350377
+2018	4	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	90.0	1.2486687965921193
+2018	4	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	54.0	1.2486687965921193
+2018	4	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	186.0	1.2486687965921193
+2018	4	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	126.0	1.2486687965921193
+2018	4	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	678.0	1.1840796019900501
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	984.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3528.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7740.0	3.1716417910447747
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	12036.0	2.233830845771144
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5652.0	3.1716417910447747
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7284.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1224.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1782.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1710.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3996.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6540.0	2.233830845771144
+2018	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1494.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	198.0	1.4278606965174128
+2018	4	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	240.0	1.4278606965174128
+2018	4	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	438.0	1.1691542288557213
+2018	4	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3342.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1938.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	318.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1794.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1464.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	1722.0	1.2412935323383079
+2018	4	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	2874.0	1.2412935323383079
+2018	5	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	7824.0	1.1888111888111887
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2670.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	11928.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5598.0	3.184315684315685
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	13092.0	2.2427572427572424
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2772.0	3.184315684315685
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	11790.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2718.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1566.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1062.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2370.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6108.0	2.2427572427572424
+2018	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	5046.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	480.0	1.433566433566433
+2018	5	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	762.0	1.433566433566433
+2018	5	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1176.0	1.1738261738261735
+2018	5	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	7932.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4398.0	1.246253746253746
+2018	5	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	4038.0	1.246253746253746
+2018	5	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1806.0	1.246253746253746
+2018	5	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2022.0	1.246253746253746
+2018	5	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2226.0	1.246253746253746
+2018	5	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	3558.0	1.246253746253746
+2018	5	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	1650.0	1.0432270490049216
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #43	1	Standart	No	Nothing	744.0	1.1769741065696553
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2610.0	1.1769741065696553
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	3816.0	2.126578215279264
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #55	1	Standart	No	Nothing	1080.0	1.1769741065696553
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #72	1	Standart	No	Nothing	7020.0	1.1769741065696553
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #81	2	Standart	No	Nothing	8364.0	2.126578215279264
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #82	3	Standart	No	Nothing	3978.0	3.009308795206505
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #83	2	Standart	No	Nothing	348.0	2.126578215279264
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #84	3	Standart	No	Nothing	7398.0	3.009308795206505
+2018	5	Moon	MN	Chocolates	Ferrero Rocher	sku #98	1	Square	No	Nothing	948.0	1.1769741065696553
+2018	5	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	120.0	1.2545473999572008
+2018	5	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	114.0	1.2545473999572008
+2018	5	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	282.0	1.2545473999572008
+2018	5	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	324.0	1.2545473999572008
+2018	5	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	726.0	1.1888111888111887
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1344.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3330.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5328.0	3.184315684315685
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	10476.0	2.2427572427572424
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5112.0	3.184315684315685
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	6876.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1218.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1188.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	924.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4686.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5868.0	2.2427572427572424
+2018	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1182.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	138.0	1.433566433566433
+2018	5	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	294.0	1.433566433566433
+2018	5	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	420.0	1.1738261738261735
+2018	5	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3348.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2316.0	1.246253746253746
+2018	5	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	216.0	1.246253746253746
+2018	5	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1962.0	1.246253746253746
+2018	5	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	1494.0	1.246253746253746
+2018	5	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2178.0	1.246253746253746
+2018	5	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	3408.0	1.246253746253746
+2018	5	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	900.0	1.246253746253746
+2018	5	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	300.0	1.246253746253746
+2018	5	Village	VL	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	300.0	1.246253746253746
+2018	6	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	8742.0	1.1983887210473312
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2250.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	13332.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5904.0	3.2099697885196377
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	13332.0	2.2608257804632426
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2934.0	3.2099697885196377
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	13422.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2532.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1998.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	54.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2730.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6816.0	2.2608257804632426
+2018	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	5508.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	312.0	1.445115810674723
+2018	6	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	660.0	1.445115810674723
+2018	6	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1104.0	1.1832829808660623
+2018	6	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	8514.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4704.0	1.2562940584088618
+2018	6	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	330.0	1.2562940584088618
+2018	6	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	492.0	1.2562940584088618
+2018	6	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3168.0	1.2562940584088618
+2018	6	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3048.0	1.2562940584088618
+2018	6	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4368.0	1.2562940584088618
+2018	6	Moon	MN	Chocolates	Cadbury	sku #34	1	Standart	No	Nothing	1752.0	1.069782751810402
+2018	6	Moon	MN	Chocolates	Cadbury	sku #37	1	Standart	No	Nothing	312.0	1.069782751810402
+2018	6	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	4626.0	3.0859117840684647
+2018	6	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9264.0	2.1807109940750493
+2018	6	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	7020.0	3.0859117840684647
+2018	6	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5706.0	1.2069343866578892
+2018	6	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1782.0	1.2336354481369587
+2018	6	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	840.0	1.2069343866578892
+2018	6	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4764.0	2.1807109940750493
+2018	6	Moon	MN	Chocolates	Ferrero Rocher	sku #60	1	Standart	No	Nothing	4140.0	1.2069343866578892
+2018	6	Moon	MN	Chocolates	Toblerone	sku #17	2	Standart	No	Nothing	936.0	2.0572745227123117
+2018	6	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	648.0	1.2069343866578892
+2018	6	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	174.0	1.2864823348694316
+2018	6	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	168.0	1.2864823348694316
+2018	6	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	354.0	1.2864823348694316
+2018	6	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	276.0	1.2864823348694316
+2018	6	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	744.0	1.1983887210473312
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	438.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3360.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6012.0	3.2099697885196377
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11232.0	2.2608257804632426
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5328.0	3.2099697885196377
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7812.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1068.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	2268.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4662.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6168.0	2.2608257804632426
+2018	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1026.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	180.0	1.445115810674723
+2018	6	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	426.0	1.445115810674723
+2018	6	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	516.0	1.1832829808660623
+2018	6	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3498.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2034.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	426.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3342.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2964.0	1.2562940584088618
+2018	6	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4122.0	1.2562940584088618
+2018	7	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	14340.0	1.2254144784265266
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	4392.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	16944.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	10548.0	3.2823602100710523
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	20436.0	2.311811347955926
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4140.0	3.2823602100710523
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	17886.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	3216.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	2334.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2022.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3720.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	10428.0	2.311811347955926
+2018	7	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	6228.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	468.0	1.477705694573164
+2018	7	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	804.0	1.477705694573164
+2018	7	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1608.0	1.2099680774379569
+2018	7	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	11028.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	6078.0	1.2846256822160431
+2018	7	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	6084.0	1.2846256822160431
+2018	7	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2400.0	1.2846256822160431
+2018	7	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2376.0	1.2846256822160431
+2018	7	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3852.0	1.2846256822160431
+2018	7	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4362.0	1.2846256822160431
+2018	7	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	3690.0	1.0924369747899159
+2018	7	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5670.0	3.1512605042016806
+2018	7	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11544.0	2.226890756302521
+2018	7	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	7632.0	3.1512605042016806
+2018	7	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	9318.0	1.2324929971988794
+2018	7	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1074.0	1.2614560807331892
+2018	7	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	600.0	1.2324929971988794
+2018	7	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3678.0	1.2324929971988794
+2018	7	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	7728.0	2.226890756302521
+2018	7	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	852.0	1.2324929971988794
+2018	7	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	264.0	1.3137254901960786
+2018	7	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	180.0	1.3137254901960786
+2018	7	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	336.0	1.3137254901960786
+2018	7	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	600.0	1.3137254901960786
+2018	7	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	924.0	1.2254144784265266
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2166.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	4062.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	8478.0	3.2823602100710523
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	14904.0	2.311811347955926
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	7560.0	3.2823602100710523
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7926.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1590.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1608.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	900.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	5418.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	8400.0	2.311811347955926
+2018	7	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1080.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	102.0	1.477705694573164
+2018	7	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	402.0	1.477705694573164
+2018	7	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	876.0	1.2099680774379569
+2018	7	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	4518.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2658.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	474.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1896.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2940.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3918.0	1.2846256822160431
+2018	7	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4800.0	1.2846256822160431
+2018	8	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	11064.0	1.2361067830061283
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	4380.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	14214.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	8262.0	3.3110003116235602
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	15912.0	2.3319829645787893
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4158.0	3.3110003116235602
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	13572.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2772.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	2406.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2166.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3138.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	8148.0	2.3319829645787893
+2018	8	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	5940.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	462.0	1.4905993559779784
+2018	8	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	828.0	1.4905993559779784
+2018	8	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1686.0	1.2205256050690765
+2018	8	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	7248.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3984.0	1.2958346317648275
+2018	8	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	4632.0	1.2958346317648275
+2018	8	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1140.0	1.2958346317648275
+2018	8	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3084.0	1.2958346317648275
+2018	8	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3606.0	1.2958346317648275
+2018	8	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4302.0	1.2958346317648275
+2018	8	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	2184.0	1.1114911080711356
+2018	8	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	4050.0	3.2062243502051984
+2018	8	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	8880.0	2.2657318741450068
+2018	8	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	6624.0	3.2062243502051984
+2018	8	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	8166.0	1.2539899680802555
+2018	8	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	906.0	1.2724628648592502
+2018	8	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1062.0	1.2539899680802555
+2018	8	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4836.0	1.2539899680802555
+2018	8	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	8892.0	2.2657318741450068
+2018	8	Moon	MN	Chocolates	Toblerone	sku #5	1	Standart	No	Nothing	18.0	1.2539899680802555
+2018	8	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	180.0	1.3366393068855449
+2018	8	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	228.0	1.3366393068855449
+2018	8	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	318.0	1.3366393068855449
+2018	8	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	282.0	1.3366393068855449
+2018	8	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	582.0	1.2361067830061283
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1182.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3564.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7524.0	3.3110003116235602
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	12432.0	2.3319829645787893
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	7200.0	3.3110003116235602
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7014.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1110.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1404.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1920.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	5274.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	7692.0	2.3319829645787893
+2018	8	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	888.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	114.0	1.4905993559779784
+2018	8	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	444.0	1.4905993559779784
+2018	8	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	324.0	1.2205256050690765
+2018	8	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3378.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2070.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	336.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1758.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2298.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2946.0	1.2958346317648275
+2018	8	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	3480.0	1.2958346317648275
+2018	8	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	900.0	1.2958346317648275
+2018	9	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	9672.0	1.2315016040567115
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2550.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	13632.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6930.0	3.2986650108661904
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	14964.0	2.3232950429473247
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3582.0	3.2986650108661904
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	13614.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	3006.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1878.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2784.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2796.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6996.0	2.3232950429473247
+2018	9	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	5736.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	546.0	1.48504605195074
+2018	9	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	726.0	1.48504605195074
+2018	9	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	192.0	1.2159784745938114
+2018	9	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	7878.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	6018.0	1.2910069336644932
+2018	9	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	5112.0	1.2910069336644932
+2018	9	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1326.0	1.2910069336644932
+2018	9	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	4068.0	1.2910069336644932
+2018	9	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	4554.0	1.2910069336644932
+2018	9	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4182.0	1.2910069336644932
+2018	9	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	2118.0	1.1481394253414976
+2018	9	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	3978.0	3.3119406500235526
+2018	9	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	8544.0	2.3404380593499763
+2018	9	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5652.0	3.3119406500235526
+2018	9	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7314.0	1.2953367875647668
+2018	9	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	582.0	1.2677222394701435
+2018	9	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1092.0	1.2953367875647668
+2018	9	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3420.0	1.2953367875647668
+2018	9	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6396.0	2.3404380593499763
+2018	9	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	282.0	1.3807112576542626
+2018	9	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	180.0	1.3807112576542626
+2018	9	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	378.0	1.3807112576542626
+2018	9	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	558.0	1.3807112576542626
+2018	9	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	654.0	1.2315016040567115
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1608.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3618.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	7434.0	3.2986650108661904
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11040.0	2.3232950429473247
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	6084.0	3.2986650108661904
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7638.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1152.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1134.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1530.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4596.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6204.0	2.3232950429473247
+2018	9	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	864.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	186.0	1.48504605195074
+2018	9	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	396.0	1.48504605195074
+2018	9	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	36.0	1.2159784745938114
+2018	9	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3540.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2676.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	408.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	930.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3708.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	4188.0	1.2910069336644932
+2018	9	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4932.0	1.2910069336644932
+2018	10	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	7350.0	1.2382934443288245
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	3336.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	11688.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6858.0	3.316857440166495
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	15528.0	2.3361082206035384
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3384.0	3.316857440166495
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	13302.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2718.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	2082.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	3420.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3936.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6516.0	2.3361082206035384
+2018	10	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	4434.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	438.0	1.493236212278876
+2018	10	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	522.0	1.493236212278876
+2018	10	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	678.0	1.2226847034339232
+2018	10	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	8022.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4506.0	1.298126951092612
+2018	10	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	4608.0	1.298126951092612
+2018	10	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2886.0	1.298126951092612
+2018	10	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2808.0	1.298126951092612
+2018	10	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3258.0	1.298126951092612
+2018	10	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4962.0	1.298126951092612
+2018	10	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	618.0	1.1632068718682893
+2018	10	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	3384.0	3.3554044380816053
+2018	10	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	6480.0	2.371152469577667
+2018	10	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5130.0	3.3554044380816053
+2018	10	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	6498.0	1.3123359580052496
+2018	10	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1062.0	1.2747138397502602
+2018	10	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1152.0	1.3123359580052496
+2018	10	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4332.0	2.371152469577667
+2018	10	Moon	MN	Chocolates	Ferrero Rocher	sku #60	1	Standart	No	Nothing	2820.0	1.3123359580052496
+2018	10	Moon	MN	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	1410.0	1.3123359580052496
+2018	10	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	576.0	1.3123359580052496
+2018	10	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	324.0	1.3988308279646864
+2018	10	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	324.0	1.3988308279646864
+2018	10	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	318.0	1.3988308279646864
+2018	10	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	492.0	1.3988308279646864
+2018	10	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	744.0	1.2382934443288245
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	474.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1620.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	2562.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5922.0	3.316857440166495
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	8868.0	2.3361082206035384
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3672.0	3.316857440166495
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	6648.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1434.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	804.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1596.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3612.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4860.0	2.3361082206035384
+2018	10	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	972.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	156.0	1.493236212278876
+2018	10	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	270.0	1.493236212278876
+2018	10	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	510.0	1.2226847034339232
+2018	10	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3186.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2190.0	1.298126951092612
+2018	10	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	300.0	1.298126951092612
+2018	10	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	924.0	1.298126951092612
+2018	10	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3528.0	1.298126951092612
+2018	10	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	4158.0	1.298126951092612
+2018	10	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4602.0	1.298126951092612
+2018	11	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	5706.0	1.2182637182637186
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2304.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	9996.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5706.0	3.263206388206389
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11784.0	2.298321048321048
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2520.0	3.263206388206389
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	9408.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2250.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1548.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2664.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3750.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4728.0	2.298321048321048
+2018	11	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	3300.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	264.0	1.4690827190827194
+2018	11	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	522.0	1.4690827190827194
+2018	11	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	876.0	1.2029074529074528
+2018	11	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	5556.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3912.0	1.2771294021294024
+2018	11	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	3528.0	1.2771294021294024
+2018	11	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2064.0	1.2771294021294024
+2018	11	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2592.0	1.2771294021294024
+2018	11	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3474.0	1.2771294021294024
+2018	11	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4662.0	1.2771294021294024
+2018	11	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	1086.0	1.1489512137638465
+2018	11	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	2718.0	3.31428234739571
+2018	11	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	4104.0	2.3420928588263026
+2018	11	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3996.0	3.31428234739571
+2018	11	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	4386.0	1.2962526514258779
+2018	11	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	396.0	1.2540950040950043
+2018	11	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	708.0	1.2962526514258779
+2018	11	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2208.0	1.2962526514258779
+2018	11	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	2952.0	2.3420928588263026
+2018	11	Moon	MN	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	294.0	1.2962526514258779
+2018	11	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	432.0	1.2962526514258779
+2018	11	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	192.0	1.3816874852698562
+2018	11	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	306.0	1.3816874852698562
+2018	11	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	342.0	1.3816874852698562
+2018	11	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	270.0	1.3816874852698562
+2018	11	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	504.0	1.2182637182637186
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	444.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1368.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3264.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	4122.0	3.263206388206389
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	7332.0	2.298321048321048
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2952.0	3.263206388206389
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5262.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	900.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1182.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	642.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2796.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4824.0	2.298321048321048
+2018	11	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1686.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	216.0	1.4690827190827194
+2018	11	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	318.0	1.4690827190827194
+2018	11	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	330.0	1.2029074529074528
+2018	11	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2250.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1542.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	276.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2040.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2520.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3072.0	1.2771294021294024
+2018	11	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4284.0	1.2771294021294024
+2018	11	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	1200.0	1.2771294021294024
+2018	11	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	900.0	1.2771294021294024
+2018	11	Village	VL	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	150.0	1.2771294021294024
+2018	11	Village	VL	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	150.0	1.2771294021294024
+2018	12	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	7776.0	1.2788944723618092
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	3078.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	10038.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5940.0	3.42211055276382
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	13680.0	2.417085427135679
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4014.0	3.42211055276382
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	10338.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	2562.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1746.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2820.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3852.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	6120.0	2.417085427135679
+2018	12	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	3960.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	108.0	1.4070351758793973
+2018	12	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	180.0	1.4070351758793973
+2018	12	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1884.0	1.1809045226130654
+2018	12	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	5808.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3648.0	1.341708542713568
+2018	12	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	3468.0	1.3567839195979905
+2018	12	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1794.0	1.341708542713568
+2018	12	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2556.0	1.341708542713568
+2018	12	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3138.0	1.341708542713568
+2018	12	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	5064.0	1.341708542713568
+2018	12	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	1302.0	1.1407511407511408
+2018	12	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	2790.0	3.4251784251784247
+2018	12	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	5316.0	2.41897741897742
+2018	12	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4248.0	3.4251784251784247
+2018	12	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5484.0	1.3425763425763426
+2018	12	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	576.0	1.341708542713568
+2018	12	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1068.0	1.3425763425763426
+2018	12	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	3504.0	2.41897741897742
+2018	12	Moon	MN	Chocolates	Ferrero Rocher	sku #60	1	Standart	No	Nothing	3132.0	1.3425763425763426
+2018	12	Moon	MN	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	312.0	1.3601263601263602
+2018	12	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	486.0	1.3601263601263602
+2018	12	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	318.0	1.3425763425763426
+2018	12	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	186.0	1.3425763425763426
+2018	12	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	384.0	1.3425763425763426
+2018	12	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	408.0	1.3425763425763426
+2018	12	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	828.0	1.195979899497488
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	678.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1344.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3564.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6282.0	3.2035175879397007
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	10788.0	2.2562814070351758
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	5328.0	3.2035175879397007
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	6930.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1356.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1494.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1632.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4332.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5592.0	2.2562814070351758
+2018	12	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2334.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	162.0	1.442211055276382
+2018	12	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	276.0	1.442211055276382
+2018	12	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	378.0	1.1809045226130654
+2018	12	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2802.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2052.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	408.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1896.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3450.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2766.0	1.2537688442211057
+2018	12	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	6144.0	1.2537688442211057
+2019	1	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	4698.0	1.2888686316215945
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2358.0	1.3521725919173504
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	5310.0	1.3521725919173504
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5922.0	3.4487997569127926
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	10068.0	2.435936392180695
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2520.0	3.4487997569127926
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	9568.0	1.3521725919173504
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1278.0	1.3521725919173504
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1410.0	1.3521725919173504
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1572.0	1.3521725919173504
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3352.0	1.3521725919173504
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	3852.0	2.435936392180695
+2019	1	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2310.0	1.3521725919173504
+2019	1	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	114.0	1.45345892839056
+2019	1	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	132.0	1.45345892839056
+2019	1	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1356.0	1.1901144535602148
+2019	1	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	3930.0	1.367365542388332
+2019	1	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2596.0	1.367365542388332
+2019	1	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	2268.0	1.367365542388332
+2019	1	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1998.0	1.3521725919173504
+2019	1	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2298.0	1.3521725919173504
+2019	1	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	2946.0	1.3521725919173504
+2019	1	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4398.0	1.3521725919173504
+2019	1	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	852.0	1.2944792528667688
+2019	1	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	1908.0	3.4608109705638967
+2019	1	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	2880.0	2.444142333609174
+2019	1	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3546.0	3.4608109705638967
+2019	1	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	3846.0	1.3565433266343538
+2019	1	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	498.0	1.3565433266343538
+2019	1	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	738.0	1.3565433266343538
+2019	1	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2166.0	1.3565433266343538
+2019	1	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	2172.0	2.444142333609174
+2019	1	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	300.0	1.3742759191393783
+2019	1	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	150.0	1.3565433266343538
+2019	1	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	228.0	1.3565433266343538
+2019	1	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	264.0	1.3565433266343538
+2019	1	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	504.0	1.3565433266343538
+2019	1	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	498.0	1.2053074040311964
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	474.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1794.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3984.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6732.0	3.2285019750835624
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11004.0	2.2738782538235585
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3348.0	3.2285019750835624
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5196.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1188.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1320.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1470.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2244.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4488.0	2.2738782538235585
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2064.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #60	1	Standart	No	Nothing	30.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	126.0	1.4180087106249368
+2019	1	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	480.0	1.4180087106249368
+2019	1	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	348.0	1.1901144535602148
+2019	1	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	1824.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1452.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	246.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1578.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2514.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3426.0	1.2635470475032915
+2019	1	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4392.0	1.2635470475032915
+2019	1	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	390.0	1.2635470475032915
+2019	1	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	292.0	1.2635470475032915
+2019	1	Village	VL	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	49.0	1.2635470475032915
+2019	1	Village	VL	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	49.0	1.2635470475032915
+2019	2	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	5184.0	1.3087524426617296
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2304.0	1.3730330145016971
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	5910.0	1.3730330145016971
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	4536.0	3.5020055538414065
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9144.0	2.4735164044019333
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2808.0	3.5020055538414065
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	10732.0	1.3730330145016971
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1218.0	1.3730330145016971
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1362.0	1.3730330145016971
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1830.0	1.3730330145016971
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4180.0	1.3730330145016971
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	3264.0	2.4735164044019333
+2019	2	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1614.0	1.3730330145016971
+2019	2	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	48.0	1.4758819294456444
+2019	2	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	48.0	1.4758819294456444
+2019	2	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1212.0	1.2084747505913809
+2019	2	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	4452.0	1.388460351743289
+2019	2	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2764.0	1.388460351743289
+2019	2	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	2616.0	1.388460351743289
+2019	2	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2124.0	1.3730330145016971
+2019	2	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2550.0	1.3730330145016971
+2019	2	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3474.0	1.3730330145016971
+2019	2	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	5232.0	1.3730330145016971
+2019	2	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	888.0	1.3237427466150868
+2019	2	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	1890.0	3.5390473887814293
+2019	2	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	3324.0	2.499395551257253
+2019	2	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2466.0	3.5390473887814293
+2019	2	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	3834.0	1.3872098646034816
+2019	2	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	480.0	1.3872098646034816
+2019	2	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	678.0	1.3872098646034816
+2019	2	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	1986.0	1.3872098646034816
+2019	2	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	2352.0	2.499395551257253
+2019	2	Moon	MN	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	300.0	1.40534332688588
+2019	2	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	396.0	1.40534332688588
+2019	2	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	228.0	1.3872098646034816
+2019	2	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	312.0	1.3872098646034816
+2019	2	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	258.0	1.3872098646034816
+2019	2	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	342.0	1.3872098646034816
+2019	2	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	624.0	1.3087524426617296
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	648.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1452.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3384.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6840.0	3.27830916383832
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9648.0	2.3089581404916184
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3996.0	3.27830916383832
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	6462.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1050.0	1.2830402139257429
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1356.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1602.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3294.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4452.0	2.3089581404916184
+2019	2	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1446.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	162.0	1.4758819294456444
+2019	2	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	330.0	1.4758819294456444
+2019	2	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	372.0	1.2084747505913809
+2019	2	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	1944.0	1.3653193458809008
+2019	2	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1536.0	1.3653193458809008
+2019	2	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	186.0	1.3653193458809008
+2019	2	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1830.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	2916.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3432.0	1.3498920086393087
+2019	2	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	5064.0	1.3498920086393087
+2019	2	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	390.0	1.2830402139257429
+2019	2	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	292.0	1.2830402139257429
+2019	2	Village	VL	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	49.0	1.2830402139257429
+2019	2	Village	VL	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	49.0	1.2830402139257429
+2019	3	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	6810.0	1.3574781310006399
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	3132.0	1.4241519095370168
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	6978.0	1.4241519095370168
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6300.0	3.6323874546618287
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	11892.0	2.565606998079794
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3114.0	3.6323874546618287
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	12792.0	1.4241519095370168
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1722.0	1.4241519095370168
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1494.0	1.4241519095370168
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	2622.0	1.4241519095370168
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4224.0	1.4241519095370168
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4980.0	2.565606998079794
+2019	3	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2556.0	1.4241519095370168
+2019	3	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	42.0	1.5308299551952207
+2019	3	Alpha City	AC	Chocolates	Milka	sku #67	1	Standart	No	Nothing	6.0	1.5308299551952207
+2019	3	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1422.0	1.2534670364838916
+2019	3	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	5502.0	1.4401536163857482
+2019	3	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	3492.0	1.4401536163857482
+2019	3	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	3246.0	1.4401536163857482
+2019	3	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2586.0	1.4241519095370168
+2019	3	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3012.0	1.4241519095370168
+2019	3	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3984.0	1.4241519095370168
+2019	3	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	6450.0	1.4241519095370168
+2019	3	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	1080.0	1.3548626577579808
+2019	3	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	2574.0	3.622246968572135
+2019	3	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	4188.0	2.55815392229646
+2019	3	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3276.0	3.622246968572135
+2019	3	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5274.0	1.4198218262806237
+2019	3	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	498.0	1.4198218262806237
+2019	3	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	900.0	1.4198218262806237
+2019	3	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	2760.0	1.4198218262806237
+2019	3	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	3504.0	2.55815392229646
+2019	3	Moon	MN	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	144.0	1.438381588715664
+2019	3	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	426.0	1.438381588715664
+2019	3	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	354.0	1.4198218262806237
+2019	3	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	348.0	1.4198218262806237
+2019	3	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	486.0	1.4198218262806237
+2019	3	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	798.0	1.4198218262806237
+2019	3	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	552.0	1.3574781310006399
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	798.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1854.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	4320.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	9612.0	3.4003627053552377
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	12012.0	2.394922125026669
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4986.0	3.4003627053552377
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7524.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1254.0	1.330808619586089
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1716.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1602.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3630.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5472.0	2.394922125026669
+2019	3	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1884.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	252.0	1.5308299551952207
+2019	3	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	342.0	1.5308299551952207
+2019	3	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	678.0	1.2534670364838916
+2019	3	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2538.0	1.4161510561126518
+2019	3	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1734.0	1.4161510561126518
+2019	3	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	390.0	1.4161510561126518
+2019	3	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2742.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3792.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	4038.0	1.4001493492639214
+2019	3	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	6600.0	1.4001493492639214
+2019	3	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	390.0	1.330808619586089
+2019	3	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	292.0	1.330808619586089
+2019	3	Village	VL	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	49.0	1.330808619586089
+2019	3	Village	VL	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	49.0	1.330808619586089
+2019	4	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	7404.0	1.3472736897829538
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	3780.0	1.413446267866596
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	7704.0	1.413446267866596
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6192.0	3.6050820539968242
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	13500.0	2.5463208046585497
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3024.0	3.6050820539968242
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	14610.0	1.413446267866596
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	1536.0	1.413446267866596
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1788.0	1.413446267866596
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	3156.0	1.413446267866596
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4182.0	1.413446267866596
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5352.0	2.5463208046585497
+2019	4	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2652.0	1.413446267866596
+2019	4	Alpha City	AC	Chocolates	Milka	sku #42	1	Standart	No	Nothing	24.0	1.5193223928004234
+2019	4	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	1650.0	1.2440444679724725
+2019	4	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	6606.0	1.4293276866066704
+2019	4	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4356.0	1.4293276866066704
+2019	4	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	3924.0	1.4293276866066704
+2019	4	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2616.0	1.413446267866596
+2019	4	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3318.0	1.413446267866596
+2019	4	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3642.0	1.413446267866596
+2019	4	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	5952.0	1.413446267866596
+2019	4	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	1428.0	1.348688262101244
+2019	4	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	2286.0	3.6057396231062953
+2019	4	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	4776.0	2.546495873876093
+2019	4	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3600.0	3.6057396231062953
+2019	4	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5868.0	1.413351397955413
+2019	4	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	558.0	1.413351397955413
+2019	4	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1158.0	1.413351397955413
+2019	4	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3204.0	1.413351397955413
+2019	4	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	3984.0	2.546495873876093
+2019	4	Moon	MN	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	1110.0	1.4318265796280334
+2019	4	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	390.0	1.4318265796280334
+2019	4	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	234.0	1.413351397955413
+2019	4	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	270.0	1.413351397955413
+2019	4	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	390.0	1.413351397955413
+2019	4	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	636.0	1.413351397955413
+2019	4	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	684.0	1.3472736897829538
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	672.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1518.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	3786.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6372.0	3.37480148226575
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9060.0	2.3769190047644253
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4986.0	3.37480148226575
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	6324.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	894.0	1.320804658549497
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1206.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1230.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3294.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5076.0	2.3769190047644253
+2019	4	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2298.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	126.0	1.5193223928004234
+2019	4	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	330.0	1.5193223928004234
+2019	4	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	612.0	1.2440444679724725
+2019	4	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2268.0	1.4055055584965588
+2019	4	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1710.0	1.4055055584965588
+2019	4	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	246.0	1.4055055584965588
+2019	4	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	1968.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3240.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3306.0	1.3896241397564846
+2019	4	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	4956.0	1.3896241397564846
+2019	5	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	8442.0	1.3244171523730226
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	3444.0	1.3894671107410494
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	9168.0	1.3894671107410494
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6642.0	3.5439217318900917
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	13332.0	2.5031223980016652
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	2844.0	3.5439217318900917
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	15204.0	1.3894671107410494
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	300.0	1.3894671107410494
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1950.0	1.3894671107410494
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	3366.0	1.3894671107410494
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4578.0	1.3894671107410494
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5868.0	2.5031223980016652
+2019	5	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2844.0	1.3894671107410494
+2019	5	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	762.0	1.2229392173189009
+2019	5	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	7302.0	1.4050791007493757
+2019	5	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4734.0	1.4050791007493757
+2019	5	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	4374.0	1.4050791007493757
+2019	5	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2670.0	1.3894671107410494
+2019	5	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3054.0	1.3894671107410494
+2019	5	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3528.0	1.3894671107410494
+2019	5	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	5796.0	1.3894671107410494
+2019	5	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	1476.0	1.3496856896339209
+2019	5	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	2556.0	3.608406261555528
+2019	5	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	5424.0	2.548379144582768
+2019	5	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3978.0	3.608406261555528
+2019	5	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	7392.0	1.4143966473560947
+2019	5	Moon	MN	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	114.0	1.4143966473560947
+2019	5	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1110.0	1.4143966473560947
+2019	5	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3864.0	1.4143966473560947
+2019	5	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4476.0	2.548379144582768
+2019	5	Moon	MN	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	1560.0	1.4328854924195735
+2019	5	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	780.0	1.4328854924195735
+2019	5	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	294.0	1.4143966473560947
+2019	5	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	366.0	1.4143966473560947
+2019	5	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	510.0	1.4143966473560947
+2019	5	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	786.0	1.4143966473560947
+2019	5	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	852.0	1.3244171523730226
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	906.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1560.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	1260.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5310.0	3.5439217318900917
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9084.0	2.5031223980016652
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4806.0	3.5439217318900917
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	9378.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	72.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1128.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1662.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3636.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4944.0	2.5031223980016652
+2019	5	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	1872.0	1.3894671107410494
+2019	5	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	126.0	1.4935470441298917
+2019	5	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	234.0	1.4935470441298917
+2019	5	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	84.0	1.2229392173189009
+2019	5	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2934.0	1.4050791007493757
+2019	5	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	2130.0	1.4050791007493757
+2019	5	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	522.0	1.4050791007493757
+2019	5	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2166.0	1.3660491257285594
+2019	5	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3246.0	1.3660491257285594
+2019	5	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3786.0	1.3660491257285594
+2019	5	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	5322.0	1.3660491257285594
+2019	5	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	411.0	1.2983971690258116
+2019	5	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	206.0	1.2983971690258116
+2019	5	Village	VL	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	51.0	1.2983971690258116
+2019	5	Village	VL	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	51.0	1.2983971690258116
+2019	6	Alpha City	AC	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	8910.0	1.2763289869608776
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	2970.0	1.3390170511534552
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	17076.0	1.3390170511534552
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	6066.0	3.4152457372116194
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	18156.0	2.4122367101303817
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	3600.0	3.4152457372116194
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5298.0	1.3390170511534552
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #31	1	Square	No	Nothing	204.0	1.3390170511534552
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	2010.0	1.3390170511534552
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	3642.0	1.3390170511534552
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4716.0	1.3390170511534552
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5928.0	2.4122367101303817
+2019	6	Alpha City	AC	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	3126.0	1.3390170511534552
+2019	6	Alpha City	AC	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	174.0	1.1785356068204569
+2019	6	Alpha City	AC	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	6966.0	1.3540621865596736
+2019	6	Alpha City	AC	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	4590.0	1.3540621865596736
+2019	6	Alpha City	AC	Chocolates	Twix	sku #78	1	Standart	No	Nothing	4296.0	1.3540621865596736
+2019	6	Alpha City	AC	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	3042.0	1.3390170511534552
+2019	6	Alpha City	AC	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3396.0	1.3390170511534552
+2019	6	Alpha City	AC	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	4308.0	1.3390170511534552
+2019	6	Alpha City	AC	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	6084.0	1.3390170511534552
+2019	6	Moon	MN	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	1974.0	1.3057476746959231
+2019	6	Moon	MN	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	3312.0	3.4909372764130717
+2019	6	Moon	MN	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9204.0	2.465418554734084
+2019	6	Moon	MN	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4230.0	3.4909372764130717
+2019	6	Moon	MN	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	5172.0	1.368352015263536
+2019	6	Moon	MN	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1404.0	1.368352015263536
+2019	6	Moon	MN	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	4428.0	1.368352015263536
+2019	6	Moon	MN	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	5064.0	2.465418554734084
+2019	6	Moon	MN	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	1782.0	1.3862389697114257
+2019	6	Moon	MN	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	858.0	1.3862389697114257
+2019	6	Moon	MN	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	228.0	1.368352015263536
+2019	6	Moon	MN	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	510.0	1.368352015263536
+2019	6	Moon	MN	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	540.0	1.368352015263536
+2019	6	Moon	MN	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	1044.0	1.368352015263536
+2019	6	Pirate Bay	PB	Chocolates	Cadbury	sku #79	1	Standart	No	Nothing	792.0	1.2763289869608776
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #105	1	Square	No	Berries	960.0	1.3390170511534552
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #106	1	Standart	No	Nothing	1914.0	1.3390170511534552
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #15	1	Standart	No	Nothing	114.0	1.3390170511534552
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #16	3	Standart	No	Nothing	5238.0	3.4152457372116194
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #22	2	Standart	No	Nothing	9324.0	2.4122367101303817
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #28	3	Standart	No	Nothing	4284.0	3.4152457372116194
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	10116.0	1.3390170511534552
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #38	1	Standart	Yes	Nothing	1128.0	1.3390170511534552
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #41	1	Standart	No	Nothing	1746.0	1.3390170511534552
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	3504.0	1.3390170511534552
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #48	2	Standart	No	Nothing	4464.0	2.4122367101303817
+2019	6	Pirate Bay	PB	Chocolates	Ferrero Rocher	sku #49	1	Standart	No	Nothing	2082.0	1.3390170511534552
+2019	6	Pirate Bay	PB	Chocolates	Milka	sku #42	1	Standart	No	Nothing	120.0	1.439317953861579
+2019	6	Pirate Bay	PB	Chocolates	Milka	sku #67	1	Standart	No	Nothing	312.0	1.439317953861579
+2019	6	Pirate Bay	PB	Chocolates	Snickers	sku #94	1	Standart	No	Nothing	66.0	1.1785356068204569
+2019	6	Pirate Bay	PB	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	2886.0	1.3540621865596736
+2019	6	Pirate Bay	PB	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	1914.0	1.3540621865596736
+2019	6	Pirate Bay	PB	Chocolates	Twix	sku #78	1	Standart	No	Nothing	408.0	1.3540621865596736
+2019	6	Pirate Bay	PB	Lollipops	Chupa Chups	sku #100	1	Round	Yes	Nuts	2322.0	1.3164493480441268
+2019	6	Pirate Bay	PB	Lollipops	Chupa Chups	sku #76	1	Round	Yes	Nuts	3882.0	1.3164493480441268
+2019	6	Pirate Bay	PB	Lollipops	Chupa Chups	sku #77	1	Round	No	Nuts	3834.0	1.3164493480441268
+2019	6	Pirate Bay	PB	Lollipops	Chupa Chups	sku #97	1	Round	No	Nuts	5790.0	1.3164493480441268
+2019	6	Village	VL	Chocolates	Ferrero Rocher	sku #30	1	Standart	No	Nothing	394.0	1.2512537612838464
+2019	6	Village	VL	Chocolates	Ferrero Rocher	sku #46	1	Standart	No	Nothing	197.0	1.2512537612838464
+2019	6	Village	VL	Chocolates	Toblerone	sku #25	1	Standart	No	Nothing	49.0	1.2512537612838464
+2019	6	Village	VL	Chocolates	Toblerone	sku #73	1	Standart	No	Nothing	49.0	1.2512537612838464

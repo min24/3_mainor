@@ -1,0 +1,61 @@
+inventory_id,category,item,price
+1,Phones,Iphone 5,350
+2,Phones,Iphone 5s,400
+3,Phones,Iphone 6,500
+4,Phones,Samsung Galaxy S4,300
+5,Phones,Samsung Galaxy S5,400
+6,Phones,Nexus 6,500
+7,Phones,LG G Flex 2,470
+8,Phones,Nokia Lumia 930,536
+9,Phones,Motorola Moto E,600
+10,Phones,HTC One M9+,621
+11,Cars,Mazda 2 sport,15515
+12,Cars,Hyundai Accent,15455
+13,Cars,Toyota Yaris,15240
+14,Cars,Chevrolet Sonic,14995
+15,Cars,Ford Fiesta,14925
+16,Cars,Kia Rio,14700
+17,Cars,Smart Fortwo,14020
+18,Cars,Mitsubishi Mirage,13790
+19,Cars,Chevrolet Spark,12995
+20,Cars,Nissan Versa,12800
+21,Alcohol,Absinthe,39
+22,Alcohol,Jager,26
+23,Alcohol,Olmeca,23
+24,Alcohol,Stolichnya,13
+25,Alcohol,Bacardi,24
+26,Alcohol,Jack Daniels,33
+27,Alcohol,Ballantines,28
+28,Alcohol,Guinness,8
+29,Alcohol,Jib Beam,30
+30,Alcohol,Johnie Walker's Red Label,23
+31,Mountain Bikes,Juliana Joplin CC XO1,5320
+32,Mountain Bikes,Santa Cruz Tallboy,6230
+33,Mountain Bikes,Scott Contessa Spark 710 Plus,3200
+34,Mountain Bikes,Specialized Turbo Levo FSR Expert 6Fattie,4100
+35,Mountain Bikes,Marin Rift Zone Pro,5600
+36,Mountain Bikes,Alchemy Arktos,3950
+37,Mountain Bikes,Intense Recluse,2875
+38,Mountain Bikes,Spot Rollik 557,7900
+39,Mountain Bikes,YT Industries Jeffsy CF ProRace�,2100
+40,Mountain Bikes,Ghost SL AMR X 9,3795
+41,Books,Archer's Voice,5.6
+42,Books,The Spice of Life,2
+43,Books,Transcendence,8.9
+44,Books,Twisted,1.9
+45,Books,Rome,3
+46,Books,Breakable,5
+47,Books,Destroyed,3.9
+48,Books,Coming Home,4.5
+49,Books,"Geared to the Present, Jones Whitman Time Traveler Series",7.9
+50,Books,The Young Elites,6
+51,Cookies,Oreo Golden Birthday Cake,3.47
+52,Cookies,Pepperidge Farm Milano,2.99
+53,Cookies,Kit Kat Bites Peanut Butter Pouch,7.99
+54,Cookies,Glico Pocky Biscuit Stick,10.55
+55,Cookies,Kinder Happy Hippo - Hazelnut,21.89
+56,Cookies,Mallomars,4.15
+57,Cookies,Hello Panda,21.78
+58,Cookies,Arnott's Tim Tam,14.99
+59,Cookies,Pepperidge Farm,4.99
+60,Cookies,Annie's Gluten Free,9.17

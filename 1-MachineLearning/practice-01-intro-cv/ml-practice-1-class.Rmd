@@ -1,0 +1,394 @@
+---
+title: "ML practice 1: classification & cross-validation"
+output: html_document
+---
+
+Сегодня мы посмотрим на результаты классификации на нескольких датасетах. Сначала перечислим датасеты, с которыми затем будем работать.
+
+### 1. Ирисы
+
+Популярный учебный датасет про три сорта ирисов
+
+```{r}
+data(iris)
+```
+
+Посмотрим на данные:
+
+```{r, warning=FALSE}
+library(ggplot2)
+library(GGally)
+#ggpairs(iris, mapping = aes(color = Species))
+```
+
+
+### 2. Рак груди
+
+Второй датасет, с которым мы работаем сегодня -- результаты диагностики опухоли груди. Вызовите справку по датасету `?mlbench::BreastCancer`
+
+* какой размер датасета?
+* какие переменные в нем есть?
+
+
+```{r}
+library(mlbench)
+data(BreastCancer)
+library(dplyr)
+?BreastCancer
+BreastCancer = select(BreastCancer, -Id)
+BreastCancer = na.omit(BreastCancer)
+```
+
+Зачем выполнена последняя операция?
+
+```{r message = F, warning=FALSE}
+#ggpairs(BreastCancer, columns = c(1,2))
+```
+
+**Ваша  очередь:** Постройте подобный график только для других переменных
+
+```{r message = F, warning=FALSE}
+#put some code here
+#ggpairs(BreastCancer, mapping = aes(color = Class))
+
+```
+```{r}
+
+```
+
+
+# Деревья решений: recap
+
+Используем пакет `partykit`.
+
+```{r}
+#install.packages("partykit")
+library(partykit)
+```
+
+Построим дерево (ирисы)
+
+```{r fig.width=12}
+tree.iris <- ctree(Species~., data = iris)
+tree.iris
+plot(tree.iris, type = "simple")
+plot(tree.iris)
+```
+
+* Какие "правила" получились?
+
+Построим более сложное дерево (рак груди)
+
+```{r fig.width=12}
+tree.breast <- ctree(Class~., data = BreastCancer)
+plot(tree.breast, type = "simple")
+```
+
+* Можете ли вы "прочитать" это дерево?
+* Какие "правила" получились?
+* Все ли переменные из данных использованы?
+
+Но насколько хорошо такие правила описывают закономерности?
+
+### Напоминание
+
+**Переобучение** -- слишком сложная модель (включение лишних переменных, слишком сложная зависимость) => подогнали модель к конкретным данным, может не работать на других данных
+
+**Недообучение** -- слишком простая модель (невключение важных переменных, слишком простая зависимость) => модель не отражает особенности данных
+
+![](https://pp.userapi.com/c837433/v837433173/55a72/ue8z_xTFFto.jpg)
+![](https://pp.userapi.com/c837433/v837433173/55a69/c4EEF59vb7E.jpg)
+
+![](https://pp.userapi.com/c837433/v837433173/55a60/Djr62Gsf_Dg.jpg)
+
+## Bias-Variance Tradeoff
+
+В целом, ошибку предсказания модели можно разложить на три составляющие
+
+Error = Irreducible Error + Bias + Variance
+
+* Irreducible Error = ошибка, обусловленная данными (в них есть разброс, отклонения, выбросы)
+* Bias = отклонение модели от данных
+* Variance = вариативность значений предсказываемой переменной (разнообразие предсказаний относительно среднего)
+
+![](http://scott.fortmann-roe.com/docs/docs/BiasVariance/biasvariance.png)
+
+
+# Обучающая и тестовая выборки
+
+Отделим 20\% от каждого датасета. Эта часть не будет использоваться для обучения модели, но на ней мы будем проверять (тестировать), насколько  хороша наша модель. 
+
+* Зачем это нужно делать?
+* Почему именно 20%?
+
+Для рака груди:
+
+```{r message = F, warning=FALSE}
+set.seed(100) #You shoud put here your own number
+Breast.test.ind = sample(seq_len(nrow(BreastCancer)), size = nrow(BreastCancer)*0.2)
+Breast.test = BreastCancer[Breast.test.ind,]
+Breast.main = BreastCancer[-Breast.test.ind,]
+```
+
+**Ваша очередь:** сделайте подобное разделение для второго датасета.
+
+```{r message = F, warning=FALSE}
+# your code here
+```
+
+# Построение моделей
+
+### Рак груди
+
+Обучение: (**NB!** только на обучающей -- `Breast.main`)
+```{r}
+
+tree.Breast <- ctree(Class~., data = Breast.main)
+plot(tree.Breast, type = "simple")
+```
+
+Для представления результатов мы часто будем использовать пакет `caret` <https://topepo.github.io/caret/index.html>. Это пакет-обертка -- дает возможность одинакового доступа к функциям, реализующим разные методы машинного обучения: названия методов, позволяющих посчитать, например, матрицу совпадений (ниже) или предсказать новые результаты по уже построенной модели, могут отличаться от разработчика к разработчику. `caret` позволяет не задумываться об этом и использовать одни названия для однотипных действий.
+
+Результаты на обучающей (malignant = злокачественная, benign = доброкачественная)
+
+```{r}
+
+library(caret)
+treePredTrain <- predict(tree.Breast, Breast.main, type = "response")
+confusionMatrix(treePredTrain,Breast.main$Class)
+confusionMatrix(treePredTrain,Breast.main$Class, mode = "prec_recall")
+cm<-confusionMatrix(treePredTrain,Breast.main$Class)
+cm$overall
+```
+
+* Как устроена матрица соответствий (confusion matrix)
+* Хорошая это точность или нет?
+
+Результаты на тестовой выборке
+
+```{r}
+
+treePredTest <- predict(tree.Breast, Breast.test, type = "response")
+cmTest = confusionMatrix(treePredTest, Breast.test$Class)
+cmTest
+```
+
+* Сравните с результатом на обучающей. Что можете сказать?
+
+## Еще раз про метрики
+
+![](https://images.nature.com/full/nature-assets/nmeth/journal/v13/n8/images_article/nmeth.3945-F1.jpg)
+
+Посчитаем Accuracy, Recall = Sensitivity, Precision = Positive Predictive Value
+
+**Ваша  очередь:** 
+
+Постройте модели для данных ирисам 
+```{r}
+set.seed(123)
+iris.test.ind = sample(seq_len(nrow(iris)), size = nrow(iris)*0.2)
+iris.test = iris[iris.test.ind, ]
+iris.main = iris[-iris.test.ind]
+```
+
+
+Разбиение на тестовую и обучающую (уже сделали чуть раньше)
+
+```{r message = F, warning=FALSE}
+
+```
+
+Построение модели
+```{r}
+tree.iris = ctree(Species~., data = iris.main)
+plot(tree.iris, type = "simple")
+```
+
+Метрики 
+
+```{r}
+library(caret)
+treePredTrain = predict(tree.iris, iris.main, type = "response")
+confusionMatrix(treePredTrain, iris.main$Species)
+```
+```{r}
+confusionMatrix(treePredTrain,iris.main$Species, mode = "prec_recall")
+```
+
+```{r}
+cm<-confusionMatrix(treePredTrain,iris.main$Species)
+cm$overall
+```
+```{r}
+treePredTest <- predict(tree.iris, iris.test, type = "response")
+cmTest = confusionMatrix(treePredTest, iris.test$Species)
+cmTest
+```
+
+### Кросс-валидация
+
+Возвращаемся к раку груди. 
+
+* Что будет, если разделить на тестовую и обучающую по-другому? В той же пропорции, просто с другим результатом случайного отбора
+
+Для разнообразия посмотрим, как это можно сделать с помощью функций пакета `caret`
+
+```{r}
+set.seed(123456)
+trainIndex <- createDataPartition(BreastCancer$Class, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+head(trainIndex, 20)
+
+Breast.test2 = BreastCancer[-trainIndex,]
+Breast.main2 = BreastCancer[trainIndex,]
+```
+
+Строим модель так же, как предыдущий раз
+```{r}
+tree.Breast2 <- ctree(Class~., data = Breast.main2)
+plot(tree.Breast2, type = "simple")
+
+treePredTrain2 <- predict(tree.Breast2, Breast.main2, type = "response")
+confusionMatrix(treePredTrain2,Breast.main2$Class)
+cm2<-confusionMatrix(treePredTrain2,Breast.main2$Class)
+
+treePredTest2 <- predict(tree.Breast2, Breast.test2, type = "response")
+cmTest2 = confusionMatrix(treePredTest2, Breast.test2$Class)
+cmTest2
+```
+
+Сравним точности
+
+```{r}
+cmTest$overall["Accuracy"]
+cmTest2$overall["Accuracy"]
+```
+
+Посмотрим на одном и том же тестовом датасете
+```{r}
+test3 <- predict(tree.Breast, Breast.test2, type = "response")
+cmTest3 = confusionMatrix(test3, Breast.test2$Class)
+cmTest2$overall["Accuracy"]
+cmTest3$overall["Accuracy"]
+```
+
+* Какое значение правильное? Как выбрать?
+
+### Cross-validation
+
+* Что делать, если при случайном выборе нам попалась очень специфичная обучающая выборка?
+
+Кросс-валидация = повторение процесса с разделением на тестовую и обучающую несколько раз и подсчет среднего значения
+
+#### k-fold Cross Validation
+
+* разделяем на k частей
+* используем k-1 часть как обучающую, последнюю -- как тестовую
+* повторяем k раз
+* считаем среднее
+
+![](https://pp.userapi.com/c841225/v841225199/23beb/mBTYwuqVlYw.jpg)
+
+```{r message = F, warning=F}
+library("party")
+train_control <- trainControl(method="cv", number=10)
+model <- caret::train(Class~., data=Breast.main, trControl=train_control, method="ctree")
+print(model)
+ggplot() + geom_line(aes(y = model$resample$Accuracy, x = 1:10)) + xlab("Fold") + ylab("Accuracy")
+```
+
+Посмотрим предсказание на первоначальной тестовой выборке.
+
+```{r}
+predictionsTest.cv <- predict(model, Breast.test)
+cmTest.cv = confusionMatrix(predictionsTest.cv, Breast.test$Class)
+cmTest.cv
+```
+
+* Что вы можете сказать о результатах?
+
+#### Leave One Out Cross Validation
+
+Частный случай k-fold валидации, где k = числу наблюдений (NB! работает долго)
+
+```{r message = F, warning=F, eval = F}
+train_control <- trainControl(method="LOOCV")
+model2 <- train(Class~., data=Breast.main, trControl=train_control, method="ctree")
+print(model2)
+predictionsTest.cv2 <- predict(model2, Breast.test)
+cmTest.cv2 = confusionMatrix(predictionsTest.cv2, Breast.test$Class)
+cmTest.cv2 
+```
+
+#### Repeated k-fold Cross Validation
+
+k-fold валидации повторяется несколько раз, результаты усредняются
+
+```{r}
+train_control <- trainControl(method="repeatedcv", number=10, repeats=5)
+model3 <- train(Class~., data=Breast.main, trControl=train_control, method="ctree")
+print(model3)
+predictionsTest.cv3 <- predict(model3, Breast.test)
+cmTest.cv3 = confusionMatrix(predictionsTest.cv3, Breast.test$Class)
+cmTest.cv3
+```
+
+**Ваша  очередь:** 
+
+Постройте модели для указанных ниже задач. Не забудьте разделить на тестовую и обучающую выбоорки и интерпретировать результаты
+
+### 3. Детские кресла
+
+Уже рассмотренные в прошлом году данные про продажи детских автомобильных кресел. Задача: предсказать уровень продаж. Т.к. задача классификации предполагает, что целевая переменная (в нашем случае -- продажи Sales), должна быть категориальной, то изменим немного наши данные -- разделим их на высокие и низкие.
+
+```{r}
+library(ISLR)
+library(dplyr)
+carseats <- ISLR::Carseats
+carseats <- carseats %>% 
+  mutate(High = ifelse(Sales <= 8, "No", "Yes")) %>% 
+  dplyr::select(-Sales) 
+```
+```{r}
+set.seed(124)
+carseats.test.ind = sample(seq_len(nrow(carseats)), size = nrow(carseats)*0.2)
+carseats.test = carseats[carseats.test.ind, ]
+carseats.main = carseats[-carseats.test.ind, ]
+```
+
+```{r}
+train_control_c <- trainControl(method="repeatedcv", number=10, repeats=5)
+model_c <- train(ShelveLoc~., data=carseats.main, trControl=train_control_c, method="ctree")
+print(model_c)
+predictionsTest.cv3 <- predict(model_c, carseats.test)
+cmTest.cv3 = confusionMatrix(predictionsTest.cv3, carseats.test$ShelveLoc)
+cmTest.cv3
+```
+
+### 4. Страховка
+
+```{r}
+library(caret)
+caravan = ISLR::Caravan
+set.seed(18)
+```
+
+
+
+```{r}
+set.seed(124)
+caravan.test.ind = sample(seq_len(nrow(caravan)), size = nrow(caravan)*0.2)
+caravan.test = caravan[caravan.test.ind, ]
+caravan.main = caravan[-caravan.test.ind, ]
+```
+```{r}
+train_control <- trainControl(method="repeatedcv", number=10, repeats=5)
+model3 <- train(Purchase~., data=caravan.main, trControl=train_control, method="ctree")
+print(model3)
+predictionsTest.cv3 <- predict(model3, caravan.test)
+cmTest.cv3 = confusionMatrix(predictionsTest.cv3, caravan.test$Class)
+cmTest.cv3
+```
+
+

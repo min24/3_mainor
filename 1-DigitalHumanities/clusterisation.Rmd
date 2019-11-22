@@ -1,0 +1,371 @@
+---
+title: Text mining. Clusterisation
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+library(tidytext)
+library(stringr)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+```
+
+## Наш план на модуль:
+Блок 1: Продвинутый анализ текста
+  - кластеризация 
+  - структурное тематическое моделирование
+  - сетевой анализ применительно к текстам
+
+Блок 2: Продвинутый анализ сетей
+  - сети + тексты (конец прошлого блока)
+  - статистические тесты на сетях
+
+Блок 3: Карты
+  - базовые, интерактивные карты
+  
+Финал: классненькая интерактивная datastory
+
+Индивидуальный отчет в конце
+
+Навыки для проекта во 2 семестре
+
+Пожелания по содержанию?
+
+--------------------------------
+
+## Кластеризация документов
+
+Для чего применятеся кластеризация?
+Для каких задач ее можно применять в текстовом анализе?
+
+По каким характеристикам можно кластеризовать тексты?
+
+
+Мы будем работать с датасетом, содержащим высказывания разных стран на дебатах ООН, разделенных по странам, сессии и году проведения дебатов.
+```{r}
+un = read_csv("~/shared/minor3_2019/1-DigitalHumanities/data/un-general-debates.csv")
+un1 = un %>% filter(year == 1990)
+```
+
+Шаги для кластеризации текстов:
+1) Препроцессинг текстов (очистка от ненужных слов, лемматизация)
+2) Создание матрицы терм-документ (с частотами и т.д.)
+3) Шкалирование
+4) Кластеризация
+
+
+Для кластеризации документов по содержанию не все слова одинаково
+полезны. Самые бесполезные — те, которые встречаются слишком часто
+(вне зависимости от тематики) либо слишком редко. Для различения
+документов полезнее всего слова из середины частотного
+распределения. Чтобы повысить вес таких слов и понизить вес остальных,
+придумали взвешенную частотность — TF-IDF. 
+
+* TF — term frequency (частота слова в документе) 
+* IDF — inverse documemnt frequency (обратная документная частота:
+  логарифм отношения количества документов в коллекции к числу
+  документов, в которых встречается данное слово)
+  
+## Препроцессинг текста
+
+Посмотрим сначала на частные слова в речах разных стран, а также лемматизируем слова. 
+Что такое лемматизация?
+```{r}
+un_words <- un1 %>%
+  unnest_tokens(word, text) %>%
+  mutate(word_lemma = textstem::lemmatize_words(word)) %>%
+  count(country, session,word_lemma, sort = TRUE)
+  
+
+head(un_words, 15)
+```
+
+Удаляем стопcлова, а также редкие слова по порогу
+```{r}
+# берем стоп-стола из датасета в библиотеке tidytext
+data("stop_words")
+names(stop_words)[1] = "word_lemma"
+
+un_words <- un_words %>%
+  anti_join(stop_words)
+
+# общее количество каждого слова во всех текстах
+words_count = un_words %>% 
+  group_by(word_lemma) %>% 
+  summarise(total = sum(n))
+
+words_count %>% 
+  ggplot() + 
+  geom_histogram(aes(x = total)) + 
+  theme_bw()
+# есть редкие слова и большое количество очень частых
+
+# сколько слов встречается почти во всех текстах
+quantile(words_count$total, 0.95)
+
+#удалим слишком редкие и наоборот, слишком распространенные
+words_count_non_stop = words_count %>% 
+  filter(total > 1 & total < quantile(words_count$total, 0.95))
+
+
+words_count_non_stop %>% 
+  ggplot() + 
+  geom_histogram(aes(x = total)) + 
+  theme_bw()
+# так лучше
+
+
+un_words_no_stop = un_words %>% 
+  filter(word_lemma %in% words_count_non_stop$word_lemma)
+
+head(un_words_no_stop, 15)
+```
+
+Теперь можно посчитать tf-idf
+```{r}
+# общее кол-во слов в каждом тексте
+total_words <- un_words_no_stop %>%
+  group_by(country, session) %>%
+  summarize(total = sum(n))
+
+un_words <- left_join(un_words_no_stop, total_words)
+
+# tf-idf
+un_tfidf <- un_words %>%
+  bind_tf_idf(word_lemma, country, n)
+
+# приведем данные к широкому формату. создадим term-document matrix
+un.tdm = un_tfidf %>%
+    dplyr::select(country, session,word_lemma, tf_idf) %>%
+    spread(word_lemma, tf_idf, fill = 0)
+
+# делаем матрицу терм-документ
+un.tdm_m = un.tdm[-(1:2)] %>% as.matrix()
+rownames(un.tdm_m) = un.tdm$country
+
+```
+
+Иерархическая кластеризация
+
+Что такое иерархическая кластеризация и как она работает?
+```{r}
+library(factoextra)
+
+res_single <- hcut(dist(un.tdm_m, method = "euclidean"), hc_method = "single", k = 5, stand = TRUE)
+fviz_dend(res_single)
+
+res_average <- hcut(dist(un.tdm_m, method = "euclidean"), hc_method = "average", k = 5, stand = TRUE)
+fviz_dend(res_average)
+
+res_complete <- hcut(dist(un.tdm_m, method = "euclidean"), hc_method = "complete", k = 5, stand = TRUE)
+fviz_dend(res_complete)
+
+```
+
+
+
+Сделаем график чуть красивее
+```{r}
+library(dendextend)
+# https://learnui.design/tools/data-color-picker.html -- можно сделать свою палетку
+mycols <- c("#0c2065", "#7c1f74", "#c92765", "#f85f42", "#ffa600")
+
+dend <-  as.dendrogram(res_complete) %>%
+   set("branches_lwd", 0.7) %>% # Branches line width
+   set("branches_k_color", mycols, k = 5) %>% # Color branches by groups
+   set("labels_colors", mycols, k = 5) %>%  # Color labels by groups
+   set("labels_cex", 0.4) # Change label size
+fviz_dend(dend, layout = "rectangle")
+```
+
+
+Посмотрим внимательнее на сами кластеры
+```{r}
+# визуализация в 2-мерном пространстве
+fviz_cluster(res_complete, geom = "text", show.clust.cent = TRUE, labelsize = 8)
+
+clusters = cbind(un.tdm[1:2], cluster = res_complete$cluster)
+
+# table(clusters$country, clusters$cluster)
+
+# добавим кластер к датасету со словами без стоп-слов, редких и частых слов и посчитаем частые слова внутри кластера
+clusters = inner_join(clusters, un_words_no_stop)
+clusters_top = clusters %>%
+  group_by(cluster, word_lemma) %>%
+  summarize(total = sum(n)) %>%
+  arrange(cluster, -total)
+
+# построим вордклауды по кластерам
+library(wordcloud2)
+cl1 = clusters_top %>%
+  dplyr::filter(cluster == 1) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl1, size = 0.3)
+# о чем этот кластер?
+
+
+cl2 = clusters_top %>%
+  dplyr::filter(cluster == 2) %>% 
+ dplyr:: ungroup() %>% 
+ dplyr:: select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl2, size = 0.3)
+# о чем этот кластер?
+
+cl3 = clusters_top %>%
+  dplyr::filter(cluster == 3) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl3, size = 0.6)
+# о чем этот кластер?
+
+
+cl4 = clusters_top %>%
+  dplyr::filter(cluster == 4) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl4, size = 0.3)
+# о чем этот кластер?
+
+library(dplyr)
+cl5 = clusters_top %>%
+  dplyr::filter(cluster == 5) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl5, size = 1)
+# о чем этот кластер?
+```
+
+Теперь ваша очередь: попробуйте повторить процесс, выделив другой сабкорпус.
+1. Выбрать тексты с 57 сессии, сделать иерархическую кластеризацию с 4 кластерами. В каком году проходила эта сессия? 
+2. Нарисуйте красивую дендраграму
+3. Для каждого кластера отобрать из данных соответствующие тексты, найти самые частотные слова кластера.
+4. Проинтерпретировать кластеры по часто встречающимся в них словам.
+
+
+K-means
+```{r}
+# попробуем посмотреть на модели с разным количеством k
+km.out3 = kmeans(scale(un.tdm_m, center = TRUE),3,nstart=5)
+km.out4 = kmeans(scale(un.tdm_m, center = TRUE),4,nstart=5)
+km.out5=kmeans(scale(un.tdm_m, center = TRUE),5,nstart=5)
+km.out6 = kmeans(scale(un.tdm_m, center = TRUE),6,nstart=5)
+
+# наглядно
+p1 <- fviz_cluster(km.out3, geom = "point", data = scale(un.tdm_m, center = TRUE)) + ggtitle(" K = 3")
+p2 <- fviz_cluster(km.out4, geom = "point", data = scale(un.tdm_m, center = TRUE)) + ggtitle(" K = 4")
+p3 <- fviz_cluster(km.out5, geom = "point", data = scale(un.tdm_m, center = TRUE)) + ggtitle(" K = 5")
+p4 <- fviz_cluster(km.out6, geom = "point", data = scale(un.tdm_m, center = TRUE)) + ggtitle(" K = 6")
+
+vip::grid.arrange(p1, p2, p3, p4, nrow = 2)
+# сколько кластеров лучше выбрать?
+
+# fviz_nbclust(x = scale(un.tdm_m, center = TRUE),FUNcluster = kmeans, method = 'silhouette' )
+# сколько кластеров лучше выбрать?
+
+# km.out$cluster
+km.out4$size
+# table(km.out$cluster)
+
+# посмотрим на получившиеся кластера на графике
+pca_comp <- prcomp(scale(un.tdm_m, center = TRUE))
+pca_rep <- data_frame(name = un.tdm$country,
+                      pc1 = pca_comp$x[,1],
+                      pc2 = pca_comp$x[,2],
+                      clust_id = as.factor(km.out4$cluster))
+
+ggplot(data = pca_rep, mapping = aes(x = pc1, y = pc2, color = clust_id)) +
+    scale_color_brewer(palette = 'Set1') +
+    geom_text(mapping = aes(label = name), size = 2.5, fontface = 'bold') +
+    labs(title = 'K-Means Cluster: 4 clusters on PCA Features',
+         x = 'Principal Component Analysis: Factor 1',
+         y = 'Principal Component Analysis: Factor 2') +
+    theme_grey() +
+    theme(legend.position = 'right',
+          legend.title = element_blank())
+
+
+# либо через factoextra
+
+# https://learnui.design/tools/data-color-picker.html -- можно сделать свою палетку
+custom_colors = c("#34a513", "#a78700", "#df5a2c", "#e23e7e") 
+
+fviz_cluster(km.out4, geom = "text", data = scale(un.tdm_m, center = TRUE), show.clust.cent = TRUE, ellipse = FALSE,labelsize = 8) + 
+  ggtitle(" K = 4") +
+  theme_bw() + 
+  scale_color_manual(values = custom_colors) +
+  xlab("Dimension 1") +
+  ylab("Dimension 2") 
+```
+
+Посмотрим поближе на кластеры
+```{r}
+clusters_k = cbind(un.tdm[1:2], cluster = km.out4$cluster)
+
+clusters_k = inner_join(clusters_k, un_words_no_stop)
+clusters_k_top = clusters_k %>%
+  group_by(cluster, word_lemma) %>%
+  summarize(total = sum(n)) %>%
+  arrange(cluster, -total)
+
+# посмотрим на частотные слова первых 2-х кластеров
+cl1_k = clusters_k_top %>%
+  filter(cluster == 1) %>% 
+  ungroup() %>% 
+  dplyr::select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl1_k, size = 0.3)
+
+# о чем этот кластер?
+
+cl2_k = clusters_k_top %>%
+  filter(cluster == 2) %>% 
+  ungroup() %>% 
+  dplyr::select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl2_k, size = 0.3)
+# о чем этот кластер? 
+
+cl3_k = clusters_k_top %>%
+  filter(cluster == 3) %>% 
+  ungroup() %>% 
+  dplyr::select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl3_k, size = 0.7)
+# о чем этот кластер? 
+
+cl4_k = clusters_k_top %>%
+  filter(cluster == 4) %>% 
+  ungroup() %>% 
+  select(-cluster) %>% 
+  top_n(50)
+wordcloud2(cl4_k, size = 0.5)
+# о чем этот кластер? 
+
+#похожи ли кластеры по содержанию на те, которые получились в иерархической кластеризации?
+```
+
+
+Опять ваша очередь: повторите процесс на сабкорпусе.
+1. Сделайте кластеризацию kmeans на текстах 57 сессии (выберите оптимальное кол-во кластеров в промежутке между 2 и 5). 
+2. Визуализируйте.
+3. Проинтерпретируйте кластеры по частотным словам в них.
+4. Сравните результаты иерархической кластеризации и kmeans.
+
+
+```{r}
+un = read_csv("~/shared/minor3_2019/1-DigitalHumanities/data/un-general-debates.csv")
+un1 = un %>% filter(session==57)
+```
+```{r}
+
+```
+

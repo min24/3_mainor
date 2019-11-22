@@ -1,0 +1,697 @@
+---
+title: "ML practice 4: Ансамбли"
+output: html_document
+---
+
+## Резюме занятий
+
+Итак, что мы рассмотрели к текущему моменту:
+
+* Inference vs Prediction
+* Обучение с учителем. Регрессия vs классификация
+* Разделение на тестовую и обучающую выборки: зачем и кому это нужно (`createDataPartition()`)
+* Bias-variance tradeoff
+* Кросс-валидация (`caret::train(..., trControl = trainControl(method="cv", number=10))`)
+* Несбалансированные выборки (`caret::train(..., trControl = trainControl(..., sampling = "down"))`)
+* Ошибки предсказания и качество предсказания
+    * Регрессия: RSS, RMSE
+    * Классификация: accuracy, precision, recall, sensitifity, specificity (`caret::confusionMatrix()`)
+    * Классификация с возможностью сдвига границы между классами: ROC, AUC (`pROC::roc()`, `pROC::auc()`)
+* Отбор и конструирование признаков: Recursive Feature Elimination (`rfe()`), важность признаков (`varImp()`)
+* Алгоритмы
+    * Регрессия: 
+        * регрессионное дерево (`ctree()`)
+        * линейная регрессия (`lm()`)
+    * Классификация: 
+        * классификационное дерево (`ctree()`)
+        * логистическая регрессия (`glm(..., family = binomial(link = "logit"))`)
+
+Все эти методы и многие другие можно вызывать и с помощью пакета `caret`. Например:
+
+* `caret::train(..., method = 'knn')`
+* `caret::train(..., method = 'svmPoly')`
+* `caret::train(..., method = 'glmnet')`
+* `caret::train(..., method = 'glm', family = binomial(link = "logit")))`
+* [поддерживаемые модели](https://topepo.github.io/caret/available-models.html)
+
+Полезная ссылка про ML <https://vas3k.ru/blog/machine_learning/>
+
+Примерный алгоритм действий 
+
+1. Исследуем данные
+2. Нормируем, центрируем значения, если это нужно
+3. Определяем тип задачи -- регрессия или классификация
+4. Смотрим сбалансированность / несбалансированность выборки
+5. Определяем метод оценки качества предсказания
+6. Разделяем на тестовую и обучающую выборки
+7. Выбираем / конструируем предикторы 
+8. Строим модель №1 с помощью подходящего алгоритма
+9. Оцениваем качество модели (не забывая про кросс-валидацию)
+10. Повторяем 7-9 для других моделей (другие алгоритмы или другой набор предикторов)
+11. Выбираем лучшую модель / *комбинируем модели вместе* (об этом сегодня)
+12. *Интерпретация* (пока -- для моделей, допускающих интерпретацию. Позже поговорим, как интерпретировать модели типа "черный ящик")
+13. Profit!
+
+## Еще раз об AUC
+
+[Интересная ссылка с объяснением AUC](https://dyakonov.org/2017/07/28/auc-roc-%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D1%8C-%D0%BF%D0%BE%D0%B4-%D0%BA%D1%80%D0%B8%D0%B2%D0%BE%D0%B9-%D0%BE%D1%88%D0%B8%D0%B1%D0%BE%D0%BA/comment-page-1/)
+
+Представ
+
+## О чем говорим сегодня:
+
+* что такое ансамбли моделей
+* еще раз о парадигме предсказание vs интерпретация (а точнее про стадию "да зачем нам эта интерпретация!")
+* что скрывается за модными словами (бэггинг, бустинг, стакинг (стэкинг), случайный лес и т.д.)
+
+И экспериментировать будем на новом датасете -- про кредиты и факторы, влияющие на выдачу кредита.
+
+```{r}
+library(dplyr)
+credit = read.csv("~/shared/minor3_2019/1-MachineLearning/practice-04-recap-ensembles/CreditScore.csv")
+str(credit)
+```
+
+Переменные:
+
+1 Status - статус по кредиту
+2 Seniority - опыт работы в годах
+3 Home - владельцы (тип) жилья
+4 Time - сроки запрошенного кредита
+5 Age - возраст
+6 Marital - семейный статус
+7 Records - есть ли предыдущая информация
+8 Job - тип занятости
+9 Expenses - траты
+10 Income	- доход
+11 Assets	- собственность
+12 Debt	- задолженность
+13 Amount	- размер запрошенного кредита
+14 Price - цена товара, на покупку которого запрашивается кредит
+
+
+Подготовим тренировочную и тестовую выборки:
+
+```{r}
+library(caret)
+set.seed(1)
+test_ind = createDataPartition(credit$Status, p = 0.2, list = FALSE)
+credit.test = credit[test_ind,]
+credit.train = credit[-test_ind,]
+```
+
+Мы хотим предсказать, каким будет скоринг. 
+ 
+ * с помощью каких алгоритмов это можно сделать?
+ 
+#### Дерево
+
+```{r}
+library(partykit)
+model.tree = ctree(Status~., data = credit.train)
+predTrain.tree = predict(model.tree, credit.train)
+confusionMatrix(predTrain.tree, credit.train$Status, positive = "good")
+predTest.tree = predict(model.tree, credit.test)
+confusionMatrix(predTest.tree, credit.test$Status, positive = "good")
+```
+
+Сохраним для дальнейшего сравнения 
+
+```{r}
+accuracyTrain.tree = confusionMatrix(predTrain.tree, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.tree = confusionMatrix(predTest.tree, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.tree
+accuracyTest.tree
+```
+
+#### Логистическая регрессия
+
+Не забываем, что логистическая регрессия требует укаазания `type = "response"` и дальнейшего преобразования от вероятности к классу
+
+```{r}
+model.log =  train(Status~., data = credit.train, method = "glm", family = binomial(link = "logit"))
+
+predTrainProb.log = predict(model.log, credit.train, type = "prob")
+predTestProb.log = predict(model.log, credit.test, type = "prob")
+
+predTrain.log = predict(model.log, credit.train, type = "raw")
+
+predTest.log = predict(model.log, credit.test, type = "raw")
+
+accuracyTrain.log = confusionMatrix(predTrain.log, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.log = confusionMatrix(predTest.log, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.log
+accuracyTest.log
+```
+
+#### Еще раз отступление про AUC
+
+[Интересная ссылка с объяснением AUC](https://dyakonov.org/2017/07/28/auc-roc-%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D1%8C-%D0%BF%D0%BE%D0%B4-%D0%BA%D1%80%D0%B8%D0%B2%D0%BE%D0%B9-%D0%BE%D1%88%D0%B8%D0%B1%D0%BE%D0%BA/comment-page-1/)
+
+Возвращаемся к моделям.
+
+#### Логистическая регрессия с меньшим числом предикторов
+
+Построим еще одну логистическую регрессию
+
+```{r}
+model.log2 =  train(Status~.-Marital, data = credit.train, method = "glm", family = binomial(link = "logit"))
+
+predTrainProb.log2 = predict(model.log2, credit.train, type = "prob")
+predTestProb.log2 = predict(model.log2, credit.test, type = "prob")
+
+predTrain.log2 = predict(model.log2, credit.train, type = "raw")
+predTest.log2 = predict(model.log2, credit.test, type = "raw")
+
+accuracyTrain.log2 = confusionMatrix(predTrain.log2, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.log2 = confusionMatrix(predTest.log2, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.log2
+accuracyTest.log2
+```
+
+* Какую бы модель вы выбрали?
+* А если не выбирать?
+
+Посмотрим, где ошибается модель логистической регрессии
+
+```{r}
+errorInd = predTest.log != credit.test$Status
+sum(errorInd)
+```
+
+А теперь посмотрим, как себя ведет на этих значениях, например, дерево
+
+```{r}
+errorTree = predTest.tree[errorInd]
+errorReal = credit.test$Status[errorInd]
+confusionMatrix(errorTree, errorReal, positive = "good")$table
+```
+
+Т.е. на каких-то значениях, где одна модель ошиблась, другая предсказывает верно
+
+Основная идея ансамблей: давайте объединим несколько моделей в одну, чтобы вытащить сильные стороны каждой
+
+* какие есть предложения по объединению?
+
+### Голосование
+
+Первый подход -- просто устроить голосование (или усреднение, если мы решаем задачу регрессии)
+
+У нас есть три модели. Соберем их результаты вместе
+
+```{r}
+predictionsTrain = data.frame(tree = predTrain.tree, log2 = predTrain.log2, log = predTrain.log)
+```
+Теперь посмотрим для каждой строки, какая доля "good"
+```{r}
+predictionsTrain = predictionsTrain %>% mutate(goodProb = ((tree == "good") + (log2 == "good") + (log == "good"))/3)
+```
+
+И если эта доля говорим 0.5, говорим, что совместное предсказание "good"
+```{r}
+predTrain.voting = as.factor(ifelse(predictionsTrain$goodProb > 0.5, "good", "bad"))
+```
+
+Считаем качество предсказания
+```{r}
+confusionMatrix(predTrain.voting, credit.train$Status, positive = "good")
+```
+
+Повторяем для тестовой выборки и сохраняем результат
+
+```{r}
+predictionsTest = data.frame(tree = predTest.tree, log2 = predTest.log2, log = predTest.log)
+predictionsTest = predictionsTest %>% mutate(goodProb = ((tree == "good") + (log2 == "good") + (log == "good"))/3)
+predTest.voting = as.factor(ifelse(predictionsTest$goodProb > 0.5, "good", "bad"))
+
+accuracyTrain.voting = confusionMatrix(predTrain.voting, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.voting = confusionMatrix(predTest.voting, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.voting
+accuracyTest.voting
+```
+
+* Какие модели вы бы еще рассмотрели?
+
+Переходим к красивым словам -- случайный лес
+
+###Random forest
+
+Первый алгоритм -- это *Random Forest*, т.е. объединение деревьев
+
+![](https://i.imgur.com/BmEWJhA.png)
+
+
+```{r}
+library(randomForest)
+set.seed(1)
+model.rf=randomForest(Status~.,data=credit.train, mtry=5, importance=TRUE)
+predTrain.rf = predict(model.rf, credit.train)
+predTest.rf = predict(model.rf, credit.test)
+```
+
+Точность предсказания
+
+```{r}
+
+accuracyTrain.rf = confusionMatrix(predTrain.rf, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf = confusionMatrix(predTest.rf, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf
+accuracyTest.rf
+```
+
+Попробум другие параметры (`?randomForest`): `ntree` -- number of trees to grow
+
+```{r}
+
+
+set.seed(1)
+model.rf2=randomForest(Status~.,data=credit.train, mtry=5, ntree = 25)
+predTrain.rf2 = predict(model.rf2, credit.train)
+predTest.rf2 = predict(model.rf2, credit.test)
+
+accuracyTrain.rf2 = confusionMatrix(predTrain.rf2, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf2 = confusionMatrix(predTest.rf2, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf2
+accuracyTest.rf2
+
+```
+```{r}
+
+set.seed(1)
+model.rf3=randomForest(Status~.,data=credit.train, mtry=5, ntree = 25 )
+predTrain.rf3 = predict(model.rf3, credit.train)
+predTest.rf3 = predict(model.rf3, credit.test)
+
+accuracyTrain.rf3 = confusionMatrix(predTrain.rf3, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf3 = confusionMatrix(predTest.rf3, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf3
+accuracyTest.rf3
+```
+
+Почему считается дольше?
+
+* `mtry` -- number of variables randomly sampled as candidates at each split
+* `importance` -- should importance of predictors be assessed
+
+```{r}
+
+
+set.seed(1)
+model.rf4=randomForest(Status~.,data=credit.train, mtry=15, importance=TRUE)
+predTrain.rf4 = predict(model.rf4, credit.train)
+predTest.rf4 = predict(model.rf4, credit.test)
+
+accuracyTrain.rf4 = confusionMatrix(predTrain.rf4, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf4 = confusionMatrix(predTest.rf4, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf4
+accuracyTest.rf4
+```
+
+Стало лучше, возможно мы немного побороли переобучение. Обратите внимание на точность на обучающей выборке.
+
+
+Отметим, что в *Random Forest* у нас еще есть и автоматическая оценка важности параметров (признаков) -- т.е. какой признак вносит больший вклад в модель. MeanDecreaseAccuracy, т.е. насколько удаление этой переменной ухудшит модель, уменьшив точность (для каждого дерева в лесе)
+
+```{r}
+
+
+importance(model.rf)
+varImpPlot(model.rf)
+```
+
+* Какая переменная важнее? С большим значением коэффициента или с меньшим?
+
+Давайте попробуем удалить переменную из начала и из конца списка.
+
+Ошибка на обучающей выборке на полной модели `r accuracyTrain.rf`
+
+Начало списка: `Records`
+
+```{r}
+set.seed(1)
+model.rf01=randomForest(Status~.-Records,data=credit.train, mtry=5, importance=TRUE)
+predTrain.rf01 = predict(model.rf01, credit.train)
+predTest.rf01 = predict(model.rf01, credit.test)
+accuracyTrain.rf01 = confusionMatrix(predTrain.rf01, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf01 = confusionMatrix(predTest.rf01, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf01
+accuracyTest.rf01
+```
+Обратите внимание на предупреждение `invalid mtry: reset to within valid range` -- mtry = количество переменных, на которых строятся деревья. У нас всего 13 предикторов, после удаления Records их осталось 12, т.е. невозможно из 12 выбрать 13
+
+Конец списка: `Debt`
+
+```{r}
+set.seed(1)
+model.rf02=randomForest(Status~.-Debt,data=credit.train, mtry=5, importance=TRUE)
+predTrain.rf02 = predict(model.rf02, credit.train)
+predTest.rf02 = predict(model.rf02, credit.test)
+accuracyTrain.rf02 = confusionMatrix(predTrain.rf02, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf02 = confusionMatrix(predTest.rf02, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf02
+accuracyTest.rf02
+
+```
+
+* Какие выводы можно сделать?
+
+Как обычно, метод можно вызывать с помощью пакета `caret`, но он проводит оптимизацию параметров, что увеличивает время работы <https://topepo.github.io/caret/available-models.html>
+```{r}
+
+library(caret)
+set.seed(1)
+rf = train(Status~., data=credit.train, method = "rf", importance = T) 
+rf
+```
+
+Так же можно получить оценку важности признаков
+
+```{r}
+importance(rf$finalModel)
+```
+
+И предсказать значения
+
+```{r}
+
+pred.rf = predict(rf, newdata = credit.test)
+confusionMatrix(pred.rf, credit.test$Status, positive = "good")
+```
+
+
+# Boosting
+
+Второй метод -- это градиентный бустинг. На каждом следующем шаге пытаемся предсказать ошибочно предсказанные значения (классификация) или наиболее отдаленные предсказания -- предсказываем остатки (регрессия)
+
+![](https://littleml.files.wordpress.com/2017/03/boosted-trees-process.png)
+![](https://qph.ec.quoracdn.net/main-qimg-c926968bfb2f1564c6351a72d60b5a87)
+
+
+
+С точки зрения интерфейса он почти не отличается от *Random Forest*, но для бинарной классификации требует, чтобы предсказываемая переменная имела значения 0-1
+
+```{r}
+library(gbm)
+set.seed(1)
+model.boost=gbm((as.numeric(Status)-1)~., data=credit.train, distribution="bernoulli", n.trees=10000, interaction.depth=4)
+summary(model.boost)
+```
+
+Посмотрим на прогноз. (`n.trees = 2000` означает, что для предсказания мы используем первые 2000 деревьев из построенных 5000). Здесь, так же, как и в случае логистической регрессии, в качестве предсказания выдается вероятность
+
+```{r}
+predTrainProb.boost = predict(model.boost, credit.train, n.trees = 1000, type = "response")
+predTestProb.boost = predict(model.boost, credit.test, n.trees = 1000, type = "response")
+
+head(predTrainProb.boost)
+```
+```{r}
+predTrain.boost = as.factor(ifelse(predTrainProb.boost > 0.5, "good", "bad"))
+predTest.boost = as.factor(ifelse(predTestProb.boost > 0.5, "good", "bad"))
+
+accuracyTrain.boost = confusionMatrix(predTrain.boost, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.boost = confusionMatrix(predTest.boost, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.boost
+accuracyTest.boost
+```
+
+Можно посмотреть разные варианты моделей для разных n.trees
+```{r}
+a_train = c()
+a_test = c()
+for (i in 1:10*1000){
+
+predTrainProb.boost = predict(model.boost, credit.train, n.trees = i, type = "response")
+predTestProb.boost = predict(model.boost, credit.test, n.trees = i, type = "response")
+
+predTrain.boost = as.factor(ifelse(predTrainProb.boost > 0.5, "good", "bad"))
+predTest.boost = as.factor(ifelse(predTestProb.boost > 0.5, "good", "bad"))
+
+accuracyTrain.boost = confusionMatrix(predTrain.boost, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.boost = confusionMatrix(predTest.boost, credit.test$Status, positive = "good")$overall["Accuracy"]
+a_train = c(a_train, accuracyTrain.boost)
+a_test = c(a_test, accuracyTest.boost)
+
+
+}
+```
+
+
+И сравним несколько моделей с разными параметрами (`?gbm` для объяснения параметров).
+
+* distribution="gaussian" -- для регрессии
+* distribution="bernoulli" -- для бинарной классификации
+
+```{r}
+model.boost2=gbm((as.numeric(Status)-1)~., data=credit.train, distribution="bernoulli", n.trees=500, 
+                 interaction.depth=2, shrinkage=0.2, verbose=F)
+
+predTrainProb.boost2 = predict(model.boost2, credit.train, n.trees = 200, type = "response")
+predTestProb.boost2 = predict(model.boost2, credit.test, n.trees = 200, type = "response")
+
+predTrain.boost2 = as.factor(ifelse(predTrainProb.boost2 > 0.5, "good", "bad"))
+predTest.boost2 = as.factor(ifelse(predTestProb.boost2 > 0.5, "good", "bad"))
+
+accuracyTrain.boost2 = confusionMatrix(predTrain.boost2, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.boost2 = confusionMatrix(predTest.boost2, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.boost2
+accuracyTest.boost2
+```
+
+Метод тоже можно вызывать с помощью пакета `caret` <https://topepo.github.io/caret/available-models.html>
+```{r}
+set.seed(1)
+#boost = train(Status~., data=credit.train, method = "gbm") 
+boost = train(Status~., data=credit.train, method = "gbm", verbose = F) 
+boost
+summary(boost$finalModel)
+```
+
+Предсказание
+```{r}
+pred.gbm = predict(boost, newdata = credit.test)
+confusionMatrix(pred.gbm, credit.test$Status, positive = "good")
+```
+
+## Ансамбли: общее описание
+
+Ансамбли моделей не ограничиваются готовыми алгоритмами, модели можно соединять разными способами. Выделяют несколько подходов
+
+1. Voting/averaging -- голосование (классификация) / усреднение (регрессия) результатов нескольких моделей
+2. Bagging (Bootstrap AGregation) -- выделение случайных подвыборок с повторением, построение моделей (обычно одного типа) на каждой из них, объединение результатов. Random Forest -- один из примеров
+3. Boosting -- на каждом новом шаге построение новой модели (обычно одного типа) для улучшения предсказания той части, которая неправильно предсказалась на предыдущем шаге. Один из примеров -- градиентный бустинг
+4. Stacking -- построение нескольких моделей (обычно разного типа), затем построение обобщающей модели, в которую в качестве признаков (предикторов) передаются результаты первоначальных моделей
+
+
+### Bagging
+
+В `caret` есть реализованные ансамбли, построенные по такому принципу -- см. `treebag`, `bagEarth`, но можно реализовать вручную
+
+1) отобрать случайно строки их данных (как?)
+2) построить модель
+3) предсказать, сохранить результат
+4) повторить 1-3 N раз
+5) усреднить
+
+
+## Boosting
+
+Тоже можно реализовать вручную, но есть много уже готовых методов, например, adaboost для классификации
+
+## Stacking
+
+Рассмотрим те же модели, что были построены для пункта Голосование. И в качестве обобщающей модели возьмем дерево
+
+Создаем новый датасет
+
+```{r}
+dataStack =  data.frame(tree = predTrain.tree, 
+                        log2 = predTrain.log2, 
+                        log = predTrain.log,
+                        Status = credit.train$Status)
+```
+
+Строим модель
+```{r}
+model.stack = train(Status~., data=dataStack, method = "ctree")
+```
+
+Т.к. модель использует предсказания предыдущих моделей, то для тестовой выборки их тоже нужно посчитать (мы это уже делали раньше)
+```{r}
+predictionsTest = data.frame(tree = predTest.tree, log2 = predTest.log2, log = predTest.log)
+```
+
+Теперь окончательное предсказание
+```{r}
+predTest.stack = predict(model.stack, newdata = predictionsTest)
+predTrain.stack = predict(model.stack, newdata = dataStack)
+accuracyTrain.stack = confusionMatrix(predTrain.stack, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.stack = confusionMatrix(predTest.stack, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.stack
+accuracyTest.stack
+```
+
+Соберем все вместе
+
+```{r}
+results = data.frame(title = c("tree", "log2", "logistic", "voting", "random forest", "gradient boosting", "stacking"),
+                     test = c(accuracyTest.tree, accuracyTest.log2, accuracyTest.log, accuracyTest.voting,
+                               accuracyTest.rf, accuracyTest.boost, accuracyTest.stack),
+                     train = c(accuracyTrain.tree, accuracyTrain.log2, accuracyTrain.log, accuracyTrain.voting,
+                               accuracyTrain.rf, accuracyTrain.boost,  accuracyTrain.stack))
+results
+```
+Полезная ссылка про ансамбли <https://vas3k.ru/blog/machine_learning/#scroll140>
+
+# Ваша очередь
+
+Постройте разные ансамбли для решения задачи предсказания, сколько человек воспользуются прокатом велосипедов. Файл, с которым мы будем работать, с Kaggle <https://www.kaggle.com/c/bike-sharing-demand/data>, но первоначальный (немного почищенный -- см. для сравнения hour.csv и DatasetDescription.txt) - с UCI Machine Learning Repository <https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset>
+
+> Кстати, если хочется посмотреть на качество итоговой модели по сравнению с остальными, то можно поучаствовать в соревновании на Kaggle <https://www.kaggle.com/c/bike-sharing-demand>. Только обратите внимание, что там в качестве предсказания используется Root Mean Squared Logarithmic Error [(RMSLE)](https://www.kaggle.com/c/bike-sharing-demand#evaluation) 
+
+Данные о прокате за 2011 и 2012 гг. от Capital Bikeshare system, Washington D.C., USA 
+
+* datetime - hourly date + timestamp  
+* season -  1 = spring, 2 = summer, 3 = fall, 4 = winter 
+* holiday - whether the day is considered a holiday
+* workingday - whether the day is neither a weekend nor holiday
+* weather 
+
+    1: Clear, Few clouds, Partly cloudy, Partly cloudy 
+    2: Mist + Cloudy, Mist + Broken clouds, Mist + Few clouds, Mist 
+    3: Light Snow, Light Rain + Thunderstorm + Scattered clouds, Light Rain + Scattered clouds 
+    4: Heavy Rain + Ice Pallets + Thunderstorm + Mist, Snow + Fog 
+* temp - temperature in Celsius
+* atemp - "feels like" temperature in Celsius
+* humidity - relative humidity
+* windspeed - wind speed
+* casual - number of non-registered user rentals initiated
+* registered - number of registered user rentals initiated
+* count - number of total rentals
+
+
+```{r}
+bike = read.csv("~/shared/minor3_2019/1-MachineLearning/practice-04-recap-ensembles/train.csv")
+bike = bike %>% select(-casual, -registered, -datetime)
+str(bike)
+```
+
+Преобразуем переменные к факторам или наоборот, где нужно
+
+```{r}
+#bike$datetime = as.character(bike$datetime)
+bike$season = as.factor(bike$season)
+bike$holiday = as.factor(bike$holiday)
+```
+
+```{r}
+library(caret)
+set.seed(1)
+test_ind = createDataPartition(bike$count, p = 0.2, list = FALSE)
+bike.test = bike[test_ind,]
+bike.train = bike[-test_ind,]
+```
+
+
+### Голосование
+
+Первый подход -- просто устроить голосование (или усреднение, если мы решаем задачу регрессии)
+
+У нас есть три модели. Соберем их результаты вместе
+
+```{r}
+library(partykit)
+model.tree = ctree(count~., data = bike.train)
+predTrain.tree = predict(model.tree, bike.train)
+
+model.linear = lm(count~., data = bike.train)
+predTrain.linear = predict(model.linear, bike.train)
+
+pred.mean = (predTrain.tree + predTrain.linear)/2
+sqrt(sum(bike$count - pred.mean)^2/8707)
+sqrt(sum(bike$count - predTrain.tree)^2/8707)
+
+sqrt(sum(bike$count - predTrain.linear)^2/8707)
+smape(predTrain.tree, bike$count)
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###Random forest
+```{r}
+library(randomForest)
+set.seed(1)
+model.rf=randomForest(count~.,data=bike.train, mtry=5, importance=TRUE)
+predTrain.rf = predict(model.rf, bike.train)
+predTest.rf = predict(model.rf, credit.test)
+accuracyTrain.rf = confusionMatrix(predTrain.rf, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf = confusionMatrix(predTest.rf, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf
+accuracyTest.rf
+
+set.seed(1)
+model.rf2=randomForest(Status~.,data=credit.train, mtry=5, ntree = 25)
+predTrain.rf2 = predict(model.rf2, credit.train)
+predTest.rf2 = predict(model.rf2, credit.test)
+
+accuracyTrain.rf2 = confusionMatrix(predTrain.rf2, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf2 = confusionMatrix(predTest.rf2, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf2
+accuracyTest.rf2
+
+set.seed(1)
+model.rf3=randomForest(Status~.,data=credit.train, mtry=5, ntree = 25 )
+predTrain.rf3 = predict(model.rf3, credit.train)
+predTest.rf3 = predict(model.rf3, credit.test)
+
+accuracyTrain.rf3 = confusionMatrix(predTrain.rf3, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf3 = confusionMatrix(predTest.rf3, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf3
+accuracyTest.rf3
+
+set.seed(1)
+model.rf4=randomForest(Status~.,data=credit.train, mtry=15, importance=TRUE)
+predTrain.rf4 = predict(model.rf4, credit.train)
+predTest.rf4 = predict(model.rf4, credit.test)
+
+accuracyTrain.rf4 = confusionMatrix(predTrain.rf4, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf4 = confusionMatrix(predTest.rf4, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf4
+accuracyTest.rf4
+
+importance(model.rf)
+varImpPlot(model.rf)
+
+library(caret)
+set.seed(1)
+rf = train(Status~., data=credit.train, method = "rf", importance = T) 
+rf
+```
+
+
+```{r}
+importance(rf$finalModel)
+
+pred.rf = predict(rf, newdata = credit.test)
+confusionMatrix(pred.rf, credit.test$Status, positive = "good")
+```
+

@@ -1,0 +1,16 @@
+```{r}
+data = read_csv('un-general-debates.csv')
+nrow(data)
+```
+```{r}
+data1 = data[1:3700, ]
+data2 = data[3701:7570, ]
+```
+```{r}
+write.csv(data1, file = 'un-general-debates1.csv')
+write.csv(data2, file = 'un-general-debates2.csv')
+
+data3 = rbind(data1, data2)
+```
+
+

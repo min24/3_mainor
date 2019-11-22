@@ -1,0 +1,17 @@
+```{r}
+students = read.csv("https://stepik.org/media/attachments/lesson/198536/students2.csv")
+
+students = students %>% mutate(Drunk = ifelse(Dalc < 4 & Walc < 5, 0,1)) %>% dplyr::select(-Dalc, -Walc)
+ 
+set.seed(36562)
+ind = createDataPartition(students$Drunk, p = 0.8, list = F)
+stud.train = students[ind,]
+stud.test = students[-ind,]
+ 
+```
+```{r}
+a = nrow(stud.train %>% filter(Drunk==1))
+b = nrow(stud.train %>% filter(Drunk==0))
+a/b
+```
+

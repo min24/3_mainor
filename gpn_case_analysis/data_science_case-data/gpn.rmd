@@ -1,0 +1,170 @@
+---
+title: "gpn_cup"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+customers <- read_delim("customers.tsv", 
+    "\t", escape_double = FALSE, trim_ws = TRUE)
+sales <- read_delim("sales.tsv", 
+    "\t", escape_double = FALSE, trim_ws = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+summary(sales)
+```
+
+```{r}
+sku = sales %>% distinct(sku_id)
+sku = as.vector(sku)
+sku[[1]][2]
+
+
+```
+
+```{r}
+sales$revenue = sales$volume*sales$price
+sales$id = paste(sales$month, sales$ira, sales$sku_id)
+```
+
+```{r}
+
+vol = sales %>% group_by(id) %>% summarise(volume_mean = mean(volume))
+```
+
+
+```{r}
+sales_vol = left_join(sales, vol)
+smape(sales_vol$volume, sales_vol$volume_mean)
+```
+
+
+
+
+```{r}
+vol2 = sales %>% group_by(id) %>% summarise(volume_mean = mean(volume), rev_mean = mean(revenue))
+sales_vol2 = left_join(sales, vol2)
+for (i in 1:length(sales_vol2)){
+  if (!is.na(sales_vol2$price[i])){
+    sales_vol2$volume_mean[i] = sales_vol2$rev_mean[i]/sales_vol2$price[i]
+  }
+}
+smape(sales_vol2$volume, sales_vol2$volume_mean)
+
+```
+```{r}
+a = sales %>% filter(id == sales$id[450])
+mod = lm(volume~year, a)
+63*2018-122358
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+sales1 = sales %>% select(-year, -location)
+sales1 = sales1 %>% filter(sales1$sku_id == sku[[1]][2]) %>% select(-sku_id)
+sales1$ira = as.factor(sales1$ira)
+sales1$product_category = as.factor(sales1$product_category)
+sales1$brand = as.factor(sales1$brand)
+sales1$shape = as.factor(sales1$shape)
+sales1$with_alcohol = as.factor(sales1$with_alcohol)
+sales1$filling = as.factor(sales1$filling)
+sales1$month = as.factor(sales1$month)
+
+```
+```{r}
+```
+
+```{r}
+library(caret)
+set.seed(1)
+test_ind = createDataPartition(sales1$month, p = 0.2, list = FALSE)
+sales.test = sales1[test_ind,]
+sales.train = sales1[-test_ind,]
+```
+
+```{r}
+library(partykit)
+model.tree = ctree(volume~., data = sales.train)
+predTrain.tree = predict(model.tree, sales.train)
+predTest.tree = predict(model.tree, sales.test)
+```
+```{r}
+RMSE(predTest.tree, sales.test$volume)
+#smape
+smape = function(pred, real){
+  a = sum(abs(pred - real)/((pred+real)/2))/length(real)
+  return(a)
+}
+smape(predTest.tree, sales.test$volume)
+
+```
+```{r}
+pred = predict(model.tree, sales.train)
+smape(pred, sales.train$volume)
+```
+
+```{r}
+sku_smape = function(id){
+  sales1 = sales %>% select(-year, -location)
+sales1 = sales1 %>% filter(sales1$sku_id == id) %>% select(-sku_id)
+sales1$ira = as.factor(sales1$ira)
+sales1$product_category = as.factor(sales1$product_category)
+sales1$brand = as.factor(sales1$brand)
+sales1$shape = as.factor(sales1$shape)
+sales1$with_alcohol = as.factor(sales1$with_alcohol)
+sales1$filling = as.factor(sales1$filling)
+sales1$month = as.factor(sales1$month)
+
+
+library(caret)
+set.seed(1)
+test_ind = createDataPartition(sales1$month, p = 0.2, list = FALSE)
+sales.test = sales1[test_ind,]
+sales.train = sales1[-test_ind,]
+return(smape(predTest.tree, sales.test$volume))
+}
+```
+
+```{r}
+sku_smape(sku[[1]][5])
+```
+
+
+
+
+

@@ -1,0 +1,310 @@
+---
+title: "Imbalanced Classes"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+Построим модель классификации для датасета на котором вы закончили.
+
+```{r}
+library(caret)
+caravan = ISLR::Caravan
+set.seed(18)
+
+trainIndex <- createDataPartition(caravan$Purchase, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+CaravanTrain <- caravan[ trainIndex,]
+CaravanTest  <- caravan[-trainIndex,]
+```
+
+Строим модель:
+
+
+```{r, message=FALSE, warning=TRUE}
+cv5<-trainControl(method="cv", number = 5)
+set.seed(100)
+tree_model <- caret::train(Purchase~., method = 'ctree', data = CaravanTrain, trControl=cv5)
+#plot(tree_model$finalModel, type="simple")
+```
+
+```{r}
+predictions.on.train <- predict(tree_model, CaravanTrain)
+confusionMatrix(predictions.on.train, CaravanTrain$Purchase, positive = "Yes")
+confusionMatrix(predictions.on.train, CaravanTrain$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+```{r}
+predictions.on.test <- predict(tree_model, CaravanTest)
+confusionMatrix(predictions.on.test, CaravanTest$Purchase, positive = "Yes")
+confusionMatrix(predictions.on.test, CaravanTest$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+Мы все делали как положено, и получили accuracy >94% и на тренировочном датасете и на тесте, но очевидно, что это плохая модель. На тесте мы смогли правильно определить только один положительный пример.
+
+Попробуем это исправить. Есть несколько способов сделать это:
+
+1. Добавить веса: учитывать одну ошибку на слабо представленном классе, например, как десять ошибок на хорошо представленном классе.
+
+2. Down-sampling: случайно выкинуть "лишние" данные из хорошо представленного класса.
+
+3. Up-sampling: случайно добавить продублировав представителей слабопредставленного класса.
+
+4. Synthetic minority sampling technique (SMOTE): сочетание Down-sampling и синтетических данных для слабо представленного класса на основе интерполяции. 
+
+* Подробнее можно почитать в статье [8 Tactics to Combat Imbalanced Classes in Your Machine Learning Dataset](https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/)
+* А про реализацию в пакете `caret` [здесь](https://topepo.github.io/caret/subsampling-for-class-imbalances.html)
+
+Давайте попробуем эти методы.
+
+# Веса
+
+Добавим веса к нашей модели. Для этого надо подготовить вектор, который для каждого примера укажет вес, с которым учитывать ошибку именно на этом примере. 
+
+Важно отметить, что ctree допускает только целые веса. По сути, он рассматривает каждый пример как столько разных примеров, какой вес ему назначен.
+
+Глянем, сколько у нас каких случаев.
+
+```{r}
+table(CaravanTrain$Purchase)
+```
+```{r}
+table(CaravanTrain$Purchase)[1]/table(CaravanTrain$Purchase)[2]
+```
+
+То есть на один положительный случай приходится примерно 15--16 отрицательных. Давайте такой вес и назначим отрицательным примерам. Обычная практика заключается в том, что веса обратно пропорциональны числу примеров данного класса. Но некоторые модели не поддерживают дробные веса.
+
+```{r}
+model_weights <- ifelse(CaravanTrain$Purchase == "No", 1, 15)
+```
+
+Теперь осталось только добавить полученные веса к нашей модели в процессе обучения.
+
+```{r}
+cv5$seeds<-tree_model$control$seeds
+tree_model_weighted <- caret::train(Purchase~., method = 'ctree', data = CaravanTrain, trControl=cv5, weights = model_weights)
+plot(tree_model_weighted$finalModel, type="simple")
+```
+
+Обратите внимание на первую строчку. Она нужна, чтобы кросс валидация использовала то же разбиение что и в первом случае. Ну и как видно на картинке, модель стала заметно сложнее.
+
+```{r}
+w.on.train <- predict(tree_model_weighted, CaravanTrain)
+#confusionMatrix(w.on.train, CaravanTrain$Purchase, positive = "Yes")
+confusionMatrix(w.on.train, CaravanTrain$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+Мы немного ухудшили Accuracy, но однозначно сильно улучшили Sensitivity (Recall). Но будет ли это работать на тестовой выборке.
+
+```{r}
+w.on.test <- predict(tree_model_weighted, CaravanTest)
+#confusionMatrix(w.on.test, CaravanTest$Purchase, positive = "Yes")
+confusionMatrix(w.on.test, CaravanTest$Purchase, positive = "Yes", mode = "prec_recall")
+
+```
+
+К сожалению, мы заметно потеряли в accuracy, да и Sensitivity (Recall) заметно упал. Возможно мы переобучились и стоит понастраивать вес как параметр модели. Но в любом случае, такая модель лучше исходной, так как исходная вообще почти не детектировала положительые случаи. 
+
+# Down-sampling
+
+Попробуем повыкидывать "лишние" примеры.
+Это можно сделать руками, но caret о нас позаботился.
+
+```{r}
+cv5_down<-cv5
+cv5_down$sampling<-"down"
+tree_model_down <- caret::train(Purchase~., method = 'ctree', data = CaravanTrain, trControl=cv5_down)
+plot(tree_model_down$finalModel, type="simple")
+```
+
+Мы снова получили простую модель. А почему?
+
+Посмотрим на ее качество.
+
+```{r}
+d.on.train <- predict(tree_model_down, CaravanTrain)
+#confusionMatrix(d.on.train, CaravanTrain$Purchase, positive = "Yes")
+confusionMatrix(d.on.train, CaravanTrain$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+А тут все стало сильно хуже. По сравнению с моделью, где мы использовали веса, совсем плохо и это на обучающей выборке. А почему так?
+
+
+```{r}
+d.on.test <- predict(tree_model_down, CaravanTest)
+#confusionMatrix(d.on.test, CaravanTest$Purchase, positive = "Yes")
+confusionMatrix(d.on.test, CaravanTest$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+Что вы можете сказать, про этот вариант?
+
+
+# Up sampling
+
+```{r}
+cv5_up<-cv5
+cv5_up$sampling<-"up"
+tree_model_up <- caret::train(Purchase~., method = 'ctree', data = CaravanTrain, trControl=cv5_up)
+plot(tree_model_up$finalModel, type="simple")
+```
+
+Посмотрим на качество модели.
+
+```{r}
+u.on.train <- predict(tree_model_up, CaravanTrain)
+#confusionMatrix(u.on.train, CaravanTrain$Purchase, positive = "Yes")
+confusionMatrix(u.on.train, CaravanTrain$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+На обучающей выборке модель ведет себя прекрасно. А на тесте?
+
+
+```{r}
+u.on.test <- predict(tree_model_up, CaravanTest)
+#confusionMatrix(u.on.test, CaravanTest$Purchase, positive = "Yes")
+confusionMatrix(u.on.test, CaravanTest$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+Что вы можете сказать, про этот вариант?
+
+
+# SMOTE
+
+```{r}
+cv5_smote<-cv5
+cv5_smote$sampling<-"smote"
+tree_model_smote <- caret::train(Purchase~., method = 'ctree', data = CaravanTrain, trControl=cv5_smote)
+plot(tree_model_smote$finalModel, type="simple")
+```
+
+А тут мы видим не очень сложную, но и не очень простую модель. Станет ли она золотой серединой?
+
+```{r}
+s.on.train <- predict(tree_model_smote, CaravanTrain)
+#confusionMatrix(s.on.train, CaravanTrain$Purchase, positive = "Yes")
+confusionMatrix(s.on.train, CaravanTrain$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+
+```{r}
+s.on.test <- predict(tree_model_smote, CaravanTest)
+#confusionMatrix(s.on.test, CaravanTest$Purchase, positive = "Yes")
+confusionMatrix(s.on.test, CaravanTest$Purchase, positive = "Yes", mode = "prec_recall")
+```
+
+Какая модель понравилась вам больше всего?
+
+*Ваша очередь:* рассмотрим небольшой датасет про переливание крови. Сможете ли вы предсказать, сдавал ли кровь человек в марте 2007 года? Тут есть небольшой дисбаланс в классах. Попробуйте применить к нему разные методы работы с дисбалансом и разные методы классификации. 
+
+```{r}
+library(readr)
+blood <- read_csv("~/shared/minor3_2019/1-MachineLearning/data/blood.csv")
+table(blood$`whether he/she donated blood in March 2007`)
+names(blood) = c("recency", "frequency", "monetary", "time", "donation")
+table(blood$donation)
+```
+
+
+
+```{r}
+library(caret)
+set.seed(22)
+blood$donation = as.factor(blood$donation)
+trainIndex2 <- createDataPartition(blood$donation, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+bloodTrain <- blood[ trainIndex2,]
+bloodTest  <- blood[-trainIndex2,]
+```
+
+```{r, message=FALSE, warning=TRUE}
+cv2<-trainControl(method="cv", number = 5)
+set.seed(100)
+tree_model2 <- caret::train(donation~., method = 'ctree', data = bloodTrain, trControl=cv2)
+#plot(tree_model2$finalModel, type="simple")
+```
+
+
+```{r}
+predictions.on.train2 <- predict(tree_model2, bloodTrain)
+confusionMatrix(predictions.on.train2, bloodTrain$donation, positive = "1")
+confusionMatrix(predictions.on.train2, bloodTrain$donation, positive = "1", mode = "prec_recall")
+```
+
+
+```{r}
+predictions.on.test2 <- predict(tree_model2, bloodTest)
+confusionMatrix(predictions.on.test2, bloodTest$donation, positive = "1")
+confusionMatrix(predictions.on.test2, bloodTest$donation, positive = "1", mode = "prec_recall")
+```
+```{r}
+table(blood$donation)
+table(blood$donation)[1]/table(blood$donation)[2]
+```
+
+```{r}
+model_weights2 <- ifelse(bloodTrain$donation == "0", 1, 3)
+```
+
+Теперь осталось только добавить полученные веса к нашей модели в процессе обучения.
+
+```{r}
+cv$seeds<-tree_model$control$seeds
+tree_model_weighted2 <- caret::train(donation~., method = 'ctree', data = bloodTrain, trControl=cv, weights = model_weights2)
+plot(tree_model_weighted2$finalModel, type="simple")
+```
+
+```{r}
+w.on.train2 <- predict(tree_model_weighted2, bloodTrain)
+#confusionMatrix(w.on.train2, bloodTrain$donation, positive = "1")
+confusionMatrix(w.on.train2, bloodTrain$donation, positive = "1", mode = "prec_recall")
+```
+
+Мы немного ухудшили Accuracy, но однозначно сильно улучшили Sensitivity (Recall). Но будет ли это работать на тестовой выборке.
+
+```{r}
+w.on.test2 <- predict(tree_model_weighted2, bloodTrain)
+#confusionMatrix(w.on.test2, bloodTrain$donation, positive = "1")
+confusionMatrix(w.on.test2, bloodTrain$donation, positive = "1", mode = "prec_recall")
+
+```
+
+
+```{r}
+estimate_f1 = function(approach){
+  cv2$sampling = approach
+  tree_model2 <- caret::train(donation~., method = 'ctree', data = bloodTrain, trControl=cv2)
+  on.train <- predict(tree_model2, bloodTrain)
+  on.test <- predict(tree_model2, bloodTest)
+a = confusionMatrix(on.test, bloodTest$donation, positive = "1", mode = "prec_recall")
+return(a$byClass["F1"])
+}
+```
+```{r}
+estimate_acc = function(approach){
+  cv2$sampling = approach
+  tree_model2 <- caret::train(donation~., method = 'ctree', data = bloodTrain, trControl=cv2)
+    on.train <- predict(tree_model2, bloodTrain)
+  on.test <- predict(tree_model2, bloodTest)
+a = confusionMatrix(on.test, bloodTest$donation, positive = "1", mode = "prec_recall")
+return(a$overall["Accuracy"])
+}
+```
+
+```{r}
+estimate_acc("down")
+estimate_f1("down")
+```
+
+```{r}
+estimate_acc("up")
+estimate_f1("up")
+```
+```{r}
+estimate_acc("smote")
+estimate_f1("smote")
+```
+

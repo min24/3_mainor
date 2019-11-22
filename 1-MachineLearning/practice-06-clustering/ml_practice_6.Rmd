@@ -1,0 +1,240 @@
+---
+title: "ML practice 7: Clustering"
+output: html_document
+---
+
+Сегодня мы поговорим об одной из задач обучения без учителя, а именно о кластеризации.
+
+Но прежде чем мы начнем, ответьте на пару вопросов:
+
+* Что такое обучение без учителя?
+* В чем состоит задача кластеризации?
+* Для чего применяется кластеризация?
+
+
+###  Данные (Аресты)
+
+Загружаем данные
+```{r, warning=FALSE, message=FALSE}
+Arrests <-USArrests
+```
+
+Посмотрим на них
+
+```{r, warning=FALSE, message=FALSE}
+str(Arrests)
+```
+
+*Murder*, *Assault*, *Rape* -- это количество арестов по соответствующим статьям на 100000 жителей.
+*UrbanPop* -- доля городского населения в штате.
+
+```{r}
+library(ggplot2)
+library(GGally)
+ggpairs(Arrests)
+```
+
+Мы видим какие-то закономерности, например сильную коррелированность Murder и Assault.
+
+Попробуем разделить штаты по похожести.
+
+### Алгоритм k-means
+
+https://www.naftaliharris.com/blog/visualizing-k-means-clustering/
+
+Идея алгоритма очень проста:
+
+1. Возьмем случайным образом k точек и назовем их центрами кластеров. 
+2. Для каждой точки найдем ближайший центр и будем считать, что точка пренадлежит этому кластеру.
+3. Вычислим новые знацения центров, как среднее арифметическое координат точек приписанных этому кластеру на предыдущем шаге.
+4. Будем повторять шаги 2-3 пока центры не перестанут меняться.
+
+
+Начнем с двух кластеров:
+
+```{r}
+km.out=kmeans(Arrests,2,nstart=20)
+km.out$cluster
+km.out$size
+table(km.out$cluster)
+sum(km.out$cluster==1)
+Arrests$clusters = factor(km.out$cluster)
+GGally::ggpairs(Arrests, mapping = ggplot2::aes(color = clusters), columns = c("Murder", "Assault", "UrbanPop", "Rape"))
+```
+
+
+А теперь 3 кластера:
+
+```{r}
+km.out=kmeans(Arrests,3,nstart=1)
+km.out$cluster
+Arrests$clusters = factor(km.out$cluster)
+ggpairs(Arrests, mapping = ggplot2::aes(color = clusters), columns = c("Murder", "Assault", "UrbanPop", "Rape"))
+```
+
+Если вы обратите внимание, то лучше всего кластеры разбились по *Assault*. А почему так произошло?
+
+```{r}
+scaledArrests <- scale(Arrests[,1:4])
+km.out=kmeans(scaledArrests,3,nstart=1)
+Arrests$clusters = factor(km.out$cluster)
+ggpairs(Arrests, mapping = ggplot2::aes(color = clusters), columns = c("Murder", "Assault", "UrbanPop", "Rape"))
+```
+
+Как мы видим, после нормализации данных кластеры довольно сильно изменились.
+
+Это вполне понятно, так как расстояние между объектами вычисляется обычно по формуле $\sqrt{\sum_i (x_i-y_i)^2}$ и если координаты не отмасштабированны, то самая "растянутая" шкала будет важнее всего.
+
+
+У k-means есть несколько недостатков:
+
+1. Полученное распределение может быть локальным минимумом квадратов расстояний до центра.
+2. Результат зависит от выбора исходных центров кластеров.
+3. Число кластеров надо знать заранее.
+
+
+Пример, когда мы получаем два одинаковых разбиения, но с разным порядком кластеров:
+```{r}
+set.seed(100)
+km.out=kmeans(scaledArrests,3,nstart=1)
+clusters1 = km.out$cluster
+km.out$size
+
+set.seed(102)
+km.out=kmeans(scaledArrests,3,nstart=1)
+clusters11 = km.out$cluster
+km.out$size
+table(clusters1,clusters11)
+```
+
+Пример, когда мы получаем два разных разбиения:
+```{r}
+set.seed(543645)
+km.out=kmeans(scaledArrests,3,nstart=1)
+clusters2 = km.out$cluster
+km.out$size
+table(clusters1,clusters2)
+```
+
+
+```{r}
+ggplot(Arrests)+geom_point(aes(x=Assault, y=UrbanPop, 
+                               color=factor(clusters1), 
+                               shape=factor(clusters2)))
+```
+
+**Теперь ваша очередь**
+
+Маленький классический пример
+
+1. Загрузите датасет Iris
+2. Постройте 3 кластера с помошью k-means (не используя Species). Сравните с реальным распределением Species
+
+```{r}
+iris
+library(ggplot2)
+library(GGally)
+ggpairs(iris[,1:4])
+summary(iris)
+```
+
+
+### Иерархическая кластеризация
+
+Как мы уже сказали, один из недостатков метода *k-means* -- это необходимость знать число кластеров, плюс некоторая случайность. Давайте посмотрим на метод, который не требует знать число кластеров.
+
+Как мы вам расказывали на лекции, иерахическая кластеризация может строится или на объединении кластеров (агломеративная) или на разбиении. Мы будем работать с первым случаем.
+
+Для того, чтобы выбрать какие кластеры объединять на очередном шаге, мы должны уметь вычислять расстояние не только между точками, но и между кластерами.
+
+Существует много таких способов! 
+Самые простые способы определить расстояние между кластерами:
+
+1. Complete Linkage: Расстояние равно самому *большому* расстоянию между точкой одного кластера и точкой другого.
+2. Single Linkage: Расстояние равно самому *маленькому* расстоянию между точкой одного кластера и точкой другого.
+3. Average Linkage: Расстояние равно *среднему* расстоянию между точками одного кластера и точками другого.
+4. Centroid: Расстояние равно расстоянию между центрами кластеров.
+
+Сравним первые три варианта:
+
+```{r}
+hc.complete=hclust(dist(scaledArrests), method="complete")
+plot(hc.complete,main="Complete Linkage", xlab="", sub="", cex=0.9)
+```
+```{r}
+hc.average=hclust(dist(scaledArrests), method="average")
+plot(hc.average, main="Average Linkage", xlab="", sub="", cex=.9)
+```
+```{r}
+hc.single=hclust(dist(scaledArrests), method="single")
+plot(hc.single, main="Single Linkage", xlab="", sub="", cex=.9)
+```
+
+Как вы видите, мы получили три разных дендрограммы. Какая из них лучше -- зависит от вашей задачи.
+
+Но обычно нам не нужны все кластеры. Имея дендрограммы, мы легко можем получить разбиение на заданное число кластеров, например на 3.
+
+```{r}
+hclusters = cutree(hc.complete, k = 3)
+#hclusters = cutree(hc.complete, h = 2)
+# h la chieu cao trong graph phia tren
+
+table(hclusters)
+```
+
+  Сравним с k-means
+```{r}
+ggplot()+geom_point(data=Arrests, aes(x=Assault, y=UrbanPop,
+                                      color=factor(clusters2), 
+                                      shape=factor(hclusters)))
+```
+
+Охарактеризуем полученные кластеры
+```{r}
+library(dplyr)
+Arrests$hclust = hclusters
+Arrests %>% group_by(hclust) %>% summarise(murder = mean(Murder), 
+                                           assault = mean(Assault),
+                                           urbanpop = mean(UrbanPop),
+                                           rape = mean(Rape)
+                                        )
+```
+
+
+Есть еще одна функция, которая может быть полезна, -- *heatmap*. Она рисует матрицу данных цветами и добавляет дендрограммы аналогичные иерархической кластеризации.
+
+```{r}
+heatmap(as.matrix(scaledArrests),hclustfun = function(x) hclust(x,method = "complete"), scale="none")
+```
+
+Посмотрим на другой пример -- сходство европейских языков:
+
+```{r}
+library(cluster.datasets)
+data(languages.spoken.europe)
+data <- languages.spoken.europe
+rownames(data) <- data$country
+data <- data[,-1]
+dataScale = scale(data)
+lang.average = hclust(dist(dataScale), method="average") # maybe single or complete
+plot(lang.average, main="Average Linkage", xlab="", sub="", cex=0.9)
+```
+
+Попробуйте другие типы ссылок. Какие выводы вы можете сделать?
+
+**Ваша очередь**
+
+Продолжаем маленький классический пример на датасете iris
+
+3. Постройте 3 кластера с помошью иерархической кластеризации.
+4. Сравните результаты с настоящими значениями сортов.
+5. Охарактеризуйте полученные кластеры
+
+Если вы все сделали, то загрузите датасет с оценками музыкальных групп и посмотрите, что вы можете сделать с ним.
+
+```{r}
+music<-read.csv("~/shared/minor3_2019/1-MachineLearning/practice-06-clustering/music.txt")
+```
+
+Как можно использовать полученные результаты?
+

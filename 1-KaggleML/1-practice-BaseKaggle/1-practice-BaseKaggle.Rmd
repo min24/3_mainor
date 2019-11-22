@@ -1,0 +1,151 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Сегодня мы сделаем наш урок не в форме традиционного Rmd документа, а в форме Ноутбука.
+
+Будем работать с простым соревнованием https://www.kaggle.com/c/house-prices-advanced-regression-techniques
+
+
+Начнем с загрузки данных
+
+```{r}
+houses <- read.csv("~/shared/minor3_2019/1-KaggleML/data/train.csv")
+```
+
+И разобъем на тестовую и обучающую выборку
+
+```{r}
+library(caret)
+set.seed(1)
+ind = createDataPartition(houses$SalePrice, p = 0.15, list = F)
+houses.train = houses[-ind,]
+houses.test = houses[ind,]
+```
+
+Попробуем начать с простейшей модели
+
+```{r}
+lm.fit <- lm(SalePrice~.-Id - Alley, data = houses.train)
+```
+
+Не работает, давайте разбираться
+
+```{r}
+summary(houses.train)
+```
+
+
+
+```{r}
+linReg<-lm(SalePrice~MSSubClass+LotArea+LotShape+OverallQual+OverallCond+YearBuilt+YearRemodAdd+ Exterior1st+Exterior2nd+GrLivArea+FullBath+BedroomAbvGr+TotRmsAbvGrd, data = houses.train)
+summary(linReg)
+```
+```{r}
+lr_pred <- predict(linReg, houses.test)
+```
+Упс, что-то не так. У нас часть значений не попала в обучающую выборку, и что будем делать?
+```{r}
+table(houses.test$Exterior1st)
+table(houses.train$Exterior1st)
+
+```
+
+
+```{r}
+linReg<-lm(SalePrice~MSSubClass+LotArea+LotShape+OverallQual+OverallCond+YearBuilt+YearRemodAdd+Exterior2nd+GrLivArea+FullBath+BedroomAbvGr+TotRmsAbvGrd, data = houses.train)
+```
+
+
+```{r}
+lr_pred <- predict(linReg, houses.test)
+```
+
+```{r}
+linReg<-lm(SalePrice~MSSubClass+LotArea+LotShape+OverallQual+OverallCond+YearBuilt+YearRemodAdd+GrLivArea+FullBath+BedroomAbvGr+TotRmsAbvGrd, data = houses.train)
+lr_pred <- predict(linReg, houses.test)
+```
+
+```{r}
+lr_rmse <- mean((lr_pred - houses.test$SalePrice)^2)^(1/2)
+lr_rmse
+```
+
+
+Ура, мы построили модель. Давайте загрузим и посмотрим, что будет.
+Но, мало просто построить модель, нужен правильный формат.
+
+```{r}
+real_test <- read.csv("~/shared/minor3_2019/1-KaggleML/data/test.csv")
+real_predict <- predict(linReg, real_test) 
+```
+
+
+```{r}
+library(readr)
+to_send <- data.frame(Id=real_test$Id, SalePrice = real_predict)
+write_csv(to_send, "to_send.csv")
+```
+
+Результат 0.22169 выглядит достаточно печально (4500+ место из 5200+), да и у лидеров порядка 0.1, а у топа и вовсе 0.07347 так что есть куда двигаться. Но как число 0.22169 соотносится, например с 42801.14 которое мы видели на тесте?
+
+
+Когда мы разобрались, что не так было с нашей оценкой, давайте попробуем подумать, как же можно все улучшить и куда двигаться.
+
+
+
+
+
+```{r}
+rmse_log_our_test <- mean((log(lr_pred) - log(houses.test$SalePrice))^2)^(1/2)
+rmse_log_our_test
+```
+
+О, это гораздо больше похоже на наш результат. Вот в чем дело. Давайте попробуем немного исправить наш прогноз, за счет оптимизации правильной метрики.
+
+```{r}
+linRegLog<-lm(log(SalePrice)~MSSubClass+LotArea+LotShape+OverallQual+OverallCond+YearBuilt+YearRemodAdd+GrLivArea+FullBath+BedroomAbvGr+TotRmsAbvGrd, data = houses.train)
+```
+
+Построили модель с оптимизацией правильной функции ошибки. Улучшилось ли?
+
+
+```{r}
+lrl_pred <- predict(linRegLog, houses.test)
+rmse_log_test <- mean((lrl_pred - log(houses.test$SalePrice))^2)^(1/2)
+rmse_log_test
+```
+И правда помогло.
+
+Давайте сделаем правильный прогноз.
+
+```{r}
+real_log_predict <- predict(linRegLog, real_test)
+to_send_log <- data.frame(Id=real_test$Id, SalePrice = exp(real_predict))
+write_csv(to_send_log, "to_send_log.csv")
+```
+
+Стало получше -- 0.15808 и примерно 3450 место. 
+
+Надо оптимизировать правильную функцию.
+
+Давайте посмотрим решение, для которого есть описание, и обсудим, что мы могли бы реализовать. https://www.kaggle.com/cjporteo/house-pricing-elasticnet-ridge-lasso-xgb-top-7
+
+
+
+Попробуйте почистить данные, добавить другие переменные и построить несколько разных моделей, например случайный лес или градиентный бустинг. Можно попробовать скомбинировать их и посмотреть, что получится.
+
+Попробуйте сделать несколько вариантов, сделайте несколько сабмитов и посмотрите, как будет соотносится ошибка на тесте у вас и на лидерборде.
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,371 @@
+---
+title: "ML practice 3: Feature Selection"
+output: html_document
+---
+
+Сегодня мы поговорим о том, какие методы существуют для выбора предикторов для включения в модель.
+
+### Данные
+
+В качестве примера используем данные про цены на жилье в Бостоне (снова)
+
+```{r warning=FALSE, message=FALSE}
+library(MASS)
+#?Boston
+
+library(ggplot2)
+library(dplyr)
+```
+
+* `crim` per capita crime rate by town
+* `zn` proportion of residential land zoned for lots over 25,000 sq.ft
+* `indus` proportion of non-retail business acres per town
+* `chas` Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).
+* `nox` nitrogen oxides concentration (parts per 10 million).
+* `rm` average number of rooms per dwelling.
+* `age` proportion of owner-occupied units built prior to 1940.
+* `dis` weighted mean of distances to five Boston employment centres.
+* `rad` index of accessibility to radial highways.
+* `tax` full-value property-tax rate per \$10,000.
+* `ptratio` pupil-teacher ratio by town.
+* `black` 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town.
+* `lstat` lower status of the population (percent).
+* `medv` median value of owner-occupied homes in \$1000s.
+
+```{r results='asis'}
+data(Boston)
+pander::pandoc.table(head(Boston), split.tables=Inf)
+```
+
+Мы продолжаем использовать пакет `caret` ([подробнее](https://topepo.github.io/caret/feature-selection-overview.html))
+
+```{r, warning=FALSE, message=FALSE}
+library(caret)
+```
+
+### Обучающая и тестовая выборки
+
+Отделим 20\% от датасета. Как обычно, эта часть не будет использоваться для обучения модели, но на ней мы будем проверять (тестировать), насколько  хороша наша модель. 
+
+```{r message = F, warning=FALSE}
+set.seed(54321) 
+Boston.test.ind = createDataPartition(Boston$medv, p = 0.2, list = F)
+Boston.test = Boston[Boston.test.ind,]
+Boston.train = Boston[-Boston.test.ind,]
+
+```
+
+## Отбор признаков (Feature Selection)
+
+* Зачем нужно выбирать, какие переменные включить в модель? Почему бы не использовать все?
+
+Некоторые алгоритмы машинного обучения уже построены так, что отбирают только часть признаков. Например, деревья решений
+
+```{r}
+library(partykit)
+modelTree <- ctree(medv~., data = Boston.train)
+plot(modelTree, digits = 2, type ="simple")
+```
+
+* Какие переменные не используются в модели?
+* Какую долю от общего числа переменных составляют переменные, включенные в итоговую модель?
+
+Другие алгоритмы строят модель по всем доступным переменным. Например:
+
+```{r}
+lm.fit<-lm(medv~., data = Boston.train)
+summary(lm.fit)
+```
+
+* К какому типу вы отнесете логистическую регрессию?
+
+### Методы отбора признаков
+
+В целом методы отбора признаков можно разделить на три группы
+
+* добавление / удаление признаков и выбор модели с лучшей оценкой качества (т.е. построение нескольких моделей и сравнение их между собой)
+
+    + Recursive Feature Elimination
+    + Genetic Algorithms
+    + Simulated Annealing
+    
+* оценивание важности каждой из переменных по-отдельности (например, влияния ее на предсказываемую переменную), вне рамок модели
+
+* встроенные методы -- алгоритм устроен таким образом, что отбирает часть переменных (деревья, регрессия с регуляризацией)
+
+
+Оценим **значимость** признаков согласно модели (например, для линейной регрессии по всем переменным)
+
+```{r}
+model <- train(medv~., data=Boston.train, method="lm")
+importance <- varImp(model, scale=FALSE)
+print(importance)
+plot(importance)
+summary(model)
+```
+
+Для разных моделей значимость признаков оценивается по-разному. Для линейной регрессии значимость признака -- это модуль значения t-критерия. Подробнее для других моделей можно посмотреть в справке функции `varImp()` (пакет caret)
+
+* Какая переменная наиболее значима?
+
+### Recursive Feature Elimination (RFE)
+
+Алгоритм RFE работает следующим образом:
+
+1. Построение модели по всем переменным (признакам)
+2. Вычисление оценки качества модели
+3. Упорядочение переменных согласно их значимости для модели (поочередно выкидываем одну переменную и смотрим, в каком случае предсказание лучше)
+4. Удаление наименее значимой переменной
+5. Построение модели по новому (сокращенному) набору переменных. Повторение шагов 2-4
+6. Выбор лучшей модели (и лучшего набора признаков соответственно)
+
+![](https://cdn-images-1.medium.com/max/1600/1*qXqx7_hDtsO9ez7_nxSXOw.png)
+
+Как обычно, чтобы избежать влияния конкретного разбиение на тестовую-обучающую, используем кросс-валидацию.
+
+Зададим параметры кросс-валидации
+```{r}
+control <- rfeControl(functions=lmFuncs, method="cv", number=10)
+```
+
+Запустим алгоритм RFE
+```{r message = F, warning=FALSE}
+set.seed(10)
+results <- rfe(x = dplyr::select(Boston.train, -medv),
+               y= Boston.train$medv, 
+               sizes=c(1:13), 
+               rfeControl=control)
+```
+
+Результат:
+```{r}
+results
+```
+
+Сравнение моделей:
+```{r}
+plot(results, type=c("g", "o"))
+```
+
+Итоговые предикторы:
+```{r}
+predictors(results)
+```
+
+Итоговая модель:
+```{r}
+summary(results$fit)
+```
+
+Ошибка
+```{r}
+lmSelected.test.RSS <- sum((predict(results$fit, Boston.test)-Boston.test$medv)^2)
+lmSelected.test.RSS
+```
+
+Исходная ошибка
+```{r}
+lm.test.RSS <- sum((predict(lm.fit, Boston.test)-Boston.test$medv)^2)
+lm.test.RSS
+```
+
+Посмотрим на модели
+```{r}
+summary(lm.fit)
+summary(results$fit)
+```
+
+Т.е. лучшей по ошибкам была признана модель со всеми переменными
+
+Сравним с деревом:
+```{r message=F, warning=F}
+tree.test.RSS <- sum((predict(modelTree, Boston.test)-Boston.test$medv)^2)
+```
+
+По ошибкам мы получили:
+
+|Метод      |RSS (test set)          |
+|-----------|------------------------|
+|LM         |`r lm.test.RSS`         |
+|LM with FS |`r lmSelected.test.RSS` |
+|Tree       |`r tree.test.RSS`       |
+
+* Какую модель выбрать?
+
+**Ваша очередь**
+1. Решите задачу предсказания диабета
+
+```{r}
+library(mlbench)
+data(PimaIndiansDiabetes2)
+library(dplyr)
+Diabetes = na.omit(PimaIndiansDiabetes2)
+```
+
+Какие факторы вы бы выбрали? Почему? Попробуйте разные сочетания предикторов. Какие транформации можно использовать?
+
+```{r}
+set.seed(100)
+test.ind = createDataPartition(Diabetes$diabetes, p = 0.2, list = FALSE)
+Diabetes.test = Diabetes[test.ind,]
+Diabetes.main = Diabetes[-test.ind,]
+
+logMod = train(diabetes~glucose, data = Diabetes.main, method = "glm", family = binomial)
+
+logPred = predict(logMod, Diabetes.test, type = "prob")
+```
+
+Как оценить качество модели?
+
+2. Посмотрите, как подход RFE работает с классификацией. Решите задачу предсказания диабета с учетом RFE. 
+
+Попробуйте логистическую регрессию (rfeControl = rfeControl(functions=caretFuncs)). Какие переменные останутся в этом случае?
+
+Общая схема
+```{r message = F, warning=FALSE, eval = F}
+set.seed(10)
+results <- rfe(x = dplyr::select(<train data>, -diabetes),
+               y= <train data>$diabetes,
+               method = "glm",
+               family = binomial(link = "logit"),
+               sizes = c(2, 4, 7), # пример рассматриваемых подвыборок
+               rfeControl = rfeControl(functions=caretFuncs,method = "cv", number = 3))
+results
+```
+
+* Как сравнить модели?
+
+### Еще один пример
+
+Посмотрим на продажу (`Sales`) детских кресел
+
+```{r message = F, warning=FALSE}
+library(ISLR)
+data(Carseats)
+```
+
+
+```{r message = F, warning=FALSE, results='asis'}
+pander::pandoc.table(head(Carseats), split.tables=Inf)
+```
+
+Разбиение
+```{r}
+set.seed(10)
+ind = createDataPartition(Carseats$Sales, p = 0.2, list = F)
+trainCar = Carseats[-ind,]
+testCar = Carseats[ind,]
+```
+
+
+Построим исходную модель
+```{r}
+lmCar = lm(Sales~., data = trainCar)
+summary(lmCar)
+```
+
+Запустим алгоритм RFE (для примера - без кросс-валидации. По умолчанию используется bootstrap)
+```{r eval=F}
+set.seed(10)
+results <- rfe(x = dplyr::select(trainCar, -Sales),
+               y= trainCar$Sales,
+               sizes = c(1:10),
+               rfeControl = rfeControl(functions=lmFuncs))
+```
+
+Для того, чтобы функция `rfe()` работала, не выдавая ошибки "undefined column selected", нужно преобразовать факторы в числа.
+
+Для `Urban` и `US` (yes-no questions):
+```{r}
+Carseats$Urban <- as.numeric(Carseats$Urban) - 1
+Carseats$US <- as.numeric(Carseats$US) - 1
+```
+
+Для `ShelveLoc` (фактор с тремя вариантами):
+
+1 способ (не всегда подходящий)
+```{r}
+#Carseats$ShelveLocNew <- as.numeric(Carseats$ShelveLoc)
+```
+
+2 способ (dummy variables)
+```{r}
+temp <- model.matrix(~ ShelveLoc - 1, data=Carseats)
+head(temp)
+```
+
+Т.к. третий фактор можно однозначно определить по значениям первых двух, то убираем один столбец из temp
+```{r}
+Carseats <- dplyr::select(Carseats, -ShelveLoc)
+Carseats <- cbind(Carseats, temp[,-1])
+```
+
+Т.к. мы делали преобразования, не забываем разбить на тестовую и обучающую заново
+
+```{r}
+trainCarNew = Carseats[-ind,]
+testCarNew = Carseats[ind,]
+```
+
+Запускаем RFE еще раз
+```{r message = F, warning=FALSE}
+set.seed(10)
+numVar= dim(trainCarNew)[2]-1
+results <- rfe(x = dplyr::select(trainCarNew, -Sales),
+               y= trainCarNew$Sales,
+               sizes = 1:numVar,
+               rfeControl = rfeControl(functions=lmFuncs))
+```
+
+Результаты
+```{r}
+results
+```
+
+Сравнение моделей:
+```{r}
+plot(results, type=c("g", "o"))
+```
+
+Какая переменная выкинута?
+
+```{r}
+results$optVariables
+print("========")
+names(trainCarNew)[!names(trainCarNew) %in% results$optVariables]
+```
+
+Ошибка на тестовой выборке
+```{r}
+lmCarRFE.test.RMSE <- sqrt(mean((predict(results$fit, testCarNew)-testCarNew$Sales)^2))
+lmCarRFE.test.RMSE
+lmCar.test.RMSE <- sqrt(mean((predict(lmCar, testCar)-testCar$Sales)^2))
+lmCar.test.RMSE
+```
+* Сравните с другими моделями
+
+**Ваша очередь:**
+
+Снова про классификацию: преобразуйте Sales в фактор
+```{r}
+Carseats$High = ifelse(Carseats$Sales>8, "yes", "no")
+Carseats$High = factor(Carseats$High)
+Carseats = dplyr::select(Carseats, -Sales)
+```
+
+Какие переменные останутся в этом случае?
+
+Общая схема
+```{r message = F, warning=FALSE, eval = F}
+set.seed(10)
+results <- rfe(x = dplyr::select(<train data>, -High),
+               y= <train data>$High,
+               method = "glm",
+               family = binomial(link = "logit"),
+               sizes = c(2, 4, 7), # пример рассматриваемых подвыборок
+               rfeControl = rfeControl(functions=caretFuncs,method = "cv", number = 2))
+results
+
+```
+
+

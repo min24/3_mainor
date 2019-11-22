@@ -1,0 +1,102 @@
+
+#1
+```{r}
+students = read.csv("https://stepik.org/media/attachments/lesson/198564/students6.csv")
+
+library(caret)
+set.seed(2874)
+ind = createDataPartition(students$sex, p = 0.75, list = F)
+stud.train = students[ind,]
+stud.test = students[-ind,]
+```
+
+```{r}
+a = stud.train %>% filter(sex=="F")
+mean(a$absences)
+```
+#2
+```{r}
+log.model = glm(sex~age + G1 + G2 + G3, data = stud.train, family = binomial(link = 'logit'))
+
+pred = predict(log.model, stud.test)
+
+library(pROC)
+ROCfull = roc(response = stud.test$sex, predictor = pred)
+pROC::auc(ROCfull)
+```
+
+#3
+```{r}
+students = students %>% mutate(Drunk = ifelse(Dalc < 4 & Walc < 5, FALSE,TRUE)) %>% dplyr::select(-Dalc, -Walc)
+
+set.seed(1928)
+ind = createDataPartition(students$Drunk, p = 0.2, list = F)
+stud.train = students[-ind,]
+stud.test = students[ind,]
+```
+
+```{r}
+a1 = nrow(stud.train %>% filter(Drunk==TRUE))
+a0 = nrow(stud.train %>% filter(Drunk==FALSE))
+a1/a0
+```
+
+#4
+
+```{r}
+stud.train$Drunk = as.factor(stud.train$Drunk)
+
+
+ctrl<-trainControl(method="none")
+ctrl$sampling = "down"
+
+
+set.seed(1928)
+tree_model_down <- caret::train(Drunk~., method = 'ctree', data = stud.train, trControl=ctrl)
+
+pred = predict(tree_model_down, stud.test)
+```
+```{r}
+confusionMatrix(pred, as.factor(stud.test$Drunk))$overall["Accuracy"]
+```
+
+
+#5
+
+```{r}
+library(cluster.datasets)
+data(all.us.city.crime.1970)
+city = all.us.city.crime.1970
+rownames(city) = city$city
+```
+
+```{r}
+city = city %>% dplyr::select(- city)
+```
+
+
+```{r}
+
+scaledcity <- scale(city[,1:8])
+
+set.seed(1010)
+km.out=kmeans(scaledcity,5,nstart=15)
+
+km.out$cluster
+km.out$size
+table(km.out$cluster)
+
+```
+
+#6
+
+```{r}
+hc.single=hclust(dist(scaledcity), method="single")
+
+hclusters = cutree(hc.single, h = 2.5)
+
+hclusters["Boston"]
+```
+
+
+
