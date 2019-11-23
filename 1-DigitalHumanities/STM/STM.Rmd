@@ -1,0 +1,575 @@
+---
+title: Text mining. STM
+output: html_document
+editor_options: 
+  chunk_output_type: chunk
+---
+```{r}
+library(tidytext)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(stringr)
+```
+
+На этой неделе продолжаем работать с обработкой текста.
+
+Напоминание: много полезного и интересного можно найти в книге про tidytext <https://www.tidytextmining.com/> 
+
+Для начала потратим немного времени на повторение.
+
+Сегодня мы будем работать с песенками. В полном датасете lyrics хранятся песни по 12 жанрам, однако мы в целях экономии времени будем анализировать пока только два -- Country и Hip-Hop, оставив по 5000 рандомных песен в каждом жанре
+```{r}
+lyrics = read_csv("~/shared/minor3_2019/1-DigitalHumanities/STM/lyrics_part.csv")
+```
+
+Сколько всего тут уникальных исполнителей?
+
+
+Посмотрите на рапределение песен по годам. Песен какого года больше всего? А меньше всего?
+Ничего подозрительного нет?
+```{r}
+# тут ваш код
+length(unique(lyrics$artist))
+length(unique(lyrics$song))
+lyrics = lyrics %>% filter(year > 1900)
+hist(lyrics$year)
+```
+
+
+Приведем слова к  нижнему регистру и удалим лишнее
+```{r}
+# нижний регистр
+lyrics$lyrics = tolower(lyrics$lyrics)
+
+# в некоторых песнях обозначены начала куплетов, вступления и хора. удалим это из текстов 
+lyrics$lyrics = str_replace_all(lyrics$lyrics, "verse 1", "")
+lyrics$lyrics = str_replace_all(lyrics$lyrics, "verse 2", "")
+lyrics$lyrics = str_replace_all(lyrics$lyrics, "\\[intro\\]", "")
+lyrics$lyrics = str_replace_all(lyrics$lyrics, "\\[talking\\]", "")
+lyrics$lyrics = str_replace_all(lyrics$lyrics, "\\[chorus\\]", "")
+lyrics$lyrics = str_replace_all(lyrics$lyrics, "\\(chorus\\)", "")
+lyrics$lyrics = str_replace_all(lyrics$lyrics, "\\(horns\\)", "")
+
+# и наконец избавимся от пропущенных зачений (тоже сами)
+lyrics = na.omit(lyrics)
+# пропущенных у нас нет, но проверять надо
+```
+
+
+
+Теперь можно разбить слова на токены, лемматизирировать их и удалить стоп слова.
+```{r}
+# делим на слова и лемматизируем
+lyrics_words = lyrics %>%
+  unnest_tokens(word, lyrics) %>%
+  mutate(word_lemma = textstem::lemmatize_words(word))
+  
+
+# удаляем стоп-слова
+data("stop_words")
+names(stop_words)[1] = "word_lemma"
+# ваш код
+lyrics_words = lyrics_words %>% filter(!word_lemma %in% stop_words$word_lemma)
+```
+
+Так как в этом списке стоп-слова содержат также формы с апострофами, мы пока не удаляли ни их, ни пуктуацию. Теперь настало время это сделать
+```{r}
+# удалим все, что осталось от пунктуации, кавычек и апострофов
+lyrics_words$word_lemma = str_replace_all(lyrics_words$word_lemma, "\\&quot\\;", " ")
+lyrics_words$word_lemma = str_replace_all(lyrics_words$word_lemma, "\\&apos\\;", " ")
+
+# и уберем всю пунктуацию
+lyrics_words$word_lemma = str_replace_all(lyrics_words$word_lemma, "[[:punct:]]", "")
+
+# после удаления пунктуации у нас остались пустые ячейки, которые тоже надо убрать
+lyrics_words[lyrics_words==""] <- NA
+lyrics_words = na.omit(lyrics_words)
+
+head(lyrics_words)
+```
+
+Посмотрим на самые часто встречающиеся слова в датасете
+```{r}
+# считаем частоты 
+lyrics_words_count = lyrics_words %>%
+  dplyr::count(word_lemma, sort = TRUE) %>%
+  ungroup()
+  
+lyrics_words_count %>% 
+  dplyr::top_n(15) %>%
+  dplyr::mutate(word_lemma = reorder(word, n)) %>% # чтобы упорядочить по частоте
+  ggplot(aes(word_lemma, n)) +
+  geom_bar(stat = "identity") +
+  xlab(NULL) +
+  coord_flip() # чтобы читать слова было удобнее
+```
+
+Как вы думаете, слова из какого жанра тут превалируют? Почему так вышло? 
+Поробуйте посчитать частые слова для каждого жанра отдельно и построить графики.
+
+Хип-хоп
+```{r}
+par(mfrow = c(1,2))
+# отфильтруйте и посчитайте слова
+hiphop_counts = lyrics_words %>% filter(genre == "Hip-hop") %>% 
+  count(word_lemma, sort = TRUE) %>% 
+  ungroup()
+
+# постройте график
+hiphop_counts %>% 
+  top_n(20) %>% 
+  mutate(word_lemma = reorder(word_lemma, n)) %>% 
+  ggplot(aes(word_lemma, n))+
+  geom_bar(stat  = "identity")+
+  xlab(NULL)+
+  coord_flip()
+```
+Можно выделить какие-то темы?
+
+
+Кантри
+```{r}
+# отфильтруйте и посчитайте слова
+country_counts = lyrics_words %>% filter(genre == "Coutry") %>% 
+  count(word_lemma, sort = TRUE) %>% 
+
+# постройте график
+country_counts %>% 
+  top_n(20) %>% 
+  mutate(word_lemma = reorder(word_lemma, n)) %>% 
+  ggplot(aes(word_lemma, n))+
+  geom_bar(stat  = "identity")+
+  xlab(NULL)+
+  coord_flip()
+```
+А тут?
+
+Есть ли пересечения? Как вы думаете, пересекающиеся слова используются в одинаковом смысле?
+Как можно проверить это?
+
+
+
+# Посмотрим на биграммы
+
+Для начала вспомним, как разделять корпус на биграммы
+```{r}
+lyrics$lyrics = as.character(lyrics$lyrics)
+lyrics.bigrams = lyrics %>% 
+  unnest_tokens(bigram, lyrics, token = "ngrams", n = 2) %>% 
+  mutate(bigram_lemma = textstem::lemmatize_words(bigram))
+
+lyrics.bigrams %>% 
+  dplyr::count(bigram, sort = TRUE)
+
+# удалим стопслова
+lyrics.bifiltered = lyrics.bigrams %>% 
+  separate(bigram_lemma, c("word1", "word2"), sep = " ") %>% 
+  dplyr::filter(!word1 %in% stop_words$word_lemma) %>% 
+  dplyr::filter(!word2 %in% stop_words$word_lemma) 
+
+lyrics.bifiltered %>% 
+  dplyr::select(word1, word2) %>% 
+  dplyr::count(word1, word2, sort = TRUE)
+```
+
+Какие слова пересекались к текстах хипхопа и кантри? Отфильтруйте эти слова в текстах раздельно и посмотрите, как они используются  (посмотрите и на использование в первом слове, и во втором)
+
+```{r}
+# хип-хоп
+lyrics.bifiltered %>% 
+  filter(genre == "Hip-hop") %>% 
+  filter(word1 == "love")
+dplyr::count(word1, word2, sort=TRUE) %>% head(15)
+
+lyrics.bifiltered %>% 
+  filter(genre == "Hip-hop") %>%
+    filter(word1 == "love")
+dplyr::count(word1, word2, sort=TRUE) %>% head(15)
+
+# кантри
+lyrics.bifiltered %>% 
+  filter(genre == "Country") %>% 
+  filter(word1 == "love")
+dplyr::count(word1, word2, sort=TRUE) %>% head(15)
+
+
+lyrics.bifiltered %>% 
+  filter(genre == "Country") %>%
+    filter(word1 == "love")
+dplyr::count(word1, word2, sort=TRUE) %>% head(15)
+
+```
+
+
+
+# Кластеризация по биграммам
+В прошлый раз мы говорили, что кластеризацию можно делать не только по частотам и tfidf, но и по биграммам. Попробуем теперь повторить на деле.
+Сначала соединим биграммы назад в единую сущность
+```{r}
+lyrics.bigrams = lyrics.bifiltered %>% 
+  unite(bigram_lemma, word1, word2, sep = " ")
+```
+
+Отберем рандомно по 50 исполнителей из каждого жанра для ускорения подсчетов
+```{r}
+set.seed(123)
+
+hp = lyrics.bigrams %>%
+filter(genre == "Hip-Hop") %>%
+sample_n(50)
+
+cntr = lyrics.bigrams %>%
+filter(genre == "Country") %>%
+sample_n(50) %>%
+rbind(hp)
+```
+
+## Задание
+1. Отфильтруйте lyrics.bigrams так, чтобы в нем остались только отобранные рандомно 100 исполнителей (может остаться и меньше).
+2. Посчитайте tfidf для биграмм по исполнителям и сделайте матрицу терм-документ.
+3. Сделайте иерархическую кластеризацию с 4 кластерами по отобранным исполнителям и проинтерпретируйте их по частым словам. 
+*3.2. Сделайте kmeans и сравните
+
+```{r}
+lb = lyrics.bigrams %>% 
+  filter(artist %in% cntr$artist) %>% 
+  group_by(artist, bigram_lemma) %>% 
+  summarise(count = n())
+
+# tf-idf
+
+lb_tfidf = lb %>% bind_tf_idf(bigram_lemma, artist, count)
+lb.tdm = lb_tfidf %>% 
+  select(artist, bigram_lemma, tf_idf) %>% 
+  spread(bigram_lemma, tf_idf, fill=0)
+
+lb.tdm_m = lb.tdm[-(1)]Mas.matrix()
+rownames(lb.tdm_m) = lb.tdm$artist
+
+library(factoextra)
+res_complete = hcut(dist(lb.tdm_m, method = "euclidean"), hc_method = "complete", k=4, stand = TRUE)
+
+clusters = cbind(lb.tdm[1], cluster = res_complete$cluster)
+
+clusters = inner_join(clusters, lyrics.bigrams)
+clusters_top = clusters %>% group_by(cluster, bigram_lemma) %>% 
+  summarise(total=n()) %>% 
+  arrange(cluster, -total)
+
+
+library(worldcloud2)
+cl1 = clusters_top %>% 
+  filter(cluster==1) %>% 
+  ungroup() %>% 
+  select(-cluster) %>% 
+  top_n(50)
+worldcloud2(cl1, size=0.3)
+```
+
+
+### Стуктурные тематические модели
+
+Что такое тематическое моделирование? 
+Для каких задач его можно использовать?
+
+Прочитать про тематическое моделирование подробнее можно в книге tidetextmining (http://tidytextmining.com/topicmodeling.html)
+
+*Тематическая модель*:
+  - каждый текст в корпусе представляет собой смесь из определённого количества тем 
+  - «тема» — набор слов, которые могут с разными вероятностями употребляться при обсуждении данной темы
+  - топики распределены в каждом документе по-разному, и выраженность темы в тексте определяется тем, насколько чаще слова из этой темы встречаются чаще остальных 
+  
+*Структурная тематическая модель*: характеристики тематической модели +
+  - выяснить, как пропорция слов каждого топика в документе меняется в зависимости от ковариатов – категорий, присвоенных каждому тексту исследователем (*prevalence covariates*)
+  - возможность выяснить, как категория текста влияет на распределение слов **внутри темы** (например, как разные политические партии говорят о демократии)
+  - позволяет посмотреть на корреляцию тем (насколько они обсуждаются в одном документе
+
+Матриалы по структрному тематическому моделированию можно почитать на сайте (https://www.structuraltopicmodel.com). 
+
+## Препроцессинг
+Делаем матрицу терм-документ
+
+Посмотрим, сколько всего уникальных песен у нас есть
+```{r}
+songs = lyrics %>% 
+  group_by(song) %>% 
+  summarise(count = n()) %>% 
+  arrange(-count)
+
+nrow(songs)
+head(songs, 10)
+# ага, 9360 песен, при этом некоторые песни повторяются по многу раз
+
+# посмотрим теперь, сколько всего уникальных пар песня-исполнитель
+songs = lyrics %>% 
+  group_by(song, artist) %>% 
+  summarise(count = n()) %>% 
+  arrange(-count)
+
+nrow(songs)
+head(songs, 10)
+# 9989, что тоже не равно количеству строк в изначальном датасете
+
+# наверное, некоторые песни перезаписывали в разные года. Проверим это
+songs = lyrics %>% 
+  group_by(song, artist, year) %>% 
+  summarise(count = n()) %>% 
+  arrange(-count)
+
+nrow(songs)
+# да, теперь все сходится по количеству
+```
+
+Так как названия некоторых песен повторяюятся у разных исполнителей, создадим ещё одну колонку, в которой будет и название песни, и исполнителя, и дата
+```{r}
+# lyr = lyrics_words
+lyrics$name <- paste(lyrics$song, "_", lyrics$artist, "_", lyrics$year)
+lyrics_words$name <- paste(lyrics_words$song, "_", lyrics_words$artist, "_", lyrics_words$year)
+
+# сделаем табличку с данными по каждой песне
+songs_meta = lyrics %>% 
+  select(name, genre, year, artist, song, lyrics) %>% 
+  distinct()
+
+```
+
+Теперь можно посчитать слова для каждой песни и сделать матрицу с частотами
+```{r}
+words_count = lyrics_words %>% 
+  group_by(name, word_lemma) %>% 
+  summarise(count = n())
+
+# функция cast_dfm делает document-feature matrix (то же самое, что и матрица терм-документ) из таблицы
+words_dfm <- words_count %>%
+  tidytext::cast_dfm(name, word_lemma, count)
+dim(words_dfm)
+# сколько в матрице документов, а сколько слов?
+
+# немного уменьшим матрицу, убрав оттуда очень редкие и очень частые слова
+words_dfm <- words_dfm %>% 
+  quanteda::dfm_trim(min_docfreq = 0.001, max_docfreq = 0.95, #3% min, 95% max
+  docfreq_type = 'prop') # пропорция слова в доке
+dim(words_dfm)
+# 9998 документов и 8028 слов - уже лучше
+```
+
+Теперь добавим к матрице с песняи и словами метаданные по песням, которые будем использовать как ковариаты в STM.
+Это легко сделать с помощью пакета quanteda (??corpus или можно посмотреть тут https://mran.microsoft.com/snapshot/2016-10-12/web/packages/quanteda/vignettes/quickstart.html), но можно и добавить данные к уже готовомй матрице. Для этого для начала надо сделать её датафреймом, чтобы сохранить порядок рядов, после чего присоединить к ним метаданные.
+```{r}
+# делаем матрицу датафреймом
+w_dfm_df = quanteda::convert(words_dfm, to = "data.frame")
+dfm_docs = select(w_dfm_df, document)
+names(dfm_docs) = "name"
+
+# присоединяем к нему метаданные
+dfm_docs = left_join(dfm_docs, songs_meta, by = "name")
+
+# и присоединяем этот датафрейм к матрице в качестве метаданных
+words_dfm@docvars <- dfm_docs
+```
+
+Подготовим данные к STM
+```{r}
+out <- quanteda::convert(words_dfm, to = 'stm')
+names(out)
+# load("~/shared/minor3_2019/1-DigitalHumanities/STM/out.RData")
+
+```
+
+Построим модель с 20 темами (НО не построим, загружаем результат)
+```{r}
+library(stm)
+
+load("~/shared/minor3_2019/1-DigitalHumanities/STM/stm_20_2.RData")
+
+# stm_20 <- stm(documents = out$documents,
+#       vocab = out$vocab,
+#       data = out$meta,
+#       prevalence =~ genre+ s(year),
+#       K = 20,
+#       verbose = TRUE) # show progress
+```
+
+# Интерпретация тем
+
+Можно интерпретировать темы несколькими способами: 
+  - смотреть на характерные темам слова
+  - смотреть на характерные темам документы
+
+А лучше всего использовать оба метода.
+
+Первый подход - интерпретировать исходя из словарного состава тем.
+Например, просто посмотреть на характерные слова и на слова, которые одновременно часто встречаются в теме и уникальны для нее (frex terms).
+```{r}
+labelTopics(stm_20, c(1:20), n = 15)
+```
+
+*summary* plot позволяет посмотреть на пропорцию тем во всех документах вместе с самыми частыми для темы словами.
+```{r}
+plot.STM(stm_20, type = 'summary', text.cex = 0.8)
+```
+Какие выводы мы можем сделать?
+
+*label* plot позволяет посмотреть на характерные слова для каждой темы
+```{r}
+plot.STM(stm_20, type = 'labels', n = 10, 
+         text.cex = 0.8, width = 100, topics = 1:10)
+
+# с frex 
+plot.STM(stm_20, type = 'labels', n = 10, text.cex = 0.8, 
+         width = 100, topics = 1:10, labeltype = 'frex')
+```
+
+Можно посмотреть на характерные документы
+```{r}
+thoughts <- findThoughts(stm_20, 
+     texts = out$meta$lyrics, # необработанный документ
+     topics = 1:3,  n = 2) # темы и количество текстов
+
+plotQuote(thoughts$docs[[3]][1], # тема 3
+          width = 80, text.cex = 0.75) 
+```
+
+Можно посмотреть на разницу в словах между темами
+```{r}
+plot.STM(stm_20, type = 'perspective', topics = c(3,4))
+```
+
+Попробуйте проинтерпретировать все темы. О чем поют хипхоперы? А о чем кантри-исполнители?
+
+
+# Эффекты ковариатов
+
+Посчитаем эффекты ковариатов на пропорции тем в документах
+```{r}
+out$meta$genre = as.factor(out$meta$genre)
+out$meta$year = as.numeric(out$meta$year)
+# prep <- estimateEffect(1:20 ~ genre + s(year), stm_20, meta = out$meta, uncertainty = "Global")
+load("~/shared/minor3_2019/1-DigitalHumanities/STM/prep.RData")
+summary(prep)
+```
+Для каких тем эффект жанра значим? А для каких значим год?
+О чем тема, для которой значим год?
+
+# Визуализация эффектов
+
+Мы можем визуально посмотреть, как ковариаты влияют на пропорцию в тем в документах разных категорий. С помощью пакета stm это можно сделать тремя разными вариантами:
+  - `pointestimate`: для категориальных переменных
+  - `difference`: для отображения разницы между двумя категориальными переменными
+  - `continuous`: для числовых переменных 
+
+Начнем с жанра
+```{r}
+# одна тема
+plot.estimateEffect(prep, topic = 8, 
+            covariate = 'genre', method = 'pointestimate')
+
+# сравнение всех тем
+plot.estimateEffect(prep, covariate = "genre", 
+                    topics = c(1:20), method = "difference",
+                    model = stm_20, # to show labels alongside
+                    cov.value1 = "Country", cov.value2 = "Hip-Hop",
+                    xlab = "Hip-Hop <---> Country", xlim = c(-0.5, 0.5),
+                    labeltype = "frex", n = 3, 
+                    width = 100,  verbose.labels = FALSE)
+# Какие выводы можно сделать?
+
+
+# Можно сохранить эффекты в датафрейм
+library(stminsights)
+library(magrittr)
+
+genre_effects <- get_effects(estimates = prep,
+                      variable = 'genre',
+                      type = 'pointestimate')
+
+# и отрисовать через ggplot интересующие нас темы
+genre_effects %>% filter(topic == 1) %>%
+ggplot(aes(x = value, y = proportion)) + geom_point() +
+ geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.1) +
+ coord_flip() + labs(x = 'Genre', y = 'Topic Proportion')
+```
+
+Теперь посмотрим на год записи песни. Он оказался значим только для 7 темы, на нее и посмотрим.
+```{r}
+plot.estimateEffect(prep, covariate = "year", 
+                    topics = 7, method = "continuous")
+# какие выводы можно сделать?
+
+date_effects <- get_effects(estimates = prep,
+                      variable = 'year',
+                      type = 'continuous')
+
+# сравним тему 7 с значимым эффектом года и тему 9 с незначимым
+date_effects %>% filter(topic %in% c(7,9)) %>% 
+  ggplot(aes(x = value, y = proportion, 
+  group = topic, color = topic, fill = topic)) +
+  geom_line() + 
+  geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
+  labs(x = "Year", y = "Expected Topic Proportion")+
+  theme_bw()
+```
+
+
+## Эффекты контентных переменных
+
+Помимо оценки эффектов метаданных на пророрцию тем в документах разных категорий, STM позволяет также посмотреть, как меняется словарный состав темы в зависимости от категории документа (**НО только для дискретных переменных**)
+
+```{r, eval = FALSE}
+load("~/shared/minor3_2019/1-DigitalHumanities/STM/stm_20_content.RData")
+# stm_20_content <- stm(documents = out$documents, 
+#       vocab = out$vocab,
+#       data = out$meta,
+#       K = 20, 
+#       prevalence = ~ genre,
+#       content = ~ genre,
+#       verbose = FALSE) # show progress
+# stm_effects20 <- estimateEffect(1:20 ~ genre,
+#       stmobj = stm_20_content, metadata = out$meta)
+
+# смотрим на темы 
+labelTopics(stm_20_content, c(1:10), n = 15)
+# как изменился аутпут модели?
+
+# визуализируем
+plot.STM(stm_20_content, topics = c(3), type = 'perspectives', 
+         covarlevels = c('Hip-Hop', 'Country'))
+```
+
+
+## Сколько тем выбрать?
+
+Можно сравнить метрики оценки качества нескольких моделей и выбрать лучшую.
+  - *семантическая согласованность (semantic coherence)* - как часто слова, принадлежащие к одной теме, встречаются вместе в каждом документе корпуса
+  - *исключительность (exclusivity)* сравнивает вероятность принадлежности слова к конкретной теме с вероятностью принадлежности к другим топикам
+  - *held-out likelyhood*
+  - *residuals*
+  
+```{r}
+# sk<-searchK(out$documents,out$vocab,K=c(7, 10, 15, 20), prevalence =~ genre + s(year), data = out$meta)
+load("~/shared/minor3_2019/1-DigitalHumanities/STM/sk_20.RData")
+knitr::kable(sk$results)
+# plot(sk)
+```
+
+Однако лучшие показатели по метрикам оценки качества модели далеко не всегда означают, что модель идеальная. Лучше построить 2 (или больше) модели, сравнить результаты (темы) и выбрать ту, которая лучше всего подходит для конкретной задачи (например, в лучшей по метрикам модели темы слишком детальные, из-за чего не все могут интерпретироваться, а нам надо что-то немного более общее). 
+
+# Сравним модели с 20 и 15 темами.
+
+Загрузим модель с 15 темами
+```{r}
+load("~/shared/minor3_2019/1-DigitalHumanities/STM/stm_15.RData")
+# stm_15 <- stm(documents = out$documents,
+#       vocab = out$vocab,
+#       data = out$meta,
+#       prevalence =~ genre+ s(year),
+#       K = 15,
+#       verbose = TRUE) # show progress
+
+```
+
+## Задание
+1) Проинтерпретируйте темы в модели с 15-ю темами
+2) Сравните модели с 15 и 20 темами. В какой из них темы получились более понятные?

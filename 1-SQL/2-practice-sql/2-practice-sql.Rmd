@@ -1,0 +1,332 @@
+---
+title: "Введение в SQL"
+output: html_document
+---
+
+### Доступ к данным
+
+Сегодня мы будем работать с внешними базами. СУБД (система управления базами данных) на сегодня SQLite -- упрощенная (по сравнению со сложными многопользовательскими, допускающими одноврменную работу) система, которая позволит нам познакомиться с основными принципами и потренироваться с SQL. Но не стоит думать, что это только учебная СУБД -- она активно используется во многих приложениях, где и не нужно много пользователей, например, хранит ваши файлы skype 
+
+```{r}
+con <- DBI::dbConnect(RSQLite::SQLite(), "~/shared/minor3_2019/1-SQL/2-practice-sql/MovieExample.db")
+```
+
+Начнем с простой базы данных MovieExample.db, в которой всего одна таблица. Для работы нам понадобится пакет RSQLite
+
+```{r}
+library(RSQLite)
+```
+
+Создаем соединение
+
+```{r}
+con <- DBI::dbConnect(SQLite(), "MovieExample.db")
+```
+
+Можем посмотреть на доступные таблицы
+```{r}
+dbListTables(con)
+```
+У нас всего одна таблица, как и было обещано.
+
+Можем быстро посмотреть на структуру таблицы
+
+```{r}
+mD = tbl(con, "movieData")
+mD
+```
+
+Это уже знакомый нам датасет про фильмы с рейтингами IMDb. Попробуем вытащить из него что-то полезное с помощью запросов
+
+### SELECT
+
+Основной запрос в SQL -- SELECT, который позволяет выбрать часть данных по условию и даже немного что-то посчитать. 
+
+![](https://miro.medium.com/max/1240/1*BhUiIwuLEuHKGtQLUpLqXA.png)
+
+Выполнить запрос можно с помощью команды `dbGetQuery`
+
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData")
+```
+
+Добавим условие
+
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData WHERE rating > 8")
+```
+
+
+Результат можно сохранить в датафрейм и работать с ним, как обычно
+
+```{r}
+data = dbGetQuery(con, "SELECT * FROM movieData WHERE rating > 8")
+
+mov = dbGetQuery(con, "SELECT title, year, rating, length FROM movieData WHERE rating > 8")
+```
+
+Таким образом, мы сохранили в окружение R только необходимые нам данные (всего 350 Кб vs 6.8 Мб исходных).
+
+Можем рисовать графики
+
+```{r}
+library(ggplot2)
+ggplot(mov) + geom_point(aes(y = rating, x = length))
+```
+
+Смотрим дальше. Давайте упорядочим по длине фильма
+
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData 
+                 WHERE rating > 8 
+                 ORDER BY length")
+```
+
+Или  в обратном порядке
+
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData 
+                 WHERE rating > 8 
+                 ORDER BY length DESC")
+```
+А еще можно ограничить число выводимых записей
+
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData 
+                 WHERE rating > 8 
+                 ORDER BY length DESC
+                 LIMIT 8")
+```
+
+Опция DISTINCT позволяет выводить только уникальные значения. Например, посмотрим, какие года есть в наших данных
+
+```{r}
+dbGetQuery(con, "SELECT DISTINCT year FROM movieData 
+                 WHERE rating > 8 
+                 ORDER BY length")
+```
+Или какие там есть возрастные рейтинги
+
+```{r}
+dbGetQuery(con, "SELECT DISTINCT mpaa FROM movieData")
+```
+
+Можно строить более сложные условия
+
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData 
+                 WHERE rating > 8 AND length < 60
+                 ORDER BY length")
+```
+(Обратите внимание на разные кавычки!)
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData 
+                 WHERE mpaa IN('R', 'NC-17') AND rating > 9
+                 ORDER BY length")
+```
+
+Выбрать все названия, начинающиеся с А
+
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData 
+                 WHERE title LIKE('A%')
+                 ORDER BY length")
+
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData 
+                 WHERE title LIKE('% do')
+                 ORDER BY length")
+
+dbGetQuery(con, "SELECT title, year, rating, length FROM movieData 
+                 WHERE title LIKE('%book%') 
+                 ORDER BY length")
+# #%book%, #%book_, #%book_%
+```
+Или все фильмы, для которых указан бюджет
+
+```{r}
+dbGetQuery(con, "SELECT title, year, rating, budget FROM movieData 
+                 WHERE budget IS NOT NULL
+                 ORDER BY length")
+```
+
+Наконец, можно посчитать что-то не очень сложное. Посмотрим средний рейтинг фильмов с длиной больше 1 часа
+
+```{r}
+dbGetQuery(con, "SELECT AVG(rating) FROM movieData 
+                 WHERE length > 60")
+```
+Более красивое название 
+```{r}
+dbGetQuery(con, "SELECT AVG(rating) AS average FROM movieData 
+                 WHERE length > 60")
+```
+Считать можно и по группам
+
+```{r}
+dbGetQuery(con, "SELECT mpaa, AVG(rating) AS average FROM movieData 
+                 WHERE length > 60
+                 GROUP BY mpaa")
+```
+И накладывать условия на группы
+
+```{r}
+dbGetQuery(con, "SELECT mpaa, AVG(rating) AS average FROM movieData 
+                 WHERE length > 60
+                 GROUP BY mpaa
+                 HAVING average > 5.5")
+```
+
+Причем условия могут быть и на какие-то другие характеристики
+
+```{r}
+dbGetQuery(con, "SELECT mpaa, AVG(rating) AS average FROM movieData 
+                 WHERE length > 60
+                 GROUP BY mpaa
+                 HAVING COUNT(mpaa) > 30")
+```
+Какие функции бывают <https://www.sqlite.org/lang_aggfunc.html>
+
+**Упражнения**:
+
+1. Выберите все фильмы жанра Action. 
+```{r}
+dbGetQuery(con, "SELECT * FROM movieData 
+                 WHERE Action == 1")
+```
+
+2. Упорядочите из по убыванию рейтинга. 
+```{r}
+dbGetQuery(con, "SELECT title, rating FROM movieData 
+                 WHERE Action == 1
+           ORDER BY rating DESC")
+```
+
+3. Выведите первые 50 строк
+```{r}
+dbGetQuery(con, "SELECT title, rating FROM movieData 
+                 WHERE Action == 1
+           ORDER BY rating DESC
+           LIMIT 50")
+```
+4. Сгруппируйте по по возрастному рейтингу, посчитайте максимальный рейтинг в каждой группе
+```{r}
+dbGetQuery(con, "SELECT mpaa, MAX(rating) AS average FROM movieData 
+                 GROUP BY mpaa")
+```
+5. Оставьте только те рейтинги, где в группе больше 5 представителей
+```{r}
+dbGetQuery(con, "SELECT mpaa, MAX(rating) AS average FROM movieData 
+                 GROUP BY mpaa
+           HAVING COUNT(rating) > 5")
+```
+
+А еще разные параметры запросов иногда удобно задавать чем-то внешним, а не явным числом. Например, вы где-то посчитали средний рейтинг, а потом хотите отфильтровать только фильмы с рейтингом выше среднего
+
+```{r}
+res = dbGetQuery(con, "SELECT AVG(rating) AS average FROM movieData")
+res$average
+mpaaChoice = "R"
+
+dbGetQuery(con, "SELECT title, rating FROM movieData WHERE rating > ? AND mpaa = ?", 
+           params = c(res$average, mpaaChoice))
+
+dbGetQuery(con, "SELECT title, rating FROM movieData WHERE rating > (SELECT AVG(rating) AS average FROM movieData) AND mpaa = 'R'" )
+```
+
+
+Хорошей практикой является закрытие соединения после окончания работы с базой
+
+```{r}
+dbDisconnect(con)
+```
+
+
+### Полезные ссылки
+
+Подробнее про SQLite можно посмотреть в [тьюториале](https://www.sqlitetutorial.net/) и в [примере](https://medium.com/@olamiotan_/working-with-sqlite-sample-chinook-data-8c923cefbc16) 
+
+Больше про базы данных в R <https://db.rstudio.com/>
+
+## Более сложная база
+
+Для более интересных примеров рассмотрим базу chinook про магазин, в котором можно покупать треки. 
+
+![](https://www.sqlitetutorial.net/wp-content/uploads/2015/11/sqlite-sample-database-color.jpg)
+Создайте соединение для этой базы. Сколько в ней таблиц?
+
+```{r}
+con2 <- DBI::dbConnect(SQLite(), "chinook.db")
+dbListTables(con2)
+```
+
+Соединить таблицы можно с помощью join
+
+```{r}
+dbGetQuery(con2, "SELECT * FROM (tracks INNER JOIN genres ON tracks.GenreId = genres.GenreId)")
+```
+
+Обратите внимание -- у нас две колонки с одинаковыми названиями. Если написать просто Name, то будет ошибка
+
+SELECT Name FROM tracks INNER JOIN genres ON tracks.GenreId = genres.GenreId
+
+Поэтому нужно указывать дополнительно название таблицы. И можно переименовывать для удобства
+
+```{r}
+res = dbGetQuery(con2, "SELECT tracks.Name AS Name, genres.Name AS Genre 
+                 FROM tracks 
+                 INNER JOIN genres ON tracks.GenreId = genres.GenreId")
+res
+```
+
+```{r}
+ggplot(res) + geom_bar(aes(x = Genre)) + coord_flip()
+```
+
+**Упражнение**
+
+1. Придумайте свои условия для запросов.
+```{r}
+dbListTables(con2)
+```
+
+```{r}
+albums = dbGetQuery(con2, "SELECT * FROM albums")
+artists = dbGetQuery(con2, "SELECT * FROM artists")
+customers = dbGetQuery(con2, "SELECT * FROM customers")
+employees = dbGetQuery(con2, "SELECT * FROM employees")
+genres = dbGetQuery(con2, "SELECT * FROM genres")
+invoice_items = dbGetQuery(con2, "SELECT * FROM invoice_items")
+invoices = dbGetQuery(con2, "SELECT * FROM invoices")
+media_types = dbGetQuery(con2, "SELECT * FROM media_types")
+playlist_track = dbGetQuery(con2, "SELECT * FROM playlist_track")
+playlists = dbGetQuery(con2, "SELECT * FROM playlists")
+sqlite_sequence = dbGetQuery(con2, "SELECT * FROM sqlite_sequence")
+sqlite_stat1 = dbGetQuery(con2, "SELECT * FROM sqlite_stat1")
+tracks = dbGetQuery(con2, "SELECT * FROM tracks")
+```
+
+```{r}
+dbGetQuery(con2, "SELECT tracks.Name as track, genres.Name as genre, albums.Title as album, artists.Name as artist
+           FROM (((tracks
+           INNER JOIN genres ON tracks.GenreId = genres.GenreId) 
+           INNER JOIN albums ON tracks.AlbumId = albums.AlbumId)
+           INNER JOIN artists ON albums.ArtistId = artists.ArtistId)")
+```
+
+2. Выведите клиентов, которые покупали треки жанра Pop
+```{r}
+dbGetQuery(con2, "SELECT FirstName, LastName, SUM(Quantity) as count
+                         FROM (SELECT customers.FirstName as FirstName,
+                         customers.LastName as LastName, tracks.Name as track,
+                         Quantity, genres.Name as genre
+           FROM ((((invoice_items
+           INNER JOIN invoices ON invoice_items.InvoiceId = invoices.InvoiceId)
+           INNER JOIN customers ON invoices.CustomerId = customers.CustomerId)
+           INNER JOIN tracks ON invoice_items.TrackId = tracks.TrackId)
+           INNER JOIN genres ON tracks.GenreId = genres.GenreId))
+           WHERE genre = 'Pop'
+           GROUP BY FirstName, LastName")
+
+
+```
+

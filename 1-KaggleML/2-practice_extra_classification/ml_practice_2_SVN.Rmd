@@ -1,0 +1,283 @@
+---
+title: "Об алгоритмах подробнее"
+output: html_document
+---
+## Метод опорных векторов (Support Vector Machine)
+
+Рассмотрим очень маленький пример: предсказание пола человека по его весу и росту (частично по [этим](http://www.svm-tutorial.com/2014/11/svm-understanding-math-part-1/) и [этим](http://www.algorithmist.ru/2011/07/support-vector-machines-with-examples.html) материалам)
+
+Предлагаю собрать свой такой же датасет https://goo.gl/forms/S1jWAaOdQmANklfi2
+
+![](http://i2.wp.com/www.svm-tutorial.com/wp-content/uploads/2014/11/01_svm-dataset1.png
+)
+
+Можем разделить данные линией -- все случаи, оказавшиеся ниже линии, будем относить к женщинам, выше -- к мужчинам.
+
+![](http://i2.wp.com/www.svm-tutorial.com/wp-content/uploads/2014/11/01_svm-dataset1-separated.png)
+
+Но таких линий можно провести много:
+
+![](http://i1.wp.com/www.svm-tutorial.com/wp-content/uploads/2014/11/01_svm-dataset1-separated-2.png)
+
+Как решить, какая лучше?
+
+Если мы выбираем линию, которая лежит близко к одному из классов, то можем столкнуться с такой ситуацией для новых данных 
+
+![](http://i2.wp.com/www.svm-tutorial.com/wp-content/uploads/2014/11/01_svm-dataset1-separated-bad.png)
+
+Т.е. нам нужна линия, которая максимально удалена от каждого из классов. Иными словами, линия, для которой расстояние между ней и ближайшими точками из каждого класса максимально.
+
+![](http://i1.wp.com/www.svm-tutorial.com/wp-content/uploads/2014/11/07_withMidpointsAndSeparator.png).
+
+Эти ближайшие точки и называются **опорными векторами**. Такая линия одна и ее можно найти из системы уравнений.
+
+Если у нас больше двух предикторов, принцип сохраняется, только делим мы классы не линией, а плоскостью (или гиперплоскостью).
+
+Но что делать, если линейно мы разделить никак не можем? Например, в такой ситуации:
+
+![](http://1.bp.blogspot.com/-6MPJFSzBl3w/Tgocu23l2tI/AAAAAAAABmc/IcV_LBweKuE/s1600/svm4.png)
+
+Тогда мы с помощью определенных функций преобразуем наши данные, "добавляем им размерность", так, чтобы в новой форме данные можно было разделить линейно. Примерно так: [смотреть](https://www.youtube.com/watch?v=9NrALgHFwTo)
+
+Такие функции делятся на классы -- ядра (kernels), могут быть полиномиальными, радиальными, сигмоидными.
+
+###  Виды стекла (Glass Identification Database)
+
+```{r, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(caret)
+```
+
+Оставим только два класса для наглядности:
+
+```{r, warning=FALSE, message=FALSE}
+library(mlbench)
+data(Glass)
+glass <- Glass %>% filter(Type %in% c(2,1))
+glass$Type <- factor(glass$Type)
+```
+
+## Обучающая и тестовая выборки
+
+```{r message = F, warning=FALSE}
+set.seed(5)
+glass.test.ind = sample(seq_len(nrow(glass)), size = nrow(glass)*0.4)
+glass.test = glass[glass.test.ind,]
+glass.main = glass[-glass.test.ind,]
+```
+
+Рассмотрим сначала всего два предиктора, например, содержание Mg и Al
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(data = glass, aes(color = Type)) + geom_point(aes(x=Mg, y = Al))
+data.main <- dplyr::select(glass.main, Type, Mg, Al)
+data.test <- dplyr::select(glass.test, Type, Mg, Al)
+```
+
+## Построение моделей
+
+Как можно разделить классы? С каким ядром лучше?
+
+### Метод опорных векторов с линейным ядром (Support Vector Machine with linear kernel)
+#0.6705 
+```{r message = F, warning=FALSE}
+library("e1071")
+svm_model <- svm(Type ~ ., data=data.main, kernel="linear")
+summary(svm_model)
+plot(svm_model, data=data.main)
+```
+
+Результаты на обучающей 
+
+```{r}
+
+svm.Pred<-predict(svm_model, data.main, probability=FALSE)
+confusionMatrix(svm.Pred,data.main$Type)
+```
+
+и тестовой выборках
+
+```{r}
+svm.Pred<-predict(svm_model, data.test, probability=FALSE)
+confusionMatrix(svm.Pred,data.test$Type)
+
+```
+
+### Метод опорных векторов с полиномиальным ядром (Support Vector Machine with polynomial kernel)
+
+```{r message = F, warning=FALSE}
+svm_model <- svm(Type ~ ., data=data.main, kernel="polynomial")
+summary(svm_model)
+plot(svm_model, data=data.main)
+
+```
+
+Результаты на обучающей 
+
+```{r}
+
+svm.Pred<-predict(svm_model, data.main, probability=FALSE)
+confusionMatrix(svm.Pred,data.main$Type)
+```
+
+и тестовой выборках
+
+```{r}
+svm.Pred<-predict(svm_model, data.test, probability=FALSE)
+confusionMatrix(svm.Pred,data.test$Type)
+
+```
+
+### Метод опорных векторов с радиальным ядром (Support Vector Machine with radial kernel)
+
+```{r message = F, warning=FALSE}
+svm_model <- svm(Type ~ ., data=data.main, kernel="radial")
+summary(svm_model)
+plot(svm_model, data=data.main)
+
+```
+
+Результаты на обучающей 
+
+```{r}
+
+svm.Pred<-predict(svm_model, data.main, probability=FALSE)
+confusionMatrix(svm.Pred,data.main$Type)
+```
+
+и тестовой выборках
+
+```{r}
+svm.Pred<-predict(svm_model, data.test, probability=FALSE)
+confusionMatrix(svm.Pred,data.test$Type)
+
+```
+
+### Метод опорных векторов с сигмоидным ядром (Support Vector Machine with sigmoid kernel)
+
+```{r message = F, warning=FALSE}
+svm_model <- svm(Type ~ ., data=data.main, kernel="sigmoid")
+summary(svm_model)
+plot(svm_model, data=data.main)
+```
+
+Результаты на обучающей 
+
+```{r}
+
+svm.Pred<-predict(svm_model, data.main, probability=FALSE)
+confusionMatrix(svm.Pred,data.main$Type)
+```
+
+и тестовой выборках
+
+```{r}
+svm.Pred<-predict(svm_model, data.test, probability=FALSE)
+confusionMatrix(svm.Pred,data.test$Type)
+
+```
+
+При выборе ядра мы определяем класс функций. Как выбрать ее конкретные параметры?
+
+```{r}
+svm_tune <- tune.svm(Type ~ ., data=data.main, kernel="sigmoid",
+                     cost=10^(-2:2), gamma=c(0.1,0.5,1,2), coef0 = -2:2)
+print(svm_tune)
+```
+
+Модель с новыми параметрами
+
+```{r message = F, warning=FALSE}
+svm_model <- svm(Type ~ ., data=data.main, kernel="sigmoid", 
+                 gamma = as.numeric(svm_tune$best.parameters["gamma"]),
+                 cost = as.numeric(svm_tune$best.parameters["cost"]),
+                 coef0 = as.numeric(svm_tune$best.parameters["coef0"]))
+summary(svm_model)
+plot(svm_model, data=data.main)
+```
+
+Результаты на обучающей
+
+```{r}
+
+svm.Pred<-predict(svm_model, data.main, probability=FALSE)
+confusionMatrix(svm.Pred,data.main$Type)
+```
+
+и тестовой выборках
+
+```{r}
+svm.Pred<-predict(svm_model, data.test, probability=FALSE)
+confusionMatrix(svm.Pred,data.test$Type)
+
+```
+
+
+**Ваша очередь**:
+
+* Улучшится ли точность, если добавить остальные предикторы?
+###  Виды стекла (Glass Identification Database)
+
+```{r, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(caret)
+```
+
+Оставим только два класса для наглядности:
+
+```{r, warning=FALSE, message=FALSE}
+library(mlbench)
+data(Glass)
+glass <- Glass %>% filter(Type %in% c(2,1))
+glass$Type <- factor(glass$Type)
+```
+
+## Обучающая и тестовая выборки
+
+```{r message = F, warning=FALSE}
+set.seed(5)
+glass.test.ind = sample(seq_len(nrow(glass)), size = nrow(glass)*0.4)
+glass.test = glass[glass.test.ind,]
+glass.main = glass[-glass.test.ind,]
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+data.main <- glass.main
+data.test <- glass.test
+```
+
+### Метод опорных векторов с линейным ядром (Support Vector Machine with linear kernel)
+#0.7727
+```{r message = F, warning=FALSE}
+library("e1071")
+svm_model <- svm(Type ~ ., data=data.main, kernel="linear")
+summary(svm_model)
+
+svm.Pred<-predict(svm_model, data.main, probability=FALSE)
+confusionMatrix(svm.Pred,data.main$Type)
+```
+
+
+### Метод опорных векторов с полиномиальным ядром (Support Vector Machine with polynomial kernel)
+#0.6932   
+```{r message = F, warning=FALSE}
+svm_model <- svm(Type ~ ., data=data.main, kernel="polynomial")
+summary(svm_model)
+svm.Pred<-predict(svm_model, data.main, probability=FALSE)
+confusionMatrix(svm.Pred,data.main$Type)
+```
+
+
+### Метод опорных векторов с радиальным ядром (Support Vector Machine with radial kernel)
+#0.8523 
+```{r message = F, warning=FALSE}
+svm_model <- svm(Type ~ ., data=data.main, kernel="radial")
+summary(svm_model)
+svm.Pred<-predict(svm_model, data.main, probability=FALSE)
+confusionMatrix(svm.Pred,data.main$Type)
+```
+* Рассмотрите классы 2 и 7 и содержание в них Na и Al. Что можно сказать про точность? Лучше ли разделяются классы?
+* Рассмотрите 3 класса стекла (1,2,7)

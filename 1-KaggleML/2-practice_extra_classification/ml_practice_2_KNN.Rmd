@@ -1,0 +1,310 @@
+---
+title: "Об алгоритмах подробнее"
+output: html_document
+---
+## Метод k ближайших соседей (k nearest neighbours)
+# (https://www.kaggle.com/c/data-science-bowl-2019)
+Сначала рассмотрим общий принцип работы. Пусть у нас есть небольшой датасет с двумя классами элементов
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+x<-c(2,4,4,7,7,9,11,12,14,15,13)
+y<-c(6,5,9,7,10,3,2,5,3,5,7)
+type<-as.factor(c(1,1,1,1,1,2,2,2,2,2,2))
+d <- data.frame(x,y,type)
+g <- ggplot(data = d, aes(x=x, y=y)) + 
+  geom_point(aes(color = type, shape = type), size = 5) +
+  theme(legend.position = "none")
+g
+
+```
+
+
+**1 ближайший сосед:** точка принадлежит к тому классу, что и ближайшая к ней точка. Ближайшая = расположенная на наименьшем расстоянии (расстояние чаще всего Евклидово, т.е. $\sqrt{(x_1-x_2)^2 + (y_1-y_2)^2}$).
+
+```{r echo=FALSE}
+g + geom_point(x = 9, y = 8, size = 5, shape = 15) +
+  geom_segment(x = 9, y = 8, xend = 7, yend = 7, linetype = 2)
+```
+
+Итоговое разделение:
+
+```{r echo = F, message=FALSE, warning=FALSE}
+library(mlr)
+task1 = makeClassifTask(id = "example", data = d, target = "type")
+plotLearnerPrediction(learner = "classif.knn", task = task1) + 
+  theme(legend.position = "none") + ggtitle("")
+```
+
+**k ближайших соседей:** точка принадлежит к тому классу, что и большинство из k ближайших к ней точек. Т.е. ищем k точек, расстояние до которых меньше, считаем долю каждого из классов среди этих точек и выбираем тот класс, доля которого больше. Например, для  k = 3:
+
+```{r echo=FALSE}
+g + geom_point(x = 4, y = 7, size = 5, shape = 15, color = "green") +
+  geom_segment(x = 4, y = 7, xend = 4, yend = 5, color = "green", linetype = 2) +
+  geom_segment(x = 4, y = 7, xend = 4, yend = 9, color = "green", linetype = 2) +
+  geom_segment(x = 4, y = 7, xend = 2, yend = 6, color = "green", linetype = 2) +
+  geom_point(x = 9, y = 5, size = 5, shape = 15, color = "blue") +
+  geom_segment(x = 9, y = 5, xend = 7, yend = 7, color = "blue", linetype = 2) +
+  geom_segment(x = 9, y = 5, xend = 9, yend = 3, color = "blue", linetype = 2) +
+  geom_segment(x = 9, y = 5, xend = 12, yend = 5, color = "blue", linetype = 2) 
+```
+
+Для зеленой точки -- из 3 ближайших соседей 3 красных и 0 голубых, значит относим к красным.
+
+Для синей точки -- из 3 ближайших соседей 1 красная и 2 голубых, значит относим к голубым.
+
+Итоговое разделение:
+
+```{r echo = F, message=FALSE}
+plotLearnerPrediction(learner = makeLearner("classif.knn", k=3), task = task1) + 
+  theme(legend.position = "none") + ggtitle("")
+```
+
+Что будет, если установить k = 11?
+
+Как меняется результат при **увеличении k**? Рассмотрим на немного большем примере
+
+```{r}
+iris <- filter(iris, Species != "setosa")
+ggplot(data = iris) + geom_point(aes(x=Sepal.Width, y = Petal.Width, color = Species))
+```
+
+Для одного соседа:
+
+```{r echo = F, message=FALSE}
+task.iris = makeClassifTask(id = "iris", data = iris, target = "Species")
+plotLearnerPrediction(learner = "classif.knn", task = task.iris,
+                      features = c("Sepal.Width", "Petal.Width")) + 
+  ggtitle("")
+```
+
+Для 3 соседей:
+
+```{r echo = F, message=FALSE}
+plotLearnerPrediction(learner = makeLearner("classif.knn", k=3), task = task.iris,
+                      features = c("Sepal.Width", "Petal.Width")) + 
+  ggtitle("")
+```
+
+Для 5 соседей:
+
+```{r echo = F, message=FALSE}
+plotLearnerPrediction(learner = makeLearner("classif.knn", k=5), task = task.iris,
+                      features = c("Sepal.Width", "Petal.Width")) + 
+  ggtitle("")
+```
+
+Для 10 соседей:
+
+```{r echo = F, message=FALSE}
+plotLearnerPrediction(learner = makeLearner("classif.knn", k=10), task = task.iris,
+                      features = c("Sepal.Width", "Petal.Width")) + 
+  ggtitle("")
+```
+
+Для 25 соседей:
+
+```{r echo = F, message=FALSE}
+plotLearnerPrediction(learner = makeLearner("classif.knn", k=25), task = task.iris,
+                      features = c("Sepal.Width", "Petal.Width")) + 
+  ggtitle("")
+```
+
+Чем больше k - тем более общую модель мы получаем. При небольших k разделение на классы больше "подогнано" к обучающим данным - при k = 1 точность на обучающей выборке равна 1 (ближайшая точка к любой точке -- она сама), но на тестовой она уже существенно ниже. В целом зависимости можно представить следующим образом
+
+Ошибка на обучающей выборке при изменении k
+![](http://www.analyticsvidhya.com/wp-content/uploads/2014/10/training-error.png)
+
+
+Ошибка на тестовой выборке при изменении k
+![](http://www.analyticsvidhya.com/wp-content/uploads/2014/10/training-error_11.png)
+
+###  Данные (рак предстательной железы)
+
+Загружаем данные
+```{r, warning=FALSE, message=FALSE}
+prCancer <- read.csv("~/shared/minor3_2019/1-KaggleML/data/Prostate_Cancer.csv")
+```
+
+Посмотрим на них
+
+```{r, warning=FALSE, message=FALSE}
+str(prCancer)
+```
+
+У нас есть 8 параметров, характеризующих новообразование:
+
+* Radius
+* Texture
+* Perimeter
+* Area
+* Smoothness
+* Compactness
+* Symmetry
+* Fractal dimension
+
+Переменная `diagnosis_result`, соответствующая диагнозу, имеет два значения:
+
+* В = Benign (доброкачественное новообразование)
+* M = Malignant (злокачественное новообразование)
+
+## Обучающая и тестовая выборки
+
+```{r message = F, warning=FALSE}
+set.seed(345)
+pc.test.ind = sample(seq_len(nrow(prCancer)), size = nrow(prCancer)*0.3)
+pc.test = prCancer[pc.test.ind,]
+pc.main = prCancer[-pc.test.ind,]
+```
+
+Рассмотрим сначала всего два предиктора -- периметр `perimeter` и коэффицент симметрии `symmetry` 
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(data = prCancer, aes(color = diagnosis_result)) + geom_point(aes(x=perimeter, y = symmetry))
+data.main <- dplyr::select(pc.main, diagnosis_result, perimeter, symmetry)
+data.test <- dplyr::select(pc.test, diagnosis_result, perimeter, symmetry)
+```
+
+## Построение моделей
+
+1 ближайший сосед
+
+```{r message = F, warning=FALSE}
+library(class)
+library(caret)
+knn_model <- knn(train = select(data.main, -diagnosis_result),
+                 test = select(data.test, -diagnosis_result),
+                 cl=data.main$diagnosis_result)
+```
+
+Результаты на тестовой выборке
+
+```{r}
+confusionMatrix(knn_model,data.test$diagnosis_result)
+```
+
+График
+
+```{r echo = F, message=FALSE}
+library(mlr)
+task.pc = makeClassifTask(id = "pc", data = prCancer, target = "diagnosis_result")
+plotLearnerPrediction(learner = "classif.knn", task = task.pc,
+                      features = c("perimeter", "symmetry")) 
+```
+
+3 ближайших соседа
+
+```{r message = F, warning=FALSE}
+knn_model <- knn(train = select(data.main, -diagnosis_result),
+                 test = select(data.test, -diagnosis_result),
+                 cl=data.main$diagnosis_result, k = 3)
+```
+
+Результаты на тестовой выборке
+
+```{r}
+confusionMatrix(knn_model,data.test$diagnosis_result)
+```
+
+График
+
+```{r echo = F, message=FALSE}
+plotLearnerPrediction(learner = makeLearner("classif.knn", k=3), task = task.pc,
+                      features = c("perimeter", "symmetry")) 
+```
+
+### Нормализация
+
+**Обратите внимание:** используемые нами переменные имеют очень разные значения
+
+```{r}
+summary(prCancer$perimeter)
+summary(prCancer$symmetry)
+```
+
+Поэтому вклад в измерение расстояния у них очень разный: разница между самыми отдаленными значениями симметрии `r 0.3040-0.1350`, а периметра -- 120. Соответственно, для алгоритма при вычислении расстояния между точками периметр важнее (это видно и на графике -- почти все разделение вертикальными линиями). Чтобы этого избежать, проводят нормализацию, т.е. приведение к единой шкале (традиционно к значениям от 0 до 1).
+Для этого нужно из каждой переменной вычесть ее минимальное значение и разделить на диапазон значений.
+
+```{r}
+smin <- min(prCancer$symmetry)
+pmin <- min(prCancer$perimeter)
+smax <- max(prCancer$symmetry)
+pmax <- max(prCancer$perimeter)
+prCancer$symmetry <- 
+  (prCancer$symmetry - smin)/(smax-smin)
+prCancer$perimeter <- 
+  (prCancer$perimeter - pmin)/(pmax-pmin)
+```
+
+И не забыть повторить разделение на тестовую и обучающую выборки
+
+```{r}
+pc.test = prCancer[pc.test.ind,]
+pc.main = prCancer[-pc.test.ind,]
+```
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(data = prCancer, aes(color = diagnosis_result)) + geom_point(aes(x=perimeter, y = symmetry))
+data.main <- dplyr::select(pc.main, diagnosis_result, perimeter, symmetry)
+data.test <- dplyr::select(pc.test, diagnosis_result, perimeter, symmetry)
+```
+
+Новая модель
+
+```{r message = F, warning=FALSE}
+knn_model <- knn(train = select(data.main, -diagnosis_result),
+                 test = select(data.test, -diagnosis_result),
+                 cl=data.main$diagnosis_result)
+```
+
+И новые результаты на тестовой выборке
+
+```{r}
+confusionMatrix(knn_model,data.test$diagnosis_result)
+```
+
+График
+
+```{r echo = F, message=FALSE}
+task.pc = makeClassifTask(id = "pc", data = prCancer, target = "diagnosis_result")
+plotLearnerPrediction(learner = "classif.knn", task = task.pc,
+                      features = c("perimeter", "symmetry")) 
+```
+
+Результаты для другой реализации метода
+
+```{r}
+knn_model2 <- knn3(diagnosis_result~., data = data.main)
+knn_pred <- predict(knn_model2, dplyr::select(data.test, -diagnosis_result), type = "class")
+confusionMatrix(knn_pred, data.test$diagnosis_result)
+
+```
+
+
+**Ваша очередь**:
+
+* Какой прозноз согласно модели будет при значениях периметра 80 и симметрии 0.22? (для модели knn3)
+
+```{r}
+  (0.22 - smin)/(smax-smin)
+  (80 - pmin)/(pmax-pmin)
+new_data <- NULL
+new_data <- as.data.frame(new_data)
+new_data[1,1] <- 0.2333333
+new_data[1,2] <- 0.5029586
+colnames(new_data) <- c("perimeter","symmetry")
+knn_pred <- predict(knn_model2, new_data, type = "class")
+```
+
+* Улучшится ли точность, если увеличить k? Какое значение k лучше выбрать?
+* Улучшится ли точность, если добавить остальные предикторы?
+* Сравните результаты при нормализации и без нее при включении всех предикторов
+
+P.S.
+```{r eval = F}
+x <- data.frame(symmetry=(0.28-smin)/(smax-smin), perimeter=(100-pmin)/(pmax-pmin))
+predict(knn_model2, x)
+```
+
+
