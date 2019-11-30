@@ -43,7 +43,7 @@ linReg<-lm(SalePrice~MSSubClass+LotArea+LotShape+OverallQual+OverallCond+YearBui
 summary(linReg)
 ```
 ```{r}
-lr_pred <- predict(linReg, houses.test)
+lr_pred <- predict(linReg, newdata = houses.test)
 ```
 Упс, что-то не так. У нас часть значений не попала в обучающую выборку, и что будем делать?
 ```{r}
@@ -79,6 +79,7 @@ lr_rmse
 ```{r}
 real_test <- read.csv("~/shared/minor3_2019/1-KaggleML/data/test.csv")
 real_predict <- predict(linReg, real_test) 
+
 ```
 
 
@@ -122,7 +123,7 @@ rmse_log_test
 
 ```{r}
 real_log_predict <- predict(linRegLog, real_test)
-to_send_log <- data.frame(Id=real_test$Id, SalePrice = exp(real_predict))
+to_send_log <- data.frame(Id=real_test$Id, SalePrice = exp(real_log_predict))
 write_csv(to_send_log, "to_send_log.csv")
 ```
 

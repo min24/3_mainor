@@ -1,0 +1,275 @@
+---
+title: "Практика с SQL и дэшборды"
+output: html_document
+---
+
+Сегодня мы практикуемся с новыи датасетом и визуализируем результаты. Данные для работы про магазин Olist Store <https://www.kaggle.com/olistbr/brazilian-ecommerce#olist_order_reviews_dataset.csv>.
+
+В базе 9 таблиц (про покупателей, товары, покупки). Схема связей (таблица product_category служебная, не включена в общую схему)
+
+![](https://i.imgur.com/HRhd2Y0.png)
+Переменные:
+
+Customers
+customer_id: key to the orders dataset. Each order has a unique customer_id.
+customer_unique_id: unique identifier of a customer.
+customer_zip_code_prefix: first five digits of customer zip code
+customer_city: customer city name
+customer_state: customer state
+
+Geolocation:
+geolocation_zip_code_prefix: first 5 digits of zip code
+geolocation_lat: latitude
+geolocation_lng: longitude
+geolocation_city: city name
+geolocation_state: state
+
+Order_items:
+order_id: order unique identifier
+order_item_id: sequential number identifying number of items included in the same order.
+product_id: product unique identifier
+seller_id: seller unique identifier
+shipping_limit_date: Shows the seller shipping limit date for handling the order over to the logistic partner.
+price: item price
+freight_value: item freight value item (if an order has more than one item the freight value is splitted between items)
+
+Order_payments
+order_id: unique identifier of an order.
+payment_sequential: a customer may pay an order with more than one payment method. If he does so, a sequence will be created to accommodate all payments.
+payment_type: method of payment chosen by the customer.
+payment_installments: number of installments chosen by the customer.
+payment_value: transaction value.
+
+Order_reviews
+review_id: unique review identifier
+order_id: unique order identifier
+review_score: Note ranging from 1 to 5 given by the customer on a satisfaction survey.
+review_comment_title: Comment title from the review left by the customer, in Portuguese.
+review_comment_message: Comment message from the review left by the customer, in Portuguese.
+review_creation_date: Shows the date in which the satisfaction survey was sent to the customer.
+review_answer_timestamp: Shows satisfaction survey answer timestamp.
+
+Orders
+order_id: unique identifier of the order.
+customer_id: key to the customer dataset. Each order has a unique customer_id.
+order_status: Reference to the order status (delivered, shipped, etc).
+order_purchase_timestamp: Shows the purchase timestamp.
+order_approved_at: Shows the payment approval timestamp.
+order_delivered_carrier_date: Shows the order posting timestamp. When it was handled to the logistic partner.
+order_delivered_customer_date: Shows the actual order delivery date to the customer.
+order_estimated_delivery_date: Shows the estimated delivery date that was informed to customer at the purchase moment.
+
+Products
+product_id: unique product identifier
+product_category_name: root category of product, in Portuguese.
+product_name_lenght: number of characters extracted from the product name.
+product_description_lenght: number of characters extracted from the product description.
+product_photos_qty: number of product published photos
+product_weight_g: product weight measured in grams.
+product_length_cm: product length measured in centimeters.
+product_height_cm: product height measured in centimeters.
+product_width_cm: product width measured in centimeters.
+
+Sellers
+seller_id: seller unique identifier
+seller_zip_code_prefix: first 5 digits of seller zip code
+seller_city: seller city name
+seller_state: seller state
+
+Product_category
+product_category_name: category name in Portuguese
+product_category_name_english: category name in English
+
+Подключаемся к базе данных (не забудьте прописать полный путь до файла, если вы копируете файл лабораторной)
+```{r}
+library(DBI)
+library(RSQLite)
+con <- DBI::dbConnect(RSQLite::SQLite(), "OlistStore.db")
+dbListTables(con)
+```
+
+Посмотрим, какие переменные есть в таблице customers
+
+```{r}
+dbListFields(con, "customers")
+```
+
+Найдем top-10 городов, из которых наши клиенты
+
+```{r}
+cities = dbGetQuery(con, "SELECT customer_city, COUNT(*) AS n
+                 FROM customers
+                 GROUP BY customer_city
+                 ORDER BY n DESC
+                 LIMIT 10")
+```
+
+Построим график
+```{r}
+library(ggplot2)
+ggplot(cities) + geom_bar(aes(x = customer_city, y= n), stat = "identity") + 
+  ylab("Number of customers") + xlab("City") + coord_flip()
+```
+
+А теперь посчитаем то же для заказов
+
+```{r}
+orderscity = dbGetQuery(con, "SELECT customer_city, COUNT(*) AS n
+                 FROM orders INNER JOIN customers ON orders.customer_id = customers.customer_id
+                 GROUP BY customer_city
+                 ORDER BY n DESC
+                 LIMIT 10")
+```
+```{r}
+ggplot(orderscity) + geom_bar(aes(x = customer_city, y= n), stat = "identity") + 
+  ylab("Number of customers") + xlab("City") + coord_flip()
+```
+Очень похожие графики -- посмотрим количество заказов всего
+```{r}
+ordersN = dbGetQuery(con, "SELECT COUNT(*) AS n
+                 FROM orders")
+ordersN
+```
+Количество заказов на покупателя
+```{r}
+orders_per_customer = dbGetQuery(con, "SELECT COUNT(*) AS n
+                 FROM orders
+                 GROUP BY customer_id")
+mean(orders_per_customer$n)
+```
+Упс, у нас каждый покупатель сделал всего один заказ, но посмотрим внимательнее на данные: customer_id по определению соответствует всего один заказ, а вот уникальный id клиента -- это customer_unique_id. Проверим с группировкой по customer_unique_id
+
+```{r}
+orders_per_customer = dbGetQuery(con, "SELECT COUNT(*) AS n
+                 FROM orders INNER JOIN customers
+                   ON orders.customer_id = customers.customer_id
+                 GROUP BY customer_unique_id
+                 ORDER BY n DESC")
+mean(orders_per_customer$n)
+```
+
+
+
+Посмотрим, сколько всего категорий товаров
+```{r}
+categoryN = dbGetQuery(con, "SELECT DISTINCT product_category_name
+                 FROM products")
+head(categoryN)
+length(categoryN$product_category_name)
+```
+
+Пересчитаем статистику по городам
+
+```{r}
+cities2 = dbGetQuery(con, "SELECT customer_city, COUNT(*) AS n
+                 FROM (SELECT DISTINCT customer_unique_id, customer_city FROM customers)
+                 GROUP BY customer_city
+                 ORDER BY n DESC
+                 LIMIT 10")
+```
+
+И новый график
+```{r}
+ggplot(cities2) + geom_bar(aes(x = customer_city, y= n), stat = "identity") + 
+  ylab("Number of customers") + xlab("City") + coord_flip()
+```
+
+и можно два сразу, чтобы сравнить
+```{r}
+ggplot() + geom_bar(data = cities, aes(x = customer_city, y= n), 
+                    stat = "identity", alpha = 0.3, fill = "red") + 
+  geom_bar(data = cities2, aes(x = customer_city, y= n), 
+           stat = "identity", alpha = 0.3, fill = "blue") + 
+  ylab("Number of customers") + xlab("City") + coord_flip()
+```
+
+
+Найдем топ-10 категорий товаров
+```{r}
+category10 = dbGetQuery(con, "SELECT product_category_name_english AS category, COUNT(*) AS n
+                 FROM (order_items INNER JOIN products ON order_items.product_id = products.product_id)
+                       INNER JOIN product_category 
+                       ON product_category.product_category_name =  products.product_category_name
+                 GROUP BY category
+                 ORDER BY n DESC
+                 LIMIT 10")
+category10
+```
+```{r}
+ggplot(category10) + geom_bar(aes(x = category, y= n), stat = "identity") + 
+  ylab("Number of orders") + xlab("Category") + coord_flip()
+```
+
+Найдем топ-10 категорий товаров в Sao Paulo
+```{r}
+categorySP = dbGetQuery(con, "SELECT product_category_name_english AS category, COUNT(*) AS n
+                 FROM (((order_items INNER JOIN products ON order_items.product_id = products.product_id)
+                       INNER JOIN product_category 
+                         ON product_category.product_category_name =  products.product_category_name)
+                       INNER JOIN orders 
+                         ON orders.order_id = order_items.order_id)
+                       INNER JOIN customers
+                         ON customers.customer_id = orders.customer_id
+                 WHERE customer_city = 'sao paulo'
+                 GROUP BY category
+                 ORDER BY n DESC
+                 LIMIT 10")
+categorySP
+```
+```{r}
+ggplot(categorySP) + geom_bar(aes(x = category, y= n), stat = "identity") + 
+  ylab("Number of orders") + xlab("Category") + coord_flip()
+```
+
+## Дэшборды
+А теперь давайте объединим эти наблюдения. Единую историю можно рассказать с помощью дэшборда. 
+
+Для этого будем использовать пакет `flexdashboard` <https://rmarkdown.rstudio.com/flexdashboard/index.html>
+
+Итог можно посмотреть в файле `dashboard-ex.html`, исходник -- `dashboard-ex.Rmd`
+
+А теперь детали
+
+##### Дэшборд создается отдельным файлом
+
+Чтобы его создать, выбираем File -> New file -> RMarkdown -> From template -> Flex Dashboard
+
+Нажмите knit, чтобы посмотреть, что получится из заготовки по умолчанию
+
+##### Структура
+
+1. Элементы-заголовки (с тремя #) -- это отдельные ячейки дэшборда
+2. Строка ---------- отделяет строки или столбцы друг от друга (показывает, где начинается следующий столбец/строка)
+3. Заполнение идет либо по строкам (`Row` перед ---- и `orientation: rows` в заголовке), либо по столбцам (`Columns` перед ---- и `orientation: columns` в заголовке)
+
+Более сложные структуры см. <https://rmarkdown.rstudio.com/flexdashboard/layouts.html>
+
+##### Элементы
+
+Подробности тут <https://rmarkdown.rstudio.com/flexdashboard/using.html>
+
+1. Графики: строятся как обычно, в чанках
+2. Таблицы: красивые таблицы можно отобразить в чанке с помощью кода `knitr::kable(data)`
+3. Value Boxes: красивые элементы с текстом или числами с помощью кода `valueBox`<https://rmarkdown.rstudio.com/flexdashboard/using.html#value_boxes>. Могут быть разного цвета, с разными иконками (см. пример). Изображения для иконок можно найти здесь <https://fontawesome.com/icons?d=gallery&m=free>
+
+**Ваша очередь:** откройте код `dashboard-ex.Rmd`. 
+
+* поменяйте цвета элементов на ваш выбор
+* подпишите оси на графиках
+* поменяйте графики местами
+
+##### Как построить дэшборд
+
+1. Сформулируйте общую задачу 
+2. Сформулируйте отдельные исследовательские вопросы
+3. Постройте необходимые элементы (графики, таблицы и т.д.)
+4. Продумайте структуру
+5. Перенесите элементы из п.3 в дэшборд
+6. Важно: в коде не должно быть вывода в консоль, просмотра датасета с помощью View, печати датасета, текста вне чанков (если это не комментарий к дашборду)
+
+**Ваша очередь:** 
+* Найдите города и категории, где потратили больше и меньше всего денег
+* Объедините в историю в дашборде
+
+* Придумайте свою историю на данных
+

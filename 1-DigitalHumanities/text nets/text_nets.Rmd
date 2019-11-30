@@ -1,0 +1,416 @@
+---
+title: Text mining. STM
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Сегодня продолжаем учиться понимать, о чем тексты, не читая их. Начнем с повторения и перейдем к сетевым методам анализа текстов.
+
+*Вспомним СТМ*
+
+В этой части мы работаем с моделью СТМ, построенной по новостным статьями New York Post и Guardian за 2016-2017 года. В нашу выборку попало около 9,5 тысяч статей. 
+Метаданные к модели включают текст статьи (content), название (title), источник статьи (где опубликована) (publication) и автор (author).
+
+Загрузите результат STM модели по новостным статьям. В модели 25 тем. 
+
+1. Что за газеты New York Post и Guardian? Какие у них имеются различия? О чем они пишут? (*если не знаете, погуглите =) *)
+2. Какая тема больше всего встречается в текстах? *hint: посмотрите на график с пропорциями тем*
+3. Содержательно проинтерпретируйте получившиеся темы.
+4. Есть ли предположения, какие темы какой газете в большей степени характерны?
+```{r}
+library(stm)
+library(stminsights)
+#install.packages("stminsights")
+#installf.packages("ggrepel")
+
+# загрузите нужные файлики
+load("~/shared/minor3_2019/1-DigitalHumanities/text nets/news_stm.RData") # сама модель с темами
+
+stm::labelTopics(news_stm, c(1:10), n = 15)
+load("~/shared/minor3_2019/1-DigitalHumanities/text nets/out.RData") # данные, по которым строилась модель (матрица, доки и метаданные)
+
+```
+
+5. Оцените эффект газеты на темы публикаций. Для каких тем эффект значим? Есть предположения, почему?
+6. Визуализируйте эффекты
+```{r}
+load("~/shared/minor3_2019/1-DigitalHumanities/text nets/prep.RData") # оценка эффектов ковариатов
+
+summary(prep)
+```
+
+
+## Корреляции тем
+
+Одной из особенностей STM является возможность посмотреть на то, как темы скореелированы между собой, то есть, насколько вероятно они встречаются друг с другом в одном документе. 
+С помощью функции get_network из пакета stminsights можно извлечь сеть, где темы будут узлами, а связи между ними - корреляцией.
+```{r}
+library(ggraph)
+stm_corrs <- get_network(model = news_stm,
+                         method = 'simple', # метод корреляции
+                         cutoff = 0.05, # минимальная корреляция
+                         labels = paste('T', 1:25),
+                         cutiso = FALSE) # изолированные узлы
+
+ggraph(stm_corrs, layout = 'fr') + geom_edge_link(
+    aes(edge_width = weight), label_colour = '#fc8d62', 
+    edge_colour = '#377eb8') + geom_node_point(size = 4, colour = 'black')  +
+  geom_node_label(aes(label = name, size = props),
+                    colour = 'black',  repel = TRUE, alpha = 0.85) +
+  scale_size(range = c(2, 10), labels = scales::percent) +  
+  labs(size = 'Topic Proportion',  edge_width = 'Topic Correlation') + theme_graph()
+```
+
+К сети корреляция можно применять сетевые методы. Например, попробуем выделить сообщества.
+```{r}
+library(igraph)
+fastgr = fastgreedy.community(stm_corrs)
+m = factor(membership(fastgr))
+
+# покрасим цвет узла (темы) в соответствии с кластером, куда он входит
+ggraph(stm_corrs, layout = 'fr') + 
+  geom_edge_link(aes(edge_width = weight), label_colour = '#fc8d62', edge_colour = '#377eb8') +  
+  geom_node_point(size = 4, colour = m)  +
+  geom_node_label(aes(label = name, size = props), colour = 'black',  repel = TRUE, alpha = 0.85) +
+  scale_size(range = c(2, 10), labels = scales::percent) +  
+  labs(size = 'Topic Proportion',  edge_width = 'Topic Correlation') + theme_graph()
+
+sort(m)
+m[m==1]
+m[m==4]
+```
+Какие темы чаще всего встречаются вместе в документах?
+Сколько сообществ выделилось? Попробуйте содержательно проинтерпретировать их по соответствующим темам.
+
+
+
+*Повторение*
+В этой части мы работаем с новостными статьями за 2016-2017 года. В нашу выборку попало около 12-ти тысяч статей. Помимо самого текста у нас есть название, источник статьи (где опубликована), автор и дата публикации.
+
+```{r}
+library(readr)
+news = read_csv("~/shared/minor3_2019/1-DigitalHumanities/text nets/news.csv")
+```
+
+Публикации из каких источников попали в выборку?
+```{r}
+library(ggplot2)
+# нарисуйте график с газетами и количеством документов по каждой
+ggplot(data = news) + geom_bar(aes(x=publication))
+
+```
+Что это за газеты? Погуглите))
+
+Даты публикаций
+```{r}
+# нарисуйте график распределения статей по времени
+ggplot(data = news) + geom_histogram(aes(x=date), binwidth = 7)
+```
+Равномерно ли распределение статей по времени? В какие периоды происходил рост или падение количества статей? Есть ли у вас гипотезы, в связи с какими событиями это могло происходить?
+
+**Исследуем наш корпус.**
+Для начала вспомним некоторые моменты с предыдущей пары.
+Зачем разбивать текст на биграммы? Какую дополнительную информацию нам это дает по сравнению с "мешком слов"?
+
+Давайте попробуем сфокусироваться на представлении России в иностранных СМИ. Отфильтруем датасет так, чтобы там остались только статьи, упоминающие Россию.
+```{r}
+library(stringr)
+# создадим колонку, в которой указано, упоминается ли Россия в статье
+news$rus = str_detect(news$content, "Russia")
+
+# построим график, отражающий динамику упоминания России
+ggplot(data = news, aes(x = date, fill = rus)) + 
+  geom_histogram(binwidth = 7)
+# Когда происходили рост и падение интереса к России в СМИ? Есть ли у вас гипотезы, почему так происходило?
+
+# оставим только статьи с упоминанием 
+library(dplyr)
+news_rus = filter(news, rus == TRUE)
+```
+
+*Перейдем к анализу текста.*
+
+1. Удалите из текстов знаки препинания, апострофы, кавычки и цифры
+2. Разбейте тексты статей на биграммы и лемматизируйте их
+3. Удалите стоп-слова (используйте tm::stopwords("en")) и посчитайте, сколько раз встречается каждая биграмма
+
+
+
+Какие словосочетания чаще всего встречаются в текстах о России?
+```{r}
+# 1
+# ваш код
+#Удалите из текстов знаки препинания
+news_rus$content = str_replace_all(news_rus$content, "\\&quot\\;", " ")
+
+#Удалите из текстов знаки апострофы
+news_rus$content = str_replace_all(news_rus$content, "\\&apos\\;", " ")
+
+#Удалите из текстов знаки кавычки
+news_rus$content = str_replace_all(news_rus$content, "[[:punct:]]", "")
+
+#Удалите из текстов знаки цифры
+news_rus$content = tm::removeNumbers(news_rus$content)
+
+# 2
+library(tidytext)
+# ваш код
+news_rus_bigrams = news_rus %>%
+  unnest_tokens(bigram, content, token = "ngrams", n = 2) %>%
+  mutate(bigram_lemma = textstem::lemmatize_words(bigram))
+
+# 3
+# ваш код
+ 
+stop_w = as.data.frame(tm::stopwords("en"))
+names(stop_w) = "word"
+
+news_rus.b.count <- news_rus_bigrams %>% 
+  tidyr::separate(bigram, c("word1", "word2"), sep = " ") %>% 
+  dplyr::filter(!word1 %in% stop_w$word) %>% 
+  dplyr::filter(!word2 %in% stop_w$word) 
+
+news_rus.b.count %>%  
+  dplyr::count(word1, word2, sort = TRUE) %>%
+  top_n(15)
+```
+
+Давайте посмотрим, с какими словами разные СМИ упоминают Россию.
+Отфильтруем слова в биграммах, чтобы в первом и втором словах была Россия и нарисуйте графики для каждого варианта, чтобы они показывали топ-слова по каждому СМИ отдельно. 
+
+Начнем с первого слова. 
+```{r}
+rus_w1 = news_rus.b.count %>% 
+  filter(word1 == "russia") %>% 
+  group_by(word1, word2, publication) %>%
+  mutate(count = n()) %>%
+  ungroup() %>%
+  select(publication, word1, word2, count) %>%
+  unique() %>%
+  group_by(publication)%>%
+  top_n(10, count)
+  arrange(desc(count)) 
+  
+rus_w1 %>%
+  mutate(term = reorder_within(word2, count, publication)) %>%
+  ggplot(aes(term, count, fill = factor(publication))) +
+  geom_col(show.legend = FALSE) +
+  scale_x_reordered()+
+  facet_wrap(~ publication, scales = "free") +
+  coord_flip() 
+```
+В паре с какими словами Россию чаще всего упоминают первым словом? Различаются ли биграммы в зависимости от газеты? Какие слова чаще употребляют разные газеты?
+
+Повторите то же самое для 2-го слова в биграмме с Россией.
+```{r}
+rus_w2 = news_rus.b.count %>% 
+  filter(word2 == "russia") %>% 
+  group_by(word1, word2, publication) %>%
+  mutate(count = n()) %>%
+  ungroup() %>%
+  select(publication, word1, word2, count) %>%
+  unique() %>%
+  group_by(publication)%>%
+  top_n(10, count) %>%
+  mutate(term = reorder(word1, count))
+
+rus_w2 %>%
+  ggplot(aes(term, count, fill = factor(publication))) +
+  geom_col(show.legend = FALSE) +
+  scale_x_reordered()+
+  facet_wrap(~ publication, scales = "free") +
+  coord_flip() 
+```
+Что происходит в этом случае? 
+Можно ли сделать вывод, в каких контекстах газеты описывают Россию?
+
+### Семантические сети
+
+Какие отношения могут быть между словами в тексте?
+
+
+
+# Сеть со-употребления слов
+
+Начнем с самого простого - сети со-употреблений. Возьмем наши биграммы и посмотрим, как они употребляются
+```{r}
+# удалим редкие биграммы и посчитаем встречаемость каждой биграммы в разных газетах
+bigrams.count = news_rus.b.count %>%
+  group_by(word1, word2) %>%
+  mutate(count = n()) %>%
+  filter(count > 50) %>%
+  ungroup() %>%
+  group_by(word1, word2, publication) %>%
+  summarise(count = n()) %>%
+  ungroup()
+
+
+library(igraph)
+bigrams.graph = graph_from_data_frame(bigrams.count)
+
+
+p <-ggraph(bigrams.graph, layout = 'kk') + 
+    geom_edge_link() + 
+    geom_node_point()
+    
+p
+```
+Не понятно, что происходит, кроме того, что есть большой компонент и несколько отдельных кластеров. Попробуем перерисовать получше и покрасить связи в соответствии с тем, в какой газете последовательность была использована.
+
+Но для начала *посмотрим на центральности.*
+
+Слова с самым большим показателем степени (degree). *что такое degree?*
+```{r}
+sort(degree(bigrams.graph), decreasing = T)[1:15]
+```
+
+Слова с самым большим показателем посредничества (betweenness). *что такое betweenness?*
+```{r}
+sort(betweenness(bigrams.graph), decreasing = T)[1:15]
+```
+
+Какие еще меры центральности вы помните?
+
+Нарисуем, предварительно удалив вершины с маленьким degree
+```{r}
+# удаляем вершины
+V(bigrams.graph)$degree = degree(bigrams.graph, mode = 'total')
+bigrams.graph=delete_vertices(bigrams.graph,V(bigrams.graph)$degree < 5)
+
+p <-ggraph(bigrams.graph, layout = 'kk') + 
+    geom_edge_link(aes(colour = factor(publication))) + 
+    geom_node_point()
+    
+p
+```
+Уже лучше, но все равно не очень - большинство связей принадлежат Reuters. Почему так могло получиться?
+
+Также как и в ggplot2, в ggpraph есть возможность разделить граф на несколько в соответсвии с какой-то номинальной переменной. Причем, это можно сделать как для категории (или типа) связи (facet_edges), так и для типа узлов (facet_nodes). 
+Попробуем сделать по сети на каждый тип связи (совместная употребляемость в газетах разного типа)
+```{r}
+p = ggraph(bigrams.graph, layout = "kk") +
+  geom_edge_link(aes(colour = factor(publication))) + 
+  geom_node_point(aes(size = degree)) +
+  geom_node_text(aes(label = name), color = 'black', vjust = 1, hjust = 1, size = 2) +
+  facet_edges(~publication)
+
+```
+Различаются ли сети для разных газет?
+
+Попробуем выделить сообщества слов
+```{r}
+set.seed(2019)
+wt = walktrap.community(bigrams.graph)
+m = factor(membership(wt))
+
+# постройте сеть, покрасив цвет узлов в соотвествии с сообществом и размером узла в соответствии с битвинностью
+p = ggraph(bigrams.graph, layout = "dh") +
+  geom_edge_fan(aes(alpha = count, colour = factor(publication))) + 
+  geom_node_point(aes(size = betweenness(bigrams.graph),color = m)) +
+  geom_node_text(aes(label = name), color = 'black', vjust = 1, hjust = 1, size = 2.5) +
+  theme_void()
+
+p
+```
+
+Посмотрим на состав кластеров
+```{r}
+sizes(wt)
+table <- cbind(wt$membership, wt$names)
+table = as.data.frame(table)
+
+filter(table, V1 == 5) %>% head(15) # мировые войны
+filter(table, V1 == 8) %>% head() # дональд трамп как кандидат на выборы
+filter(table, V1 == 14) %>% head(10) # дни недели
+```
+О чем эти кластеры?
+
+*Задание:*
+Выберите 5 других кластера и содержательно проинтерпретерийте их
+
+
+# Сеть корреляций
+
+При помощи данной визуализации мы можем увидеть, как пары слов друг с другом связаны. Но более интеренсным для нас будет анализ того, как слова потенциально могут встречаться друг с другом в одном документе, даже если они не стоят рядом в предложении. 
+
+В качестве показателя потенциальной встречаемости слов в предложении можно использовать, например, корреляцию. Чем сильнее скоррелированы два слова, тем вероятнее они встречаются в одном документе (в данном случае документ - это все статьи одного автора). 
+Посмотрим на корреляции слов в новостных статьях о России.
+```{r}
+library(widyr)
+
+news_rus.words <- news_rus %>%
+  unnest_tokens(word, content) %>%
+  mutate(word_lemma = textstem::lemmatize_words(word)) %>%
+  anti_join(stop_w)
+
+word_cors <- news_rus.words %>%
+  group_by(word_lemma) %>%
+  filter(n() > 30) %>% # сразу уберем очень редкие
+  pairwise_cor(word_lemma, author, sort = TRUE) # делаем корреляцию, это займет некоторое время))
+```
+
+Посмотрим, в каких контекстах употребляются Россия и Путин.
+```{r}
+words.to.filter = c("russia","putin")
+plot_words =  word_cors %>% filter(item1 %in% words.to.filter) %>% group_by(item1) %>% top_n(15) %>%
+  mutate(item2 = reorder(item2, correlation)) 
+
+
+plot_words %>%  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity") +
+  xlab(NULL) +
+  coord_flip() + facet_wrap(~item1,scale="free_y")
+```
+Проинтерпретируйте контексты.
+
+Оставим только относительно сильные корреляции между словами и сделаем из этого граф. Запустим алгоритм обнаружения сообществ и посмотрим на их число.
+
+```{r}
+strong_cors.graph = word_cors %>% 
+  filter(correlation > 0.3) %>%
+  graph_from_data_frame()
+
+set.seed(2019)
+wc <- walktrap.community(strong_cors.graph)
+length(wc) 
+sizes(wc)
+table <- cbind(wc$membership, wc$names)
+table = as.data.frame(table)
+
+filter(table, V1 == 11) %>% head(15) # кубинские проблемы
+filter(table, V1 == 8) %>% head() # глобальное потепление
+```
+
+Давайте нарисуем сеть для кластеров с 15 по 25 (просто так).
+
+```{r}
+table$V1 = as.character(table$V1)
+table$V2 = as.character(table$V2)
+
+strong_cors = word_cors %>% 
+  filter(correlation > 0.3) %>%
+  left_join(table, by = c("item1" = "V2")) %>%
+  dplyr::rename(item1_cl = V1) %>%
+  left_join(table, by = c("item2" = "V2")) %>%
+  dplyr::rename(item2_cl = V1) %>%
+  filter(item1_cl %in% c(15:25) & item2_cl %in% c(15:25))
+
+
+g = strong_cors %>%
+  dplyr::select(item1, item2, correlation) %>%
+  graph_from_data_frame()
+
+V(g)$cl = as.character(table$V1[match(V(g)$name, table$V2)])
+
+ggraph(g, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(aes(color = cl), size = 4) +
+  geom_node_text(aes(label = name), repel = TRUE, size = 3) +
+  theme_void()
+```
+Проинтерпретируйте кластеры.
+
+*Задание* 
+Выберите 10 кластеров после 25, проинтерпретируйте их и нарисуйте сеть по ним.
+
