@@ -11,7 +11,23 @@ library(ggplot2)
 library(DBI)
 library(RSQLite)
 con <- DBI::dbConnect(RSQLite::SQLite(), "OlistStore.db")
+
 ```
+
+```{r}
+dbListTables(con)
+customers = dbGetQuery(con, "SELECT * FROM customers")
+geolocation = dbGetQuery(con, "SELECT * FROM geolocation")
+order_items = dbGetQuery(con, "SELECT * FROM order_items")
+order_payments = dbGetQuery(con, "SELECT * FROM order_payments")
+order_reviews = dbGetQuery(con, "SELECT * FROM order_reviews")
+orders = dbGetQuery(con, "SELECT * FROM orders")
+product_category = dbGetQuery(con, "SELECT * FROM product_category")
+products = dbGetQuery(con, "SELECT * FROM products")
+sellers = dbGetQuery(con, "SELECT * FROM sellers")
+
+```
+
 
 
  
@@ -29,15 +45,8 @@ valueBox(ordersN$n, icon = "fas fa-chart-pie", color = "primary")
 ### Top-10 cities
 
 ```{r}
-cities = dbGetQuery(con, "SELECT customer_city, COUNT(*) AS n
-                 FROM (SELECT DISTINCT customer_unique_id, customer_city FROM customers)
-                 GROUP BY customer_city
-                 ORDER BY n DESC
-                 LIMIT 10")
-ggplot() + geom_bar(data = cities, aes(x = customer_city, y= n), stat = "identity") + 
-  geom_bar(data = dplyr::filter(cities, customer_city == 'sao paulo'), 
-           aes(x = customer_city, y= n), stat = "identity", fill = 'darkgreen') +
-  ylab("Number of customers") + xlab("City") + coord_flip()
+temp = survey %>% count(Satisfaction)
+ggplot(temp) + geom_bar(aes(x = Satisfaction, y = n), stat = "identity")
 ```
 
 Column {data-width=350}

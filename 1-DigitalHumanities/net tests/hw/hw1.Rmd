@@ -1,0 +1,96 @@
+
+### Домашнее задание
+
+*Данные:* Пользователи lastfm с данными: пол, возраст (есть не у всех), страна (тоже не у всех), дата регистрации
+
+*Что сделать:* 
+1) Дескриптивный анализ 
+2) Выявить естественные жанры на основе индивидуальных предпочтений
+
+*Методы:*
+
+Минимум 2 метода из пройденного в этом модуле:
+
+1) Структурное тематическое моделирование можно использовать и в качестве метода кластеризации. За счет того, что он использует представление текста в качестве "мешка слов", то есть, не учитывая контекст, что позволяет выявить там "естественные жанры" из часто встречающихся рядом песен или исполнителей.
+
+2) Сети пользователей/исполниелей/песен/слов (ассортативность, корреляции и т.д.)
+
+3) Кластеризация на основе текста
+
+4) Карты 
+
+Попробуем немного покопаться на примере 20-ти пользователей. 
+```{r}
+library(readr)
+library(tidytext)
+
+users_part = read_csv("~/shared/minor3_2019/1-DigitalHumanities/net tests/hw/lastfm_users_sample.csv")
+tracks = read_csv("~/shared/minor3_2019/1-DigitalHumanities/net tests/hw/lastfm_tracks_sample.csv")
+
+users_part = inner_join(users_part, tracks, by = "userid")
+
+```
+
+Токенизируем
+```{r}
+users_words = users_part %>%
+  unnest_tokens(word, artname)
+
+# оставим только возраст юзера
+users = users_part %>% distinct(userid, age)
+
+users_count = users_words %>% 
+  group_by(userid, word) %>% 
+  summarise(count = n())
+
+# сделаем document-feature matrix 
+words_dfm <- users_count %>%
+  tidytext::cast_dfm(userid, word, count)
+dim(words_dfm)
+
+# немного уменьшим матрицу, убрав оттуда очень редкие и очень частые слова
+words_dfm <- words_dfm %>% 
+  quanteda::dfm_trim(min_docfreq = 0.1, max_docfreq = 0.95, #3% min, 95% max
+  docfreq_type = 'prop') # пропорция слова в доке
+dim(words_dfm)
+
+
+# делаем матрицу датафреймом
+w_dfm_df = quanteda::convert(words_dfm, to = "data.frame")
+dfm_docs = select(w_dfm_df, document)
+names(dfm_docs) = "userid"
+
+# присоединяем к нему метаданные
+dfm_docs = left_join(dfm_docs, users, by = "userid")
+
+# и присоединяем этот датафрейм к матрице в качестве метаданных
+words_dfm@docvars <- dfm_docs
+```
+
+STM
+```{r}
+out <- quanteda::convert(words_dfm, to = 'stm')
+
+library(stm)
+library(stminsights)
+
+# sk<-searchK(out$documents,out$vocab,K=c(7, 10, 15, 20), prevalence =~ s(age), data = out$meta)
+# knitr::kable(sk$results)
+
+# don't run
+stm_15 <- stm(documents = out$documents,
+      vocab = out$vocab,
+      data = out$meta,
+      prevalence =~ s(age),
+      K = 15,
+      verbose = TRUE) # show progress
+
+load("~/shared/minor3_2019/1-DigitalHumanities/net tests/hw/stm_15.RData")
+
+labelTopics(stm_15, n = 15)
+
+prep <- estimateEffect(1:15 ~ s(age), stm_15, meta = out$meta, uncertainty = "Global")
+summary(prep)
+```
+
+2. Постройте граф скореллированных между собой слов (исполнителей) (вероятность встретиться у одного человека), выделите сообщества

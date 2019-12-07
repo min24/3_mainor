@@ -1,0 +1,79 @@
+---
+title: "My dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    theme: readable
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(DBI)
+library(RSQLite)
+library(ggplot2)
+con <- DBI::dbConnect(RSQLite::SQLite(), "~/shared/minor3_2019/1-SQL/3-practice-dashboard/OlistStore.db")
+dbListTables(con)
+```
+
+Column {data-width=370}
+-------------------------------------------------------------------
+
+### danger
+
+```{r}
+valueBox(56, color = 'danger', icon = "fas fa-angry")
+```
+
+### primary
+
+```{r}
+valueBox("Пример", color = 'primary', icon = "fas fa-archive")
+```
+
+### warning
+
+```{r}
+valueBox(paste0(76, "%"), color  = "warning", icon = "fas fa-arrow-left")
+```
+
+### success
+
+```{r}
+f = 83
+valueBox(paste0(f, "%"), color = "success", icon = "fas fa-asterisk")
+```
+
+### info
+
+```{r}
+f = 83
+valueBox(paste0(f, "%"), color = "info", icon = "far fa-edit")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Заголовок 2
+
+это пример текста в **дэшборде**
+
+* пункт 1
+* пункт 2
+
+### Chart C
+
+```{r}
+cities2 = dbGetQuery(con, "SELECT customer_city, COUNT(*) AS n
+                 FROM (SELECT DISTINCT customer_unique_id, customer_city FROM customers)
+                 GROUP BY customer_city
+                 ORDER BY n DESC
+                 LIMIT 10")
+ggplot(cities2) + geom_bar(aes(x = customer_city, y= n), stat = "identity") + 
+  ylab("Number of customers") + xlab("City") + coord_flip()
+```
+
+### Chart C
+```{r}
+knitr::kable(cities2)
+```

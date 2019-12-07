@@ -230,6 +230,7 @@ ggplot(categorySP) + geom_bar(aes(x = category, y= n), stat = "identity") +
 
 А теперь детали
 
+
 ##### Дэшборд создается отдельным файлом
 
 Чтобы его создать, выбираем File -> New file -> RMarkdown -> From template -> Flex Dashboard

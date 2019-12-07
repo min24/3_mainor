@@ -46,8 +46,12 @@ summary(prep)
 Одной из особенностей STM является возможность посмотреть на то, как темы скореелированы между собой, то есть, насколько вероятно они встречаются друг с другом в одном документе. 
 С помощью функции get_network из пакета stminsights можно извлечь сеть, где темы будут узлами, а связи между ними - корреляцией.
 ```{r}
+#install.packages("devtools")
+#devtools::install_github("slowkow/ggrepel")
+#installed.packages("stminsights")
 library(ggraph)
-stm_corrs <- get_network(model = news_stm,
+library(ggplot2)
+stm_corrs <- stminsights::get_network(model = news_stm,
                          method = 'simple', # метод корреляции
                          cutoff = 0.05, # минимальная корреляция
                          labels = paste('T', 1:25),

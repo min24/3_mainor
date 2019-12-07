@@ -1,0 +1,389 @@
+---
+title: Network tests
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## Сначала немного повторим сети
+
+Рассмотрим данные про отношения между семьями Флоренции (Renaissance Florentine families collected by John Padgett from historical documents). Связь -- брачные договоры.
+
+```{r}
+adjFlorence <- read.csv("~/shared/minor3_2019/1-DigitalHumanities/net tests/florentineFamily.csv")
+rownames(adjFlorence) <- names(adjFlorence)
+adjFlorence <- as.matrix.data.frame(adjFlorence)
+```
+
+* что такое матрица смежности?
+
+```{r message=F, warning=FALSE}
+library(igraph)
+florentine <- graph.adjacency(adjmatrix = adjFlorence, mode = "undirected")
+plot(florentine)
+```
+
+### Recap: меры центральности
+
+Вспомним о различных мерах центральности -- посчитаем, сколько брачных связей связывает семейство Медичи с остальными
+
+```{r}
+degree(florentine, v = "Medici")
+```
+
+Что можно сказать о других семьях?
+
+```{r}
+degree(florentine)
+```
+
+Для более удобного представления мы можем изменить размер вершин таким образом, чтобы он отражал степень вершины 
+
+```{r}
+# plot(florentine, vertex.size = degree(florentine)*5)
+
+library(ggraph)
+p = ggraph(florentine, layout = "fr") +
+  geom_edge_link() + 
+  geom_node_point(aes(size = degree(florentine)*5), color = "yellow") +
+  geom_node_text(aes(label = name), color = 'black', vjust = 1, hjust = 1, size = 3)+
+  theme_void()
+p
+```
+
+* Какие выводы можно сделать из данного графа?
+* замените степень на битвинность. Как изменятся выводы?
+
+```{r}
+# ваш код
+```
+
+Другие меры центральности
+
+* **Центральность по близости** ("Быстро достижимые вершины"): показывает, насколько вершины близки друг к другу. Центральность по близости = число других вершин (n-1), разделенное на сумму расстояний до других вершин. Другими словами, обратное значение к тому, сколько в среднем шагов потребуется, чтобы дойти до любой другой вершины 
+
+```{r}
+closeness(florentine)
+plot(florentine, vertex.size = closeness(florentine)*400, 
+     vertex.label.cex = closeness(florentine)*50)
+```
+
+* **PageRank** ("Важны соседи"): вершина более важна, если она связана с более важными вершинами (eigenvector centrality). Разрабатывался как инструмент для ранжирования веб-страниц (Google PageRank). Если на странице A есть ссылка на страницу B, это значит, что автор А считает, что источник В полезен. Т.е. ссылка от А добавляет репутацию В, но А тоже бывают разные..., важнее те, у которых репутация выше (ссылка от авторитетного источника важнее). Pagerank вершины =  сумма pageranks соседей, разделенная на количество этих соседей. 
+
+```{r}
+page_rank(florentine)$vector
+
+plot(florentine, vertex.size = page_rank(florentine)$vector*100, 
+     vertex.label.cex = page_rank(florentine)$vector*10)
+```
+
+### Recap: выявление сообществ
+
+Модулярность = разность между долей ребер внутри сообщества и ожидаемой доли связей, если бы ребра были размещены случайно. Является мерой качества разделения на сообщества.
+
+* **Fast-Greedy**: иерархический подход. Первоначально каждая вершина представляет собой отдельное сообщество. Сообщества объединяются таким образом, чтобы это привело к наибольшему возрастанию модулярности. Останавливаемся, когда нет следующего шага, увеличивающего модулярность. 
+
+```{r}
+fgcommune <- fastgreedy.community(florentine)
+membership(fgcommune) ## assigning nodes to communities
+modularity(fgcommune)
+plot(fgcommune, florentine)
+```
+
+* **Walktrap**: Подход, основанный на случайных путях. Основная идея -- если случайно "блуждать" по графу, то больше шансов, что ваш путь будет чаще оставаться внутри сообщества и только иногда выходить за его пределы. 
+
+```{r}
+wtcommune <- walktrap.community(florentine)
+membership(wtcommune) ## assigning nodes to communities
+modularity(wtcommune)
+plot(wtcommune, florentine)
+```
+
+Другие алгоритмы в `igraph` (см. справку)
+
+* label.propagation.community 
+* leading.eigenvector.community 
+* multilevel.community 
+* optimal.community
+* spinglass.community 
+* infomap.community
+
+## Не только описание 
+
+А теперь посмотрим на другую сеть про те же семьи Флоренции -- теперь с финансовыми связями.
+
+```{r}
+adjFlorenceFinance <- read.csv("~/shared/minor3_2019/1-DigitalHumanities/net tests/florentineFamilyFinance.csv")
+rownames(adjFlorenceFinance) <- names(adjFlorenceFinance)
+
+adjFlorenceFinance <- as.matrix.data.frame(adjFlorenceFinance)
+```
+
+> Подробный анализ связей семьи Медичи и история их прихода к власти хорошо описывается в статье
+Robust Action and the Rise of the Medici, 1400-1434 (John F. Padgett, and Christopher K. Ansell) 
+https://www.journals.uchicago.edu/doi/abs/10.1086/230190
+
+Мы можем провести анализ и для этой сети -- посчитать центральности и найти важные вершины, выделить сообщества. Но что, если мы хотим сравнить эти сети? Например, понять, насколько "связи взаимосвязаны", другими словами, верно ли, что те семьи, у которых больше деловых связей, с большей вероятностью будут иметь и брачные связи.
+
+Для этого можно посчитать корреляцию. Обратите внимание: она вычисляется для матриц, mode соответствует типу графа (graph для неориентированного, digraph для ориентированного)
+
+Функции пакетов sna и igraph пересекаются и часто вызывают конфликты, поэтому отключим пакет igraph.
+```{r message=F, warning=FALSE}
+detach("package:igraph")
+library(sna)
+gcor(adjFlorenceFinance, adjFlorence, mode = "graph")
+```
+
+* Это много или мало?
+* Есть взаимосвязь или нет?
+* Может, это просто случайно так получилось?
+
+Так же, как и для сравнений обычных переменных (средних, например), для ответов на такие вопросы про графы существуют специальные статистические тесты. 
+
+Вспомним логику тестов: 
+
+* предполагаем, что взаимосвязи нет 
+* получаем распределение нужного нам параметра при таком предположении 
+* сравниваем, выделяется ли наше реальное значение из этого множества случайных 
+* если выделяется ("статистически значимо"), то отвергаем первоначальное предположение об отсутствии взаимосвязи
+* если не выделяется, то наше реальное различие может быть получено и случайно
+
+С графами логика такая же
+
+* давайте будем генерировать графы случайно и посмотрим, сможем ли мы получить интересующую нас связь или нет
+    * оставляем те же вершины, что есть в первоначальном графе
+    * оставляем то же число связей 
+    * но распределяем эти связи случайно
+    * в терминах матрицы смежности: оставляем названия строк и столбцов и общее число единиц, но перемешиваем эти единицы по матрице случайно
+* считаем для каждого такого графа корреляцию, повторяем много раз
+* если наше реальное значение выделяется из массы случайных, то считаем, что взаимосвязь есть
+
+В пакете sna есть специальная функция, которая реализует этот процесс "перемешаем-посчитаем". Только сначала нам нужно организовать из наших матриц единый объект. Т.е. это будет объект из двух элементов, каждый их которых является матрицей 16*16
+
+```{r}
+florTotal <- list(adjFlorence, adjFlorenceFinance)
+flo.qap <- qaptest(florTotal, gcor, g1=1, g2=2, reps=1000)
+```
+
+* florTotal - наши сети
+* gcor - функция, значение которой мы будем вычислять
+* g1, g2 - показатель того, что у нас два графа, которые нужно сравнить, в качестве первого используем первый элемент списка, в качестве второго - второй
+* reps - число случайных графов
+
+```{r}
+summary(flo.qap)
+```
+
+**Ваша очередь**
+Загрузите данные о путешествиях 37 британских архитекторов по итальянским городам в 18-м веке (данные собраны в рамках проекта "Республика писем" в Стэнфорде, детальнее про проект и кейсы можно посмотреть здесь http://republicofletters.stanford.edu/). 
+Первый файл *people* содержит самих архитекторов и их принадлежность к различным обществам.
+Во втором файле *travels* находятся те же самые архитекторы и места в Италии, которые они посещали. 
+
+```{r}
+library(readr)
+people = read_csv("~/shared/minor3_2019/1-DigitalHumanities/net tests/people.csv")
+
+# матрица архитектор-общество (если участник, то 1, если нет, то 0)
+people_mat <- ifelse(table(people$PersonName, people$society)>=1, 1, 0)
+
+# создаем матрицу архитектор-архитектор на основании их общей принадлежности к обществу
+people_mat.adj <- people_mat %*% t(people_mat)
+
+
+# то же самое делаем для путешествий
+travels = read_csv("~/shared/minor3_2019/1-DigitalHumanities/net tests/travels.csv")
+travels_mat <- ifelse(table(travels$PersonName, travels$place_name)>=1, 1, 0)
+# делаем матрицу путешественник-путешественник
+travels_mat.adj <- travels_mat %*% t(travels_mat)
+```
+
+1) Сформулируйте гипотезу о связи между двумя сетями, которую можно проверить с помощью корреляции.
+2) Проверьте ее
+
+
+### Лирическое отсутпление 
+
+# Бимодальные сети
+
+До этого мы обсуждали графы, которые состоят из вершин одного порядка (равнозначных), теперь же поговорим о графах, в которых соединяются 2 разных группы вершин.
+
+Соответственно, рассмотрим двудольный (или бимодальнй) граф. Это граф, множество вершин которого можно разбить на две части таким образом, что каждое ребро графа соединяет какую-то вершину из одной части с какой-то вершиной другой части, и не существует ребра, соединяющего две вершины из одной и той же части.
+
+Вернемся к сетям архитекторов - обе они бимодальные. Рассмотрим сеть с их принадлежностью к сообществам.
+```{r}
+# посмотрим на датасет
+head(people)
+```
+
+Функции пакетов sna и igraph пересекаются и часто вызывают конфликты, поэтому в этот раз отключим пакет sna.
+```{r message=F, warning=FALSE}
+detach("package:sna")
+library(igraph)
+```
+
+Можно сделать граф из датасета
+```{r}
+g = graph_from_data_frame(people) 
+g = igraph::simplify(g) # убираем петли
+
+bipartite.mapping(g) # видим 2 типа узлов - все ок, граф бимодальный
+
+V(g)$type <- bipartite_mapping(g)$type # задаем атрибуты вершин
+
+
+ggraph(g, layout = 'fr') + 
+      geom_node_point(aes(col = type, shape = type, size = degree(g))) + 
+      geom_edge_link() +
+      geom_node_text(aes(label = name), size = 3) +
+      theme_void()
+
+```
+Какие выводы можно сделать?
+А если заменить размер узла на битвинность?
+
+
+## Как сделать из этого обычный граф с одним типом вершин? 2 варианта: 
+
+  1) достать матрицы, как мы это сделали для проверки гипотезы
+  2) достать проекции бимодальной сети
+  
+**Матрицы**
+
+Сделем из нашей матрицы по архитекторам граф
+```{r}
+people.g <- graph.adjacency(adjmatrix = people_mat.adj, mode = "undirected")
+
+wt <- walktrap.community(people.g)
+m = factor(membership(wt))
+
+ggraph(people.g, layout = 'kk') + 
+      geom_node_point(aes(size = degree(people.g), color = m)) + 
+      geom_edge_link(alpha = 0.3) +
+      geom_node_text(aes(label = name), size = 3, color = "blue") +
+      theme_void()
+```
+
+**Проекции** 
+Из двудольного графа, который мы сделали ранее, можно достать проекции как для архитекторов, так и для сообществ.
+```{r}
+# делаем проекции
+proj <- bipartite_projection(g)
+
+# смотрим на проекции
+print(proj[[1]], g=TRUE, e=TRUE)
+print(proj[[2]], g=TRUE, e=TRUE)
+
+# проекция с людьми
+people.proj = proj[[1]]
+
+ggraph(people.proj, layout = 'fr') + 
+      geom_node_point(aes(size = degree(people.proj))) + 
+      geom_edge_link(alpha = 0.3) +
+      geom_node_text(aes(label = name), size = 3, color = "blue") +
+      theme_void()
+
+
+# проекция с обществами
+soc.proj = proj[[2]]
+
+fg <- fastgreedy.community(soc.proj)
+m = factor(membership(fg))
+
+# можно преобразовать нашу сеть в интерактивную
+# library(visNetwork)
+# data <- toVisNetworkData(soc.proj)
+# visNetwork(nodes = data$nodes, edges = data$edges, height = "1000px", width = "100%") 
+
+ggraph(soc.proj, layout = 'fr') + 
+      geom_node_point(aes(size = degree(soc.proj), color = m)) + 
+      geom_edge_link(alpha = 0.3) +
+      geom_node_text(aes(label = name), size = 3, color = "blue") +
+      theme_void()
+
+# какие выводы можно сделать?
+```
+
+**Ваша очередь** 
+Проанализируйте бимодальный граф путешествий: попробуйте выделить сообщества среди людей и мест, выделить центральные узлы и тд.
+
+# Конец лирического отсупления
+
+
+### Ассортативность 
+
+*Ассортативность или гомофилия* показывает, насколько узлы в нашей сети склонны иметь связи с похожими на них узлами (обладающими такими же свойствами). В этом случае помимо структурных характеристик сети (центральности и т.д) в анализ добавляются внешние атрибуты (напр. принадлежность к группе).
+
+Посмотрим на базу международных торговых путей. Она уже дана в виде сети. 
+Что это за сеть? Какие атрибуты есть у узлов?
+```{r}
+library(ITNr)
+data("ELEnet16") #уже в виде сети
+(ELEnet16)
+```
+
+Посмотрим, насколько страны стремятся развивать торговые пути с странами с похожим ВВП. Сначала удалим страны, для которых не указан ВВП.
+```{r}
+gr1 = delete_vertices(ELEnet16, is.na(V(ELEnet16)$GDP))
+V(gr1)$GDP
+
+assortativity(gr1, V(gr1)$GDP, directed = T)
+```
+
+Итак, мы получили коэффициент ассортативности. Он измеряется от -1 до 1, где -1 -- связи в сети склонны формироваться между узлами с отличающимися характеристиками, а 1 -- узлы предпочитают формировать связь с похожими узлами.
+
+Стремятли страны торговать с похожими по ВВП странами?
+
+Можно посчитать похожесть по категориальной переменной. Например, по уровню дохода
+```{r}
+V(ELEnet16)$income
+
+assortativity_nominal(ELEnet16, V(ELEnet16)$income, directed = T)
+```
+
+
+Насколько мы можем быть уверены в этом ответе? А что, если при отсутствии реальной взаимосвязи мы получим похожий результат? *Звучит знакомо, да?* Опять используем статистические тесты. 
+
+Предполагаем, что уровень дохода распределяется случайно -> перемешиваем, пересчитываем -> сравниваем, делаем выводы = знакомый тест перестановок
+
+```{r}
+g = ELEnet16
+number_of_permutations = 3500
+assortativity_shuffled  <- rep(NA, number_of_permutations)
+for(i in 1:number_of_permutations){
+  V(g)$attr_shuffled = sample(V(g)$income, replace = F)
+  assortativity_shuffled[i] = assortativity_nominal(g,as.factor(V(g)$attr_shuffled))
+}
+```
+
+Квантили при случайном перемешивании
+```{r}
+q <- quantile(assortativity_shuffled, c(0.05, 0.95))
+q
+```
+
+Реальная ассортативность
+```{r}
+assortativity_real = assortativity_nominal(g, V(g)$income, directed = T)
+assortativity_real
+```
+
+p-value
+```{r}
+pvalue = sum(abs(assortativity_shuffled) >= abs(assortativity_real)) / number_of_permutations
+pvalue
+```
+
+И график
+```{r}
+library(ggplot2)
+df <- data.frame(assortativity_shuffled = assortativity_shuffled) 
+ggplot(df) +
+  geom_histogram(aes(assortativity_shuffled), fill="lightgreen") + 
+  geom_vline(xintercept=assortativity_real, color="black")+ 
+  geom_vline(xintercept=q[1], color="red") +
+  geom_vline(xintercept=q[2], color="red") + theme_bw()
+```
+
+**Выводы?**
+
+Посчитайте ассортативность торговых путей по региону. 

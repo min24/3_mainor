@@ -1,0 +1,209 @@
+---
+title: "Predictions"
+output: html_document
+---
+
+## Задачи
+
+Клиентская аналитики, бизнес-аналитика -- это не только и не столько инструменты (базы данных, визуализации), но и задачи. А вот решать их можно теми же инструментами, что мы уже изучали.
+
+Одна из популярных задач -- оценка и предсказание удовлетворенности. Рассмотрим на примере авиакомпаний
+
+```{r}
+library(RSQLite)
+con <- DBI::dbConnect(SQLite(), "~/shared/minor3_2019/1-SQL/4-practice-prediction/Satisfaction.db")
+```
+
+```{r}
+dbListTables(con)
+
+```
+```{r}
+customers = dbGetQuery(con, "SELECT * FROM customers")
+survey = dbGetQuery(con, "SELECT * FROM survey")
+
+```
+
+Данные из US Airline passenger satisfaction survey <https://www.kaggle.com/johndddddd/customer-satisfaction> (~130000 наблюдений). 
+
+* **Satisfaction**: Airline satisfaction level(Satisfaction, neutral or dissatisfaction)
+* Gender:Gender of the passengers (Female, Male)
+* Loyalty:The customer type (Loyal customer, disloyal customer)
+* Age:The actual age of the passengers
+* TravelType:Purpose of the flight of the passengers (Personal Travel, Business Travel)
+* Class:Travel class in the plane of the passengers (Business, Eco, Eco Plus)
+* Distance:The flight distance of this journey
+* Wifi service:Satisfaction level of the inflight wifi service (0:Not Applicable;1-5)
+* TimeConvenience:Satisfaction level of Departure/Arrival time convenient
+* OnlineBooking:Satisfaction level of online booking
+* GateLocation:Satisfaction level of Gate location
+* FoodDrink:Satisfaction level of Food and drink
+* Boarding:Satisfaction level of online boarding
+* SeatComfort:Satisfaction level of Seat comfort
+* Entertainment:Satisfaction level of inflight entertainment
+* OnboardService:Satisfaction level of On-board service
+* LegRoom:Satisfaction level of Leg room service
+* Baggage:Satisfaction level of baggage handling
+* CheckinService:Satisfaction level of Check-in service
+* InflightService:Satisfaction level of inflight service
+* Cleanliness:Satisfaction level of Cleanliness
+* DepartureDelay:Delay in minutes
+* ArrivalDelay:Delay in minutes
+
+```{r}
+dbListTables(con)
+```
+```{r}
+dbListFields(con, "survey")
+```
+
+```{r}
+dbListFields(con, "customers")
+```
+
+Посмотрим, сколько рейсов совершают клиенты
+
+```{r}
+library(dplyr)
+cust = dplyr::tbl(con, "customers")
+survey = tbl(con, "survey")
+
+dbGetQuery(con, "SELECT id, COUNT() AS n FROM survey GROUP BY id")
+
+query = survey %>% count(id) %>% select(n)
+```
+```{r}
+q = query %>% filter(n>10)
+```
+
+
+Результат запроса
+```{r}
+data = query %>% collect()
+```
+
+```{r}
+library(ggplot2)
+ggplot(data) + geom_histogram(aes(x = n))
+```
+
+Посмотрим на код внутри
+```{r}
+query %>% show_query()
+```
+
+Не самый оптимальный вариант -- тот же результат можно получить так
+
+```{r}
+data1 = dbGetQuery(con, "SELECT COUNT() AS n FROM survey GROUP BY id")
+ggplot(data1) + geom_histogram(aes(x = n))
+```
+
+Вернемся к задаче -- исследование и предсказание удовлетворенности. Одним из разумных решений является сегментация данных -- выделение групп клиентов, интереснвх  по какому-то признаку.
+
+* какие группы можно выделить?
+* на каком основании?
+
+```{r}
+temp = survey %>% count(Satisfaction)
+ggplot(temp) + geom_bar(aes(x = Satisfaction, y = n), stat = "identity")
+```
+
+
+Посмотрим, например, на самую потенциально активную группу -- пассажиров от 23 до 35 лет, причем путешествующих экономом
+
+```{r}
+activeQ = cust %>% left_join(survey) %>% filter(Age >= 23 & Age <= 35 & Class == "Eco") %>% select(-Gender, -Age, -Class, -id) 
+active = activeQ %>% collect()
+```
+
+```{r}
+activeQ %>% show_query()
+```
+
+* Напишите запрос самостоятельно
+
+Посмотрим на удовлетворенность
+```{r}
+ggplot(active) + geom_bar(aes(x = Satisfaction))
+```
+
+```{r}
+allSQ = survey %>% group_by(Satisfaction) %>% count() 
+all = allSQ %>% collect()
+ggplot(all) + geom_bar(aes(x = Satisfaction, y = n), stat = "identity")
+```
+
+
+Преобразуем нужные переменные к факторам
+```{r}
+for (var in names(active)[c(1:3,5:18)]){
+  active[[var]] = as.factor(active[[var]])
+}
+active$Distance = as.numeric(active$Distance)
+```
+
+Строим модель
+```{r}
+library(partykit)
+library(caret)
+active.ind = createDataPartition(active$Satisfaction, p = 0.8, list = F)
+active.train = active[active.ind,]
+active.test = active[-active.ind,]
+```
+
+```{r}
+treemodel = ctree(Satisfaction~., data = active.train)
+plot(treemodel)
+```
+
+* Оцените качество модели
+
+```{r}
+predTest = predict(treemodel, active.test)
+confusionMatrix(predTest, active.test$Satisfaction)
+```
+
+```{r}
+ggplot(active) + geom_bar(aes(x = Wifi))
+```
+Попробуем что-то изменить, например, wifi
+
+```{r}
+test2 = active.test
+ggplot(test2) + geom_bar(aes(x = Wifi))
+summary(active.test$Wifi)
+```
+
+```{r}
+test2$Wifi[test2$Wifi=="1" | test2$Wifi=="2" | test2$Wifi=="3"] = "4"
+```
+
+Предсказываем и оцениваем удовлетворенность
+```{r}
+predTest = predict(treemodel, test2)
+ggplot(data.frame(predTest)) + geom_bar(aes(x = predTest))
+```
+Исходная удовлетворенность
+
+```{r}
+ggplot(active.test) + geom_bar(aes(x = Satisfaction))
+```
+
+Как понять, какой признак менять -- важность признаков (см. лаб №5 в machine learning)
+```{r}
+library(vip)
+vi(treemodel)
+vip(treemodel)
+```
+
+
+**Ваша очередь**
+* Представьте результаты в виде дашборда. Что туда вынести?
+* Выделите действительно активных пассажиров (совершивших много поездок)
+* Выделите другие группы пассажиров
+
+```{r}
+survey %>% count(id) %>% arrange(-n)
+```
+
