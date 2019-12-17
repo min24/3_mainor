@@ -29,6 +29,7 @@ tracks = read_csv("~/shared/minor3_2019/1-DigitalHumanities/net tests/hw/lastfm_
 
 users_part = inner_join(users_part, tracks, by = "userid")
 
+
 ```
 
 Токенизируем

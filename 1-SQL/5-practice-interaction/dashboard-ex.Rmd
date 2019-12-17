@@ -1,0 +1,90 @@
+---
+title: "Olist Store Statistics"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+---
+ 
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(DBI)
+library(RSQLite)
+library(plotly)
+con <- DBI::dbConnect(RSQLite::SQLite(), "~/shared/minor3_2019/1-SQL/3-practice-dashboard/OlistStore.db")
+```
+
+
+ 
+Column {data-width=500}
+-----------------------------------------------------------------------
+### orders in total
+
+```{r}
+ordersN = dbGetQuery(con, "SELECT COUNT(*) AS n
+                 FROM orders")
+valueBox(ordersN$n, icon = "fas fa-chart-pie", color = "primary")
+```
+
+
+### Top-10 cities
+
+```{r}
+cities = dbGetQuery(con, "SELECT customer_city, COUNT(*) AS n
+                 FROM (SELECT DISTINCT customer_unique_id, customer_city FROM customers)
+                 GROUP BY customer_city
+                 ORDER BY n DESC
+                 LIMIT 10")
+p = ggplot() + geom_bar(data = cities, aes(x = customer_city, y= n), stat = "identity") + 
+  geom_bar(data = dplyr::filter(cities, customer_city == 'sao paulo'), 
+           aes(x = customer_city, y= n), stat = "identity", fill = 'darkgreen') +
+  ylab("Number of customers") + xlab("City") + coord_flip()
+ggplotly(p)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+### categories in total
+
+```{r}
+categoryN = dbGetQuery(con, "SELECT DISTINCT product_category_name
+                 FROM products")
+valueBox(length(categoryN$product_category_name), icon = "fas fa-bars")
+```
+
+### Top-10 categories
+
+```{r}
+category10 = dbGetQuery(con, "SELECT product_category_name_english AS category, COUNT(*) AS n
+                 FROM (order_items INNER JOIN products ON order_items.product_id = products.product_id)
+                       INNER JOIN product_category 
+                       ON product_category.product_category_name =  products.product_category_name
+                 GROUP BY category
+                 ORDER BY n DESC
+                 LIMIT 10")
+p = ggplot(category10) + geom_bar(aes(x = category, y= n), stat = "identity") + 
+  ylab("Number of orders") + xlab("Category") + coord_flip()
+g = ggplotly(p)
+g
+```
+
+### Top-10 Categories in San Paulo
+
+```{r}
+categorySP = dbGetQuery(con, "SELECT product_category_name_english AS category, COUNT(*) AS n
+                 FROM (((order_items INNER JOIN products ON order_items.product_id = products.product_id)
+                       INNER JOIN product_category 
+                         ON product_category.product_category_name =  products.product_category_name)
+                       INNER JOIN orders 
+                         ON orders.order_id = order_items.order_id)
+                       INNER JOIN customers
+                         ON customers.customer_id = orders.customer_id
+                 WHERE customer_city = 'sao paulo'
+                 GROUP BY category
+                 ORDER BY n DESC
+                 LIMIT 10")
+p = ggplot(categorySP) + geom_bar(aes(x = category, y= n), stat = "identity", fill = 'darkgreen') + 
+  ylab("Number of orders") + xlab("Category") + coord_flip()
+
+ggplotly(p)
+```

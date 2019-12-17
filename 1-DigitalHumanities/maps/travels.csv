@@ -1,0 +1,424 @@
+"PersonName","place_name","Duration"
+"Talman, John","Rome",37
+"Talman, John","Leghorn",1
+"Talman, John","Pisa",1
+"Talman, John","Florence",5
+"Talman, John","Lucca",1
+"Talman, John","Pistoia",1
+"Talman, John","Rome",1
+"Talman, John","Naples",2
+"Talman, John","Rome",1
+"Talman, John","Florence",1
+"Talman, John","Rome",19
+"Talman, John","Ravenna",1
+"Talman, John","Padua",1
+"Talman, John","Rome",1
+"Talman, John","Venice",1
+"Talman, John","Padua",1
+"Talman, John","Rome",6
+"Talman, John","Venice",1
+"Talman, John","Florence",1
+"Talman, John","Rome",4
+"Talman, John","Padua",1
+"Talman, John","Rome",1
+"Talman, John","Venice",1
+"Talman, John","Rome",1
+"Talman, John","Rome",1
+"Talman, John","Monza",1
+"Dingley, Robert","Florence",3
+"Dingley, Robert","Rome",1
+"Dingley, Robert","Padua",1
+"Dingley, Robert","Venice",1
+"Revett, Nicholas","Leghorn",1
+"Revett, Nicholas","Rome",63
+"Revett, Nicholas","Naples",1
+"Revett, Nicholas","Venice",1
+"Revett, Nicholas","Pola",1
+"Revett, Nicholas","Venice",1
+"Revett, Nicholas","Greece",1
+"Stuart, James 'Athenian'","Rome",1
+"Stuart, James 'Athenian'","Naples",1
+"Stuart, James 'Athenian'","Rome",27
+"Stuart, James 'Athenian'","Venice",10
+"Stuart, James 'Athenian'","Pola",1
+"Stuart, James 'Athenian'","Venice",1
+"Stuart, James 'Athenian'","Greece",1
+"Fountaine, Sir Andrew","Venice",1
+"Fountaine, Sir Andrew","Padua",1
+"Fountaine, Sir Andrew","Rome",2
+"Fountaine, Sir Andrew","Turin",1
+"Fountaine, Sir Andrew","Florence",1
+"Fountaine, Sir Andrew","Rome",3
+"Fountaine, Sir Andrew","Venice",6
+"Fountaine, Sir Andrew","Padua",1
+"Robinson, Hon. Thomas","Turin",5
+"Robinson, Hon. Thomas","Genoa",1
+"Robinson, Hon. Thomas","Milan",1
+"Robinson, Hon. Thomas","Florence",1
+"Robinson, Hon. Thomas","Naples",1
+"Robinson, Hon. Thomas","Rome",7
+"Robinson, Hon. Thomas","Parma",1
+"Robinson, Hon. Thomas","Florence",1
+"Robinson, Hon. Thomas","Genoa",1
+"Robinson, Hon. Thomas","Venice",5
+"Wyatt, James","Venice",15
+"Wyatt, James","Rome",1
+"Chambers, William","Rome",15
+"Chambers, William","Florence",2
+"Chambers, William","Rome",26
+"Chambers, William","Naples",1
+"Chambers, William","Bologna",1
+"Chambers, William","Venice",1
+"Chambers, William","Vicenza",1
+"Chambers, William","Genoa",1
+"Chambers, William","Milan",1
+"Chambers, William","Turin",1
+"Gibbs, James","Rome",61
+"Riou, Stephen","Naples",1
+"Riou, Stephen","Capri",1
+"Riou, Stephen","Rome",1
+"Riou, Stephen","Venice",1
+"Riou, Stephen","Vicenza",1
+"Riou, Stephen","Florence",1
+"Riou, Stephen","Rome",16
+"Riou, Stephen","Naples",2
+"Riou, Stephen","Mount Vesuvius",1
+"Riou, Stephen","Pozzuoli",1
+"Riou, Stephen","Baiae",1
+"Riou, Stephen","Cuma",1
+"Riou, Stephen","Arco Felice",1
+"Riou, Stephen","Constantinople",1
+"Riou, Stephen","Tivoli",1
+"Riou, Stephen","Frascati",1
+"Riou, Stephen","Marino",1
+"Riou, Stephen","Albano",1
+"Riou, Stephen","Gensano",1
+"Adam, Robert","Genoa",1
+"Adam, Robert","Leghorn",1
+"Adam, Robert","Pisa",1
+"Adam, Robert","Florence",2
+"Adam, Robert","Siena",1
+"Adam, Robert","Rome",2
+"Adam, Robert","Naples",1
+"Adam, Robert","Baiae",1
+"Adam, Robert","Reggio (Emilia)",1
+"Adam, Robert","Solfatara",1
+"Adam, Robert","Caserta",1
+"Adam, Robert","Herculaneum",1
+"Adam, Robert","Rome",6
+"Adam, Robert","Caprarola",1
+"Adam, Robert","Narni",1
+"Adam, Robert","Terni",1
+"Adam, Robert","Spoleto",1
+"Adam, Robert","Rimini",1
+"Adam, Robert","Ravenna",1
+"Adam, Robert","Rome",8
+"Adam, Robert","Sora",1
+"Adam, Robert","Rome",24
+"Adam, Robert","Albano",1
+"Adam, Robert","Florence",1
+"Adam, Robert","Bologna",1
+"Adam, Robert","Padua",1
+"Adam, Robert","Venice",1
+"Adam, Robert","Spalato",2
+"Adam, Robert","Venice",2
+"Adam, Robert","Vicenza",1
+"Adam, Robert","Verona",1
+"Mylne, Robert","Civitavecchia",1
+"Mylne, Robert","Rome",1
+"Mylne, Robert","Naples",14
+"Mylne, Robert","Rome",1
+"Mylne, Robert","Naples",1
+"Mylne, Robert","Sicily",5
+"Mylne, Robert","Rome",16
+"Mylne, Robert","Tivoli",1
+"Mylne, Robert","Anzio",1
+"Mylne, Robert","Siena",1
+"Mylne, Robert","Florence",1
+"Mylne, Robert","Pisa",1
+"Mylne, Robert","Leghorn",1
+"Mylne, Robert","Rome",5
+"Mylne, Robert","Narni",1
+"Mylne, Robert","Terni",1
+"Mylne, Robert","Foligno",1
+"Mylne, Robert","Perugia",1
+"Mylne, Robert","Cortona",1
+"Mylne, Robert","Arezzo",1
+"Mylne, Robert","Florence",1
+"Mylne, Robert","Bologna",1
+"Mylne, Robert","Venice",2
+"Mylne, Robert","Padua",1
+"Mylne, Robert","Vicenza",1
+"Mylne, Robert","Verona",1
+"Mylne, Robert","Lake Garda",1
+"Mylne, Robert","Brescia",1
+"Byres, James","Rome",385
+"Byres, James","Tarquinia",1
+"Byres, James","Paestum",1
+"Byres, James","Calabria",1
+"Byres, James","Reggio (Calabria)",1
+"Byres, James","Sicily",1
+"Byres, James","Sicily",1
+"Byres, James","Venice",1
+"Adam, James","Turin",1
+"Adam, James","Venice",5
+"Adam, James","Pola",1
+"Adam, James","Padua",1
+"Adam, James","Vicenza",1
+"Adam, James","Verona",1
+"Adam, James","Ferrara",1
+"Adam, James","Bologna",1
+"Adam, James","Florence",4
+"Adam, James","Pisa",1
+"Adam, James","Leghorn",1
+"Adam, James","Siena",1
+"Adam, James","Rome",6
+"Adam, James","Naples",5
+"Adam, James","Caserta",1
+"Adam, James","Benevento",1
+"Adam, James","Pompeii",1
+"Adam, James","Paestum",1
+"Adam, James","Capri",1
+"Adam, James","Rome",17
+"Adam, James","Florence",1
+"Adam, James","Bologna",1
+"Adam, James","Parma",1
+"Richardson, George","Turin",1
+"Richardson, George","Venice",1
+"Richardson, George","Pola",3
+"Richardson, George","Florence",1
+"Richardson, George","Rome",5
+"Richardson, George","Naples",5
+"Richardson, George","Rome",25
+"Baxter, John","Leghorn",1
+"Baxter, John","Rome",66
+"Newton, William","Rome",1
+"Kent, William","Leghorn",1
+"Kent, William","Pisa",1
+"Kent, William","Florence",5
+"Kent, William","Rome",52
+"Kent, William","Siena",1
+"Kent, William","Florence",2
+"Kent, William","Bologna",1
+"Kent, William","Faenza",1
+"Kent, William","Forli",1
+"Kent, William","Ravenna",1
+"Kent, William","Ferrara",1
+"Kent, William","Venice",2
+"Kent, William","Padua",1
+"Kent, William","Vicenza",1
+"Kent, William","Mantua",1
+"Kent, William","Parma",1
+"Kent, William","Rome",18
+"Kent, William","Naples",1
+"Kent, William","Rome",4
+"Kent, William","Florence",2
+"Kent, William","Bologna",2
+"Kent, William","Modena",1
+"Kent, William","Reggio (Calabria)",1
+"Kent, William","Parma",2
+"Kent, William","Modena",1
+"Kent, William","Bologna",1
+"Kent, William","Rome",24
+"Kent, William","Florence",1
+"Kent, William","Genoa",1
+"Cameron, Charles","Bologna",1
+"Cameron, Charles","Pisa",1
+"Cameron, Charles","Rome",1
+"Cameron, Charles","Nocera",1
+"Cameron, Charles","Pompeii",1
+"Kirby, William","Rome",25
+"Norris, Richard","Rome",1
+"Harrison, Thomas","Rome",85
+"Harrison, Thomas","Pola",1
+"Harrison, Thomas","Venice",1
+"Lewis, James","Rome",25
+"Lewis, James","Tivoli",1
+"O'Brien, Thomas","Rome",1
+"O'Brien, Thomas","Mantua",1
+"O'Brien, Thomas","Cremona",1
+"O'Brien, Thomas","Asola",1
+"O'Brien, Thomas","Naples",1
+"O'Brien, Thomas","Turin",1
+"O'Brien, Thomas","Genoa",4
+"O'Brien, Thomas","Cremona",36
+"O'Brien, Thomas","Florence",1
+"Ebdon, Christopher","Florence",23
+"Ebdon, Christopher","Rome",1
+"Ebdon, Christopher","Florence",7
+"Stevens, Edward","Florence",1
+"Stevens, Edward","Rome",4
+"Stevens, Edward","Naples",1
+"Stevens, Edward","Pompeii",1
+"Stevens, Edward","Rome",1
+"Hardwick, Thomas","Rivoli",1
+"Hardwick, Thomas","Turin",1
+"Hardwick, Thomas","Milan",1
+"Hardwick, Thomas","Bologna",1
+"Hardwick, Thomas","Florence",1
+"Hardwick, Thomas","Rome",18
+"Hardwick, Thomas","Naples",3
+"Hardwick, Thomas","Caserta",1
+"Hardwick, Thomas","Herculaneum",1
+"Hardwick, Thomas","Pompeii",1
+"Hardwick, Thomas","Portici",1
+"Hardwick, Thomas","Paestum",1
+"Hardwick, Thomas","Salerno",1
+"Hardwick, Thomas","Capri",1
+"Hardwick, Thomas","Pozzuoli",1
+"Hardwick, Thomas","Rome",1
+"Hardwick, Thomas","Naples",1
+"Hardwick, Thomas","Rome",8
+"Hardwick, Thomas","Caprarola",1
+"Hardwick, Thomas","Viterbo",1
+"Hardwick, Thomas","Venice",1
+"Hardwick, Thomas","Vicenza",1
+"Hardwick, Thomas","Genoa",1
+"Brettingham, Robert William Furze","Rome",4
+"Brettingham, Robert William Furze","Naples",1
+"Brettingham, Robert William Furze","Rome",37
+"Brettingham, Robert William Furze","Tivoli",1
+"Brettingham, Robert William Furze","Naples",1
+"Brettingham, Robert William Furze","Rome",4
+"Soane, John","Rome",8
+"Soane, John","Naples",2
+"Soane, John","Pompeii",1
+"Soane, John","Paestum",1
+"Soane, John","Salerno",1
+"Soane, John","Naples",2
+"Soane, John","Paestum",1
+"Soane, John","Polla",1
+"Soane, John","Salerno",1
+"Soane, John","Naples",2
+"Soane, John","Capua",1
+"Soane, John","Gaeta",1
+"Soane, John","Terracina",1
+"Soane, John","Pontine Marshes",1
+"Soane, John","Velletri",1
+"Soane, John","Albano",1
+"Soane, John","Rome",2
+"Soane, John","Naples",1
+"Soane, John","Sicily",2
+"Soane, John","Malta",3
+"Soane, John","Sicily",1
+"Soane, John","Naples",2
+"Soane, John","Rome",1
+"Soane, John","Narni",1
+"Soane, John","Loreto",1
+"Soane, John","Ancona",1
+"Soane, John","Bologna",1
+"Soane, John","Parma",1
+"Soane, John","Milan",1
+"Soane, John","Brescia",1
+"Soane, John","Verona",1
+"Soane, John","Mantua",1
+"Soane, John","Vicenza",1
+"Soane, John","Padua",1
+"Soane, John","Venice",1
+"Soane, John","Bologna",1
+"Soane, John","Florence",1
+"Soane, John","Rome",8
+"Soane, John","Caprarola",1
+"Soane, John","Siena",1
+"Soane, John","Florence",1
+"Soane, John","Bologna",1
+"Soane, John","Ferrara",1
+"Soane, John","Padua",2
+"Soane, John","Vicenza",1
+"Soane, John","Verona",1
+"Soane, John","Mantua",1
+"Soane, John","Parma",1
+"Soane, John","Milan",1
+"Soane, John","Pavia",1
+"Soane, John","Genoa",1
+"Soane, John","Milan",1
+"Soane, John","Como",1
+"Groves, John Thomas","Italy",121
+"Groves, John Thomas","Tivoli",1
+"Herbert, Henry Herbert, Lord","Turin",1
+"Herbert, Henry Herbert, Lord","Padua",1
+"Herbert, Henry Herbert, Lord","Venice",4
+"Herbert, Henry Herbert, Lord","Rome",2
+"Herbert, Henry Herbert, Lord","Naples",3
+"Herbert, Henry Herbert, Lord","Rome",1
+"Herbert, Henry Herbert, Lord","Florence",1
+"Herbert, Henry Herbert, Lord","Venice",1
+"Saunders, George","Rome",1
+"Saunders, George","Naples",1
+"Saunders, George","Rome",1
+"Hope, Thomas","Rome",2
+"Hope, Thomas","Naples",1
+"Hope, Thomas","Sicily",1
+"Hope, Thomas","Rome",1
+"Hope, Thomas","Rome",3
+"Hope, Thomas","Naples",1
+"Hope, Thomas","Rome",3
+"Hope, Thomas","Naples",1
+"Hope, Thomas","Rome",1
+"Sandys, Francis","Rome",55
+"Sandys, Francis","Vicenza",1
+"Sandys, Francis","Verona",1
+"Gandy, Joseph Michael","Leghorn",1
+"Gandy, Joseph Michael","Rome",1
+"Gandy, Joseph Michael","Tivoli",1
+"Gandy, Joseph Michael","Albano",1
+"Gandy, Joseph Michael","Velletri",1
+"Gandy, Joseph Michael","Cori",1
+"Gandy, Joseph Michael","Palestrina",1
+"Gandy, Joseph Michael","Frascati",1
+"Gandy, Joseph Michael","Marino",1
+"Gandy, Joseph Michael","Ariccia",1
+"Gandy, Joseph Michael","Abruzzi",2
+"Gandy, Joseph Michael","Olevano",1
+"Gandy, Joseph Michael","Subiaco",1
+"Gandy, Joseph Michael","Tagliacozzo",1
+"Gandy, Joseph Michael","Avezzano",1
+"Gandy, Joseph Michael","Trasacco",1
+"Gandy, Joseph Michael","Celano",1
+"Gandy, Joseph Michael","Capistrello",1
+"Gandy, Joseph Michael","Isola di Sora",1
+"Gandy, Joseph Michael","Monte Cassino",1
+"Gandy, Joseph Michael","Pontecorvo",1
+"Gandy, Joseph Michael","Rome",1
+"Gandy, Joseph Michael","Naples",3
+"Gandy, Joseph Michael","Rome",13
+"Gandy, Joseph Michael","Florence",1
+"Tatham, Charles Heathcote","Leghorn",1
+"Tatham, Charles Heathcote","Siena",1
+"Tatham, Charles Heathcote","Rome",16
+"Tatham, Charles Heathcote","Velletri",1
+"Tatham, Charles Heathcote","Naples",1
+"Tatham, Charles Heathcote","Pompeii",1
+"Tatham, Charles Heathcote","Herculaneum",1
+"Tatham, Charles Heathcote","Paestum",1
+"Tatham, Charles Heathcote","Caserta",1
+"Tatham, Charles Heathcote","Rome",19
+"Tatham, Charles Heathcote","Ravenna",1
+"Tatham, Charles Heathcote","Venice",1
+"Tatham, Charles Heathcote","Vicenza",1
+"Tatham, Charles Heathcote","Venice",1
+"Tatham, Charles Heathcote","Trieste",1
+"Burlington, Richard Boyle, 3rd Earl of","Mont Cenis",1
+"Burlington, Richard Boyle, 3rd Earl of","Turin",1
+"Burlington, Richard Boyle, 3rd Earl of","Genoa",1
+"Burlington, Richard Boyle, 3rd Earl of","Lerici",1
+"Burlington, Richard Boyle, 3rd Earl of","Pisa",1
+"Burlington, Richard Boyle, 3rd Earl of","Leghorn",1
+"Burlington, Richard Boyle, 3rd Earl of","Siena",1
+"Burlington, Richard Boyle, 3rd Earl of","Rome",6
+"Burlington, Richard Boyle, 3rd Earl of","Bracciano",1
+"Burlington, Richard Boyle, 3rd Earl of","Leghorn",1
+"Burlington, Richard Boyle, 3rd Earl of","Florence",1
+"Burlington, Richard Boyle, 3rd Earl of","Bologna",1
+"Burlington, Richard Boyle, 3rd Earl of","Padua",1
+"Burlington, Richard Boyle, 3rd Earl of","Venice",2
+"Burlington, Richard Boyle, 3rd Earl of","Padua",1
+"Burlington, Richard Boyle, 3rd Earl of","Vicenza",1
+"Burlington, Richard Boyle, 3rd Earl of","Verona",1
+"Burlington, Richard Boyle, 3rd Earl of","Milan",1
+"Burlington, Richard Boyle, 3rd Earl of","Turin",1
+"Burlington, Richard Boyle, 3rd Earl of","Genoa",1
+"Burlington, Richard Boyle, 3rd Earl of","Vicenza",1
+"Burlington, Richard Boyle, 3rd Earl of","Venice",1
+"Burlington, Richard Boyle, 3rd Earl of","Vicenza",1
+"Burlington, Richard Boyle, 3rd Earl of","Turin",1

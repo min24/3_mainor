@@ -1,0 +1,84 @@
+
+```{r}
+library(RSQLite)
+con <- DBI::dbConnect(SQLite(), "BankChurn.db")
+```
+
+```{r}
+dbListTables(con)
+
+```
+```{r}
+library(dplyr)
+churn = dbGetQuery(con, "SELECT * FROM churn")
+churn = churn %>% dplyr::select(-CustomerId, -Surname)
+churn$CountryId = as.factor(churn$CountryId)
+churn$Gender = as.factor(churn$Gender)
+```
+
+```{r}
+library(partykit)
+library(caret)
+ind = createDataPartition(churn$Exited, p = 0.8, list = F)
+train = churn[ind,]
+test = churn[-ind,]
+```
+
+
+```{r}
+train = churn[ind,]
+
+tree_model = ctree(data=train, Exited~.)
+
+tree_pred = predict(tree_model, data=train)
+a = mean(tree_pred)
+tree_pred = ifelse(tree_pred > a, 1, 0)
+tree_pred = as.factor(tree_pred)
+train$Exited = as.factor(train$Exited)
+
+confusionMatrix(tree_pred, train$Exited)
+
+```
+
+
+
+
+```{r}
+churn1 = churn %>% select(CreditScore, CountryId, Gender, Age, Tenure, Balance, EstimatedSalary, Exited)
+
+```
+
+```{r}
+library(partykit)
+library(caret)
+churn = churn %>% filter(CountryId=="jd73")
+set.seed(1)
+ind = createDataPartition(churn1$Exited, p = 0.8, list = F)
+train = churn1[ind,]
+test = churn1[-ind,]
+```
+```{r}
+train = churn1[ind,]
+tree_model = ctree(data=train, Exited~.)
+tree_pred = predict(tree_model, data=train)
+a = mean(tree_pred)
+tree_pred = ifelse(tree_pred > a, 1, 0)
+tree_pred = as.factor(tree_pred)
+train$Exited = as.factor(train$Exited)
+confusionMatrix(tree_pred, train$Exited)
+```
+```{r}
+library(vip)
+vi(tree_model)
+vip(tree_model)
+```
+
+```{r}
+summary(churn)
+```
+
+```{r}
+ggplot(churn %>% filter(CountryId=="jd73"))+ geom_bar(aes(x = Exited))
+churn %>% filter(CountryId=="jd73") %>% nrow()
+```
+

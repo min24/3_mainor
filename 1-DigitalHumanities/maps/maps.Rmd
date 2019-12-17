@@ -1,0 +1,491 @@
+---
+title: Maps
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Сегодня переходим к картам. 
+
+
+## Типы географических данных
+
+Есть два типа географических моделей - **векторные** и **растерные**, которые определяюь тип данных, с которыми работает исследователь.
+
+**Векторные** данные представляют собой точки, линии и полигоны. У таких данных есть четкие установленные границы (пространственные координаты), и они обладают высоким уровнем точности.  
+  
+**Растерные** данные разделяют поверхность на ячейки одинакового размера, для каждой из которых характерно какое-то значение характеристики (например, количество полезных ископаемых, плотность леса и т.д.) 
+
+*Векторные* данные обычно используются в гуманитарных науках (ну и для не-гуманитарных задач, в которых требуется работа с конктретными географическими единицами).
+
+*Растерные* данные больше распространены в геологии и других науках, имеющих отношение к окружающей среде.
+Однако их использование зависит от конкретных задач, и оба типа данных могут использоваться вместе.
+
+Сегодня мы рассмотрим только векторные данные.
+
+## Векторные данные
+
+В основе векторных данных лежат точки, расположенные внутри координатных систем (coordinate reference system). Они могут быть индивидуальными (например, остановка, здание и т.д.), либо соединяться в более сложные геометрические формы: линии и полигоны. Основные типы векторных данных:
+  - точки - 2 координаты (широта, долгота)
+  - линии - это несколько таких соединенных точек 
+  - полигоны - это несколько соединенных линий (и площадь между ними) 
+  
+![](https://geocompr.robinlovelace.net/figures/sf-classes.png) 
+
+
+Как вы думаете, как в такой системе будут записываться города?
+
+Для работы с векторными данными мы будем в основном пользваться пакетом **sf**, который поддурживает все стандартные векторные типы данных и методы работы с ними. 
+Виньетка: https://cran.r-project.org/web/packages/sf/vignettes/sf1.html 
+```{r}
+library(sf)  
+```
+
+Простые географичекие объекты хранятся в датафрейме, в котором географичекие данные находятся в отдельной колонке. Посмотрим на датасет *world* из пакета *spData*. 
+
+```{r}
+library(spData)
+
+data(world)
+class(world)
+
+names(world)
+str(world)
+```
+Какие данные содержатся в этом датасете??
+Что находится в колонке geom?
+```{r}
+class(world$geom)
+
+world$geom
+
+# попробуем нарисовать
+plot(world$geom)
+```
+
+Посмотрим на другие колонки. Например, на ожидаемую продолжительность жизни. 
+```{r}
+summary(world["lifeExp"])
+# почему саммари показал не только информацию по заданной колонке?
+
+head(world["lifeExp"])
+
+plot(world["lifeExp"])
+```
+
+В каких странах ожидаемая продолжительность жизни самая высокая? А в каких сама низкая? Что происходит в России?
+
+Над географическими данными, хранящимися в датасете, можно производить те же саме операции, что и с обычными датасетами. При этом, географическиехарактеристики сохраняются. 
+Попробуем, например, нарисовать только Азию.
+
+```{r}
+library(dplyr)
+world_asia = world %>% 
+  filter(continent == "Asia")
+
+plot(world_asia)
+dev.off()
+
+# либо можно выделить регион на карте мира
+asia = st_union(world_asia) # объединяем страны в Азии 
+plot(world$geom)
+plot(asia, add = TRUE, col = "red") # add = TRUE добавляет карту Азии поверх карты мира
+
+```
+
+**А теперь вы:**
+
+Отберите страны с населением меньше 10000000 человек и выделите их на карте мира синим цветом.
+
+
+
+Можно еще и агрегировать данные! Например, посмотрим на кол-во населения по континентам.
+```{r}
+world_agg2 = aggregate(world["pop"], by = list(world$continent),
+                       FUN = sum, na.rm = TRUE)
+class(world_agg2)
+
+plot(world_agg2["pop"])
+```
+
+Или создавать новые переменные
+```{r}
+pop_dens = world %>% 
+  mutate(pop_dens = pop / area_km2)
+
+plot(pop_dens["pop_dens"])
+```
+
+Или соединять датасеты с другими, у которых нет географических данных. Например, посмотрим на безработицу по странам. Для этого соединим с данными World Bank, оставив там предварительно только название страны и коэффициент, показывающий уровень безработицы.
+```{r}
+unempl = worldbank_df %>% 
+  dplyr::select(name, unemployment) 
+
+class(unempl)
+
+world_unempl = left_join(world, unempl, by = c("name_long" = "name"))
+class(world_unempl)
+
+plot(world_unempl["unemployment"])
+```
+
+*Ваша очередь:*
+Оставьте в датасете World Bank только страну и уровень грамотности (literacy), соедините получившийся датасет с world. Агрегируйте уровень грамотности до среднего по субрегиону и отразите результат на карте.
+
+
+
+Можно посчитать расстояния между странами (между их центрами) (требуется lwgeom)
+```{r}
+# world_unempl = inner_join(world, unempl, by = c("name_long" = "name"))
+# dist = as.data.frame(st_distance(st_centroid(world), st_centroid(world_unempl)))
+```
+
+
+## Более продвинутые визуализации 
+
+Теперь, когда мы разобрались с тем, как работать с данными, обладающими географическими атрибутами, научимся рисовать красивые карты. 
+Основной пакет, которым будем пользоваться - tmap, который подобно ggplot2 использует подход "грамматики визуализации" (то есть, разделение на аестетики - то, как визуализуется, и не аестетики - что визуализуется). 
+
+Начнем с обычных хороплетов (choropleth), то есть карт, где полигоны закрашены в соответствии с определенным признаком. 
+Пока продолжим работать с файлом world. Посмотрим, как страны различаются по ВВП на душу населения. 
+
+```{r}
+library(tmap)
+
+tm_shape(world) +
+  tm_polygons("gdpPercap")
+```
+
+Добавим немного красок
+```{r}
+tm_shape(world) +
+  tm_polygons("gdpPercap") +
+tm_shape(world) +
+  tm_borders("black", lwd = .5) +  # красим границы в черный цвет
+  tm_text("iso_a2", size = "AREA") +  # пишем название страны 
+tm_layout(bg.color = "skyblue", inner.margins = c(0, .02, .02, .02),  # цвет фона 
+          legend.text.color = "black",
+          legend.position = c(0.1, 0.14))# цвет легенды
+```
+
+А можно стилизовать карту под классическую
+```{r}
+tm_shape(world) +
+  tm_polygons("gdpPercap") +
+  tm_style_classic() +
+  tm_compass(type = "rose", position = c(0.88, 0.14),
+             size = 1.5)
+
+# ?tm_layout  - можно посмотреть, какие еще стили и настройки бывают
+```
+
+
+## Добавляем точки
+
+Например, мы хотим добавить на карту с ВВП столицы стран. Загрузим датасет с столицами и координатами.
+
+```{r}
+library(readr)
+capitals = read_csv("~/shared/minor3_2019/1-DigitalHumanities/maps/concap.csv")
+names(capitals)[3:4] = c("lat", "lon")
+
+class(capitals)
+```
+
+Однако просто так он не будет добавляться на карту, потому что он не является географическим объектом. Чтобы все было хорошо, надо его переконвертировать.
+
+```{r}
+capitals_geo = st_as_sf(capitals, coords = c("lon", "lat"), 
+                 crs = 4326, agr = "constant")
+
+class(capitals_geo)
+```
+
+
+Каждый новый элемент добавляется на карту слоями - как в ggplot. Добавить точки можно с помощью **tm_symbols** (?tm_symbols)
+```{r}
+tm_shape(world) +
+  tm_polygons("gdpPercap") +
+tm_shape(world) +
+  tm_borders("black", lwd = .5) +  # красим границы в черный цвет
+  tm_text("iso_a2", size = "AREA") +  # пишем название страны 
+tm_layout(bg.color = "skyblue", inner.margins = c(0, .02, .02, .02),  # цвет фона 
+          legend.text.color = "black") +
+tm_shape(capitals_geo) +
+  tm_symbols()
+```
+
+Как-то не очень. Попробуем поправить. 
+Допустим, у нас есть кол-во населения в столицах (его нет, но давайте сделаем рандомно). 
+```{r}
+capitals_geo$population = sample(1:200, 245, replace=TRUE)
+capitals_geo$population
+```
+
+Добавим на карту
+```{r}
+tm_shape(world) +
+  tm_polygons("gdpPercap") +
+tm_shape(world) +
+  tm_borders("black", lwd = .5) +  # красим границы в черный цвет
+  tm_text("iso_a2", size = "AREA") +  # пишем название страны 
+tm_layout(bg.color = "lightblue", inner.margins = c(0, .02, .02, .02),  # цвет фона 
+          legend.text.color = "black", legend.show = FALSE) +
+tm_shape(capitals_geo) +
+  tm_symbols(size = "population", col = "red", alpha = 0.4)
+```
+
+А еще можно сделать карту интерактивной. tmap умеет работать с пакетом leaflet для интерактивных карт.
+```{r}
+tmap_mode("view")
+
+tm_shape(world) +
+  tm_polygons("gdpPercap") +
+tm_shape(world) +
+  tm_borders("black", lwd = .5) +   # пишем название страны 
+tm_layout(bg.color = "lightblue", inner.margins = c(0, .02, .02, .02),  # цвет фона 
+          legend.text.color = "black", legend.show = FALSE) +
+tm_shape(capitals_geo) +
+  tm_symbols(size = "population", col = "red", alpha = 0.4, id = "CapitalName")
+
+tmap_mode("plot") # выходим из интерактивного режима
+```
+
+*Ваша очередь**
+
+Нарисуйте карту, в которой будут только страны Европы, Африки и Азии. Закрасьте страны по уровню ВВП, а цветом точек передайте ожидаемую продолжительность жизни (так, чтобы было читаемо на фоне карты). Цвет границ сделайте белым, а легенду уберите.
+Наблюдаются ли какие-либо тренды?
+
+```{r}
+tmap_mode("plot")
+europe = world %>% filter(continent == "Europe" | continent == "Africa" | continent == "Asia")
+tm_shape(europe) +
+  tm_polygons("gdpPercap") +
+tm_shape(europe)+
+  tm_symbols(col = "lifeExp", alpha = 0.5, id = "name_long", palette = "Blues")+
+tm_layout(legend.show = FALSE)
+```
+
+
+## Шейпфайлы
+
+До этих пор мы работали с довольно простыми географическими объектами, теперь настало время разобраться с шейпфайлами. ( а заодно научиться рисовать карты с помощью ggplot2) 
+
+```{r}
+library(ggfortify)
+library(plotly)
+library(ggplot2)
+library(ggmap)
+library(rgdal)
+library(sp)
+
+MapDir <- "~/shared/minor3_2019/1-DigitalHumanities/maps/"
+# загружаем шейпфайл
+owd<-getwd()
+setwd(MapDir)
+wmap = readOGR(dsn = "./", "TM_WORLD_BORDERS-0.3")
+setwd(owd)
+plot(wmap)
+wmap@data$NAME # обратимся к элементу слота внутри файла, чтобы посмотреть на страны, представленные в нём
+wdata = wmap@data # слот data можно сохранить как датафрейм
+rus = wmap[wmap@data$NAME == "Russia",] # оставим только Россию
+
+# форматируем, чтобы можно было использовать с ggplot2
+wmap = fortify(wmap) 
+```
+
+```{r}
+# параметр group определяет принадлежность точки к полигону
+ ggplot() +  
+  geom_polygon(data = rus, aes(x = long, y = lat, group = group), col = "white") + 
+  coord_map() + # сохраняет проекцию
+  xlim(-10, 260) + ylim(40, 100) + # обрезает оси
+   theme_nothing() # убирает фон, оси, сетку
+```
+
+
+## Добавляем на карты линии 
+
+Попробуем отрисовать маршруты между российскими аэропортами
+```{r}
+# загружаем датасеты с данными по аэропортам и полётам
+routes = read.csv(paste(MapDir,"/Ruser/air_routes.csv",sep=""), header = FALSE)
+airports = read.csv(paste(MapDir,"/Ruser/airports.csv",sep=""), header = FALSE)
+
+# задаём имена колонок
+colnames(routes) = c("Airline", "AirlineID", "Source", "SourceID", "Dest", "DestID", "Codeshare", "Stops", "Equipment")
+colnames(airports) = c("AirportID", "Name", "City", "Country", "IATA", "ICAO", "Lat", "Lon", "Alt", "TZ", "Time", "Tzdb")
+
+source = as.data.frame(routes$Source)
+colnames(source) = "IATA"
+source = dplyr::left_join(source, airports, by = "IATA")
+source = dplyr::select(source, IATA, City, Country, Lat, Lon)
+dest = as.data.frame(routes$Dest)
+colnames(dest) = "IATA"
+dest = dplyr::left_join(dest, airports, by = "IATA")
+dest = dplyr::select(dest, IATA, City, Country, Lat, Lon)
+ways = cbind(source, dest)
+ways = na.omit(ways)
+colnames(ways) = c("Source", "Source_city", "Source_country", "start_lat", "start_lon", "Dest", "Dest_city", "Dest_country", "dest_lat", "dest_lon")
+ways$id <- seq_len(nrow(ways))
+waysrus = filter(ways, Source_country == "Russia")
+waysrus = filter(waysrus, Dest_country == "Russia")
+waysrus_w = plyr::count(waysrus[, -11])
+```
+
+
+```{r}
+# посмотрим на все аэропорты страны
+airportsrus = filter(airports, Country == "Russia")
+ggplot() + geom_polygon(data = rus, aes(x = long, y = lat, group = group), col = "black") + coord_map() + xlim(-10, 250) + ylim(40, 100) +
+  geom_point(data = airportsrus, aes(x = Lon, y = Lat, col = as.factor(TZ))) + 
+  theme_nothing()
+
+# задаём минимальные настройки для рисунка
+theme_opts <- list(theme(panel.grid.minor = element_blank(),
+                         panel.grid.major = element_blank(),
+                         panel.background = element_blank(),
+                         plot.background = element_rect(fill="#000000"),
+                         panel.border = element_blank(),
+                         axis.line = element_blank(),
+                         axis.text.x = element_blank(),
+                         axis.text.y = element_blank(),
+                         axis.ticks = element_blank(),
+                         axis.title.x = element_blank(),
+                         axis.title.y = element_blank(),
+                         legend.position='none',
+                         plot.title = element_text(size=22)))
+# можно было бы использовать theme_nothing, но хочется установить не белый фон
+
+ggplot() + 
+  geom_polygon(data = rus, aes(x = long, y = lat, group = group), col = "gray94", fill = "black") + 
+  xlim(-10, 200) + ylim(40, 100)  +
+  # начала и концы линий, соединяющих аропорты
+  geom_curve(aes(x = waysrus_w$start_lon, y = waysrus_w$start_lat, xend = waysrus_w$dest_lon, yend = waysrus_w$dest_lat, col = -log(waysrus_w$freq)), size = 0.2, curvature = 0.1, alpha = 0.5) + 
+  # точки поверх линий
+  geom_point(data = unique(waysrus_w), aes(x = start_lon, y = start_lat, size = freq), col = "white", alpha = 0.5) +
+  # проекция, при которой у в 2 раза больше х. ratio рассчитывается как y\x
+  coord_equal(ratio = 2) +
+  # применяем настройки темы
+  theme_opts
+```
+
+
+
+*Ваша очередь*
+Вспомним датасет про путешествия с прошлой пары по сетям. Ы частности, мы сроили сеть мест в Италии, которые посещали британские архитекторы 18 века. 
+У тех мест есть координаты - они находятся в датасете *places*. 
+В этот раз поробуем наложить наши сеть на карту. Что для этого надо сделать: 
+1) Сделать проекцию бимодальной сети с городами (хинт: используйте proj_places = projection$proj2)
+2) Применить алгоритм поиска сообществ (любой), сохранить принадлежность к сообществу для каждого города
+3) Получить из проекции edgelist (hint: pl_adj = as.data.frame(get.edgelist(proj_places)))
+4) Соединить этот эджлист с датасетом places, где есть координаты (оставить координаты для обеих точек)
+5) Оставить из шейпфайла только Италию
+6) Наложить сеть на карту: точки места, связи между ними - посещение одним человеком
+
+```{r}
+travels = read_csv("./travels.csv")
+
+places = read_tsv("./Places.tsv")
+places = tidyr::separate(places, Coordinates, into = c("lat", "lon"), sep = ",")
+```
+
+
+```{r}
+travels1 = travels %>% left_join(places, by = c("place_name" = "Place name"))
+```
+
+```{r}
+g = graph_from_data_frame(travels1)
+g = igraph::simplify(g)
+
+bipartite.mapping(g)
+
+V(g)$type <- bipartite_mapping(g)$type
+
+proj <- bipartite_projection(g)
+
+# смотрим на проекции
+proj = proj$proj2
+
+fg <- fastgreedy.community(proj)
+m = as.data.frame(factor(membership(fg)))
+
+m$place_name = rownames(m)
+names(m) = c("community", "Place name")
+
+pl_adj = as.data.frame(get.edgelist(proj))
+```
+
+```{r}
+pl_adj = pl_adj %>% left_join(places, by = c("V1" = "Place name")) %>% left_join(places, by = c("V2" = "Place name"))
+pl_adj = dplyr::select(pl_adj, 1,2,4,5,9,10)
+
+```
+
+
+```{r}
+wmap = readOGR(dsn = "./", "TM_WORLD_BORDERS-0.3")
+setwd(owd)
+wmap@data$NAME # обратимся к элементу слота внутри файла, чтобы посмотреть на страны, представленные в нём
+wdata = wmap@data # слот data можно сохранить как датафрейм
+it = wmap[wmap@data$NAME == "Italy",] # оставим только Россию
+```
+
+```{r}
+``{r}
+ ggplot() +  
+  geom_polygon(data = it, aes(x = long, y = lat, group = group), col = "white") + 
+  coord_map(projection = "mercator") + # сохраняет проекцию
+  xlim(-30, 80) + ylim(20, 50) + # обрезает оси
+   theme_nothing() # убирает фон, оси, сетку
+
+pl_adj$lon.x = as.numeric(pl_adj$lon.x)
+pl_adj$lat.x = as.numeric(pl_adj$lat.x)
+pl_adj$lon.y = as.numeric(pl_adj$lon.y)
+pl_adj$lat.y = as.numeric(pl_adj$lat.y)
+
+places$lat = as.numeric(places$lat)
+places$lon = as.numeric(places$lon)
+
+ggplot() + geom_polygon(data = it, aes(x = long, y = lat, group = group), col = "gray94", fill = "black") + xlim(-30, 80) + ylim(20, 50)  +
+  # начала и концы линий, соединяющих аропорты
+  geom_curve(aes(x = pl_adj$lon.x, y = pl_adj$lat.x, xend = pl_adj$lon.y, yend = pl_adj$lat.y, col = "blue"), size = 0.2, curvature = 0.1, alpha = 0.5) + 
+  # точки поверх линий
+  geom_point(data = unique(places), aes(x = lon, y = lat), col = "white", size = 0.3, alpha = 0.5) +
+  # проекция, при которой у в 2 раза больше х. ratio рассчитывается как y\x
+  coord_equal(ratio = 2) +
+  # применяем настройки темы
+  theme_opts
+
+```
+
+
+## Интерактивные карты с leaflet
+
+```{r}
+library(leaflet)
+places = places %>% left_join(m)
+
+m <- leaflet(data = places) %>% setView(lng = 12.496366, lat = 41.902782, zoom = 6)
+m %>% addTiles() %>% 
+  addCircles(~lon, ~lat, popup = ~as.character(`Place name`), label = ~as.character(`Place name`))
+```
+
+```{r}
+places1 = travels1 %>% group_by(place_name) %>% mutate(total = n()) %>% ungroup() %>% dplyr::select(place_name, total, lon, lat, community)
+places1 = distinct(places1)
+names(places1)[1] = "place"
+
+pal <- colorFactor(c("navy", "red", "green", "black"), domain = c("1", "2", "3", "4"))
+
+m <- leaflet(data = places1) %>% setView(lng = 12.496366, lat = 41.902782, zoom = 6)
+m %>% addTiles() %>% 
+  addCircles(~lon, ~lat, popup = ~as.character(places1$place), label = ~as.character(places1$place), color = ~pal(community), radius = 5)
+```
+
+
+
+
+
+

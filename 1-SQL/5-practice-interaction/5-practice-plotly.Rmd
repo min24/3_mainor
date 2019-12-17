@@ -1,0 +1,274 @@
+---
+title: "Interactive plots"
+output: html_document
+---
+
+## Задачи
+
+Сегодня вернемся к визуализациям и дашбордам. В качестве примера продолжим предсказание оттока клиентов (customer churn)
+
+```{r}
+library(RSQLite)
+con <- DBI::dbConnect(SQLite(), "~/shared/minor3_2019/1-SQL/4-practice-prediction/Churn.db")
+```
+
+Данные телеком-компании <https://www.kaggle.com/blastchar/telco-customer-churn>
+
+```{r}
+dbListTables(con)
+```
+```{r}
+dbListFields(con, "churn")
+```
+
+customerID: Customer ID
+gender: Whether the customer is a male or a female
+SeniorCitizen: Whether the customer is a senior citizen or not (1, 0)
+Partner: Whether the customer has a partner or not (Yes, No)
+Dependents: Whether the customer has dependents or not (Yes, No)
+tenure: Number of months the customer has stayed with the company
+PhoneService: Whether the customer has a phone service or not (Yes, No)
+MultipleLines: Whether the customer has multiple lines or not (Yes, No, No phone service)
+InternetService: Customer’s internet service provider (DSL, Fiber optic, No)
+OnlineSecurity: Whether the customer has online security or not (Yes, No, No internet service)
+OnlineBackup: Whether the customer has online backup or not (Yes, No, No internet service)
+DeviceProtection: Whether the customer has device protection or not (Yes, No, No internet service)
+TechSupport: Whether the customer has tech support or not (Yes, No, No internet service)
+StreamingTV: Whether the customer has streaming TV or not (Yes, No, No internet service)
+StreamingMovies: Whether the customer has streaming movies or not (Yes, No, No internet service)
+Contract: The contract term of the customer (Month-to-month, One year, Two year)
+PaperlessBilling: Whether the customer has paperless billing or not (Yes, No)
+PaymentMethod: The customer’s payment method (Electronic check, Mailed check, Bank transfer (automatic), Credit card (automatic))
+MonthlyCharges: The amount charged to the customer monthly
+TotalCharges: The total amount charged to the customer
+Churn: Whether the customer churned or not (Yes or No)
+
+### Plotly
+
+plotly -- инструмент для интерактивной визуализации. Подробный тьюториал <https://plotly-r.com/>. И основные графики <https://plot.ly/r/plotly-fundamentals/>
+
+Попробуем на простом примере
+
+Посмотрим, какое у нас распределение по оттокам
+
+```{r}
+library(dplyr)
+churn = dplyr::tbl(con, "churn")
+
+query = churn %>% count(Churn) 
+```
+
+Результат запроса
+```{r}
+data1 = query %>% collect()
+```
+
+```{r}
+library(ggplot2)
+ggplot(data1) + geom_bar(aes(x = Churn, y = n), stat = "identity")
+```
+
+
+```{r}
+library(plotly)
+```
+
+```{r}
+temp = c(4, 8)
+
+
+plot_ly(data1, x = ~Churn, y = ~n)
+```
+Получили знакомый график, но с небольшим интерактивным эффектом
+
+Чуть сложнее. Посмотрим, отличаются ли распределения месячных выплат для тех, что получает электронные счета или нет
+
+```{r}
+data1 = dbGetQuery(con, "SELECT MonthlyCharges, PaperlessBilling
+                         FROM churn")
+```
+
+```{r}
+plot_ly(data1, x = ~MonthlyCharges, color = ~PaperlessBilling, type = "histogram")
+```
+
+Как-то не очень хорошо видно
+
+```{r}
+plot_ly(alpha = 0.6) %>%
+  add_histogram(x = ~MonthlyCharges, data = filter(data1,PaperlessBilling == "Yes"), 
+                nbinsx = 65, name = "Paperless") %>%
+  add_histogram(x = ~MonthlyCharges, data = filter(data1,PaperlessBilling == "No"),
+                nbinsx = 65, name = "Traditional") %>%
+  layout(barmode = "overlay")
+```
+
+Посмотрим на другие графики
+
+```{r}
+data1 = dbGetQuery(con, "SELECT MonthlyCharges, PaperlessBilling, tenure
+                         FROM churn
+                   WHERE Contract == 'Two year'")
+```
+
+
+```{r}
+plot_ly(data1, x = ~MonthlyCharges, y = ~tenure, color = ~PaperlessBilling, type = 'scatter', mode = 'markers',
+        marker = list(opacity = 0.5))
+
+```
+Можно к этой фильтрации подключить и таблицу
+
+```{r}
+# m <- highlight_key(data1)
+# p = plot_ly(m, x = ~MonthlyCharges, y = ~tenure, color = ~PaperlessBilling, type = 'scatter', mode = 'markers',
+#         marker = list(opacity = 0.5))
+# gg <- highlight(ggplotly(p), "plotly_selected")
+# crosstalk::bscols(gg, DT::datatable(m))
+```
+
+
+Еще один вариант
+
+```{r}
+data1 = dbGetQuery(con, "SELECT OnlineSecurity, COUNT() AS n
+                         FROM churn
+                         GROUP BY OnlineSecurity")
+```
+
+```{r}
+data2 = dbGetQuery(con, "SELECT DeviceProtection, COUNT() AS n
+                         FROM churn
+                         WHERE OnlineSecurity == 'No'
+                         GROUP BY DeviceProtection")
+```
+
+```{r}
+data1$OnlineSecurity
+
+data2$DeviceProtection
+```
+
+```{r}
+data3 = dbGetQuery(con, "SELECT DeviceProtection, COUNT() AS n
+                         FROM churn
+                         WHERE OnlineSecurity == 'Yes'
+                         GROUP BY DeviceProtection")
+```
+
+```{r}
+plot_ly(
+  labels = c("Total", "No security", "No internet service", "Online security", "No protection", "Device protection",
+             "No protection ", "Device protection "),
+  parents = c("", "Total", "Total", "Total", "No security", "No security", "Online security", "Online security"),
+  values = c(sum(data1$n), data1$n, data2$n, data3$n),
+  type = 'sunburst',
+  branchvalues = 'total'
+)
+```
+```{r}
+data4 = dbGetQuery(con, "SELECT DeviceProtection, OnlineSecurity, COUNT() AS n
+                         FROM churn
+                         WHERE OnlineSecurity != 'No internet service'
+                         GROUP BY DeviceProtection, OnlineSecurity")
+data4
+```
+
+```{r}
+plot_ly(
+  labels = c("Total", "No security", "No internet service", "Online security", "No protection", "No protection ", "Device protection",
+              "Device protection "),
+  parents = c("", "Total", "Total", "Total", "No security", "Online security", "No security",  "Online security"),
+  values = c(sum(data1$n), data1$n, data4$n),
+  type = 'sunburst',
+  branchvalues = 'total'
+)
+```
+
+```{r}
+accountDetails = churn %>% filter(InternetService != "No") %>% 
+  select(Churn, Contract, PaymentMethod, MonthlyCharges) %>% 
+  collect()
+```
+
+```{r}
+for (var in names(accountDetails)[1:3]){
+  accountDetails[[var]] = as.factor(accountDetails[[var]])
+}
+```
+
+Строим модель
+```{r}
+library(partykit)
+library(caret)
+ind = createDataPartition(accountDetails$Churn, p = 0.8, list = F)
+train = accountDetails[ind,]
+test = accountDetails[-ind,]
+```
+
+```{r}
+treemodel = partykit::ctree(Churn~., data = train)
+plot(treemodel)
+```
+
+* Оцените качество модели
+
+```{r}
+predTest = predict(treemodel, test)
+confusionMatrix(predTest, test$Churn)
+```
+
+Оценим важность признаков 
+```{r}
+library(vip)
+vi(treemodel)
+vip(treemodel)
+```
+
+
+```{r}
+g = vip(treemodel)
+p =ggplotly(g)
+p
+```
+
+```{r}
+p$x$data[[1]]$text
+```
+
+
+```{r}
+str(p)
+```
+
+Меняем отображаемый текст
+
+```{r}
+library(stringr)
+p$x$data[[1]]$text = p$x$data[[1]]$x
+p
+```
+Отформатируем число
+```{r}
+p$x$data[[1]]$text = format(p$x$data[[1]]$x, digits = 1)
+p
+```
+
+Всплывающее сообщение не обязательно должно быть только про цифры -- это может быть сопровождающий текст
+```{r}
+p$x$data[[1]]$text = str_c(format(p$x$data[[1]]$x, digits = 2), c("", "", " The MOST important variable!"))
+p
+```
+
+
+Другие параметры тоже можно менять, например, цвет
+```{r}
+p$x$data[[1]]$marker$color
+p$x$data[[1]]$marker$color = c("rgba(89,89,89,1)", "rgba(89,89,89,1)", 'rgba(255,110,20,0.8)')
+p$x$data[[1]]$marker$line = 0.1
+p
+```
+
+
+
+

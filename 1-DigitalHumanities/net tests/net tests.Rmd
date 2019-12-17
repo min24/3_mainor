@@ -56,6 +56,7 @@ p
 
 ```{r}
 # ваш код
+
 ```
 
 Другие меры центральности
@@ -93,6 +94,7 @@ plot(fgcommune, florentine)
 * **Walktrap**: Подход, основанный на случайных путях. Основная идея -- если случайно "блуждать" по графу, то больше шансов, что ваш путь будет чаще оставаться внутри сообщества и только иногда выходить за его пределы. 
 
 ```{r}
+
 wtcommune <- walktrap.community(florentine)
 membership(wtcommune) ## assigning nodes to communities
 modularity(wtcommune)
@@ -122,6 +124,46 @@ adjFlorenceFinance <- as.matrix.data.frame(adjFlorenceFinance)
 > Подробный анализ связей семьи Медичи и история их прихода к власти хорошо описывается в статье
 Robust Action and the Rise of the Medici, 1400-1434 (John F. Padgett, and Christopher K. Ansell) 
 https://www.journals.uchicago.edu/doi/abs/10.1086/230190
+
+1) Найдите центральные узлы
+2) Выделите сообщества
+
+
+```{r}
+florentine2 = graph.adjacency(adjmatrix = adjFlorenceFinance, mode = "undirected")
+
+p = ggraph(florentine, layout = "fr") +
+  geom_edge_link() + 
+  geom_node_point(aes(size = degree(florentine2)*5), color = "yellow") +
+  geom_node_text(aes(label = name), color = 'black', vjust = 1, hjust = 1, size = 3)+
+  theme_void()
+p
+
+p = ggraph(florentine, layout = "fr") +
+  geom_edge_link() + 
+  geom_node_point(aes(size = betweenness(florentine2)*5), color = "yellow") +
+  geom_node_text(aes(label = name), color = 'black', vjust = 1, hjust = 1, size = 3)+
+  theme_void()
+p
+
+p = ggraph(florentine, layout = "fr") +
+  geom_edge_link() + 
+  geom_node_point(aes(size = closeness(florentine2)*5), color = "yellow") +
+  geom_node_text(aes(label = name), color = 'black', vjust = 1, hjust = 1, size = 3)+
+  theme_void()
+p
+
+fgcommune <- fastgreedy.community(florentine2)
+membership(fgcommune) ## assigning nodes to communities
+modularity(fgcommune)
+plot(fgcommune, florentine2)
+
+wtcommune <- walktrap.community(florentine2)
+membership(wtcommune) ## assigning nodes to communities
+modularity(wtcommune)
+plot(wtcommune, florentine2)
+```
+
 
 Мы можем провести анализ и для этой сети -- посчитать центральности и найти важные вершины, выделить сообщества. Но что, если мы хотим сравнить эти сети? Например, понять, насколько "связи взаимосвязаны", другими словами, верно ли, что те семьи, у которых больше деловых связей, с большей вероятностью будут иметь и брачные связи.
 
@@ -172,6 +214,7 @@ flo.qap <- qaptest(florTotal, gcor, g1=1, g2=2, reps=1000)
 
 ```{r}
 summary(flo.qap)
+plot(flo.qap)
 ```
 
 **Ваша очередь**
@@ -305,6 +348,44 @@ ggraph(soc.proj, layout = 'fr') +
 
 **Ваша очередь** 
 Проанализируйте бимодальный граф путешествий: попробуйте выделить сообщества среди людей и мест, выделить центральные узлы и тд.
+
+```{r}
+# делаем проекции
+proj <- bipartite_projection(g)
+
+# смотрим на проекции
+print(proj[[1]], g=TRUE, e=TRUE)
+print(proj[[2]], g=TRUE, e=TRUE)
+
+# проекция с людьми
+people.proj = proj[[1]]
+
+ggraph(people.proj, layout = 'fr') + 
+      geom_node_point(aes(size = degree(people.proj))) + 
+      geom_edge_link(alpha = 0.3) +
+      geom_node_text(aes(label = name), size = 3, color = "blue") +
+      theme_void()
+
+
+# проекция с обществами
+soc.proj = proj[[2]]
+
+fg <- fastgreedy.community(soc.proj)
+m = factor(membership(fg))
+
+# можно преобразовать нашу сеть в интерактивную
+# library(visNetwork)
+# data <- toVisNetworkData(soc.proj)
+# visNetwork(nodes = data$nodes, edges = data$edges, height = "1000px", width = "100%") 
+
+ggraph(soc.proj, layout = 'fr') + 
+      geom_node_point(aes(size = degree(soc.proj), color = m)) + 
+      geom_edge_link(alpha = 0.3) +
+      geom_node_text(aes(label = name), size = 3, color = "blue") +
+      theme_void()
+
+```
+
 
 # Конец лирического отсупления
 
