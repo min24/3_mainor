@@ -82,3 +82,42 @@ output: html_document
    * status_year: год записи (год сбора данных (2015) для текущих сотрудников, год увольнения для ушедших)
    * status: статус сотрудника (active -- является сотрудником в текущий момент, terminated -- уже не является сотрудником)
    * business_unit: подразделение (магазин или офис)
+   
+   
+   
+   
+   
+```{r}
+library(RSQLite)
+con <- DBI::dbConnect(SQLite(), "~/shared/minor3_2019/1-SQL/project/EmployeeChurn.db")
+```
+
+```{r}
+dbListTables(con)
+```
+
+```{r}
+info = dplyr::tbl(con, "info")
+data = info %>% collect()
+```
+
+```{r}
+data$sta = ifelse(data$status == "active",1, 0)
+```
+```{r}
+length = data %>% group_by(length_of_service,termreason_desc ) %>% summarise(n =n())
+```
+
+```{r}
+library(dplyr)
+length2 = data %>% filter(length_of_service >= 4 )
+library(partykit)
+library(caret)
+active.ind = createDataPartition(length2$sta, p = 0.8, list = F)
+train = length2[active.ind,]
+test = length2[-active.ind,]
+log.model = glm(sta~.-status, data = train, family = binomial(link = 'logit'))
+importance <- varImp(log.model, scale=FALSE)
+print(importance)
+plot(importance)
+```

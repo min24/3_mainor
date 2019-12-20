@@ -83,9 +83,13 @@ library(dplyr)
 world_asia = world %>% 
   filter(continent == "Asia")
 
-plot(world_asia)
+plot(world_asia$geom)
+plot(vietnam, add = TRUE, col = "red")
+
 dev.off()
 
+vietnam = world %>% filter(name_long == "Vietnam")
+plot(vietnam)
 # либо можно выделить регион на карте мира
 asia = st_union(world_asia) # объединяем страны в Азии 
 plot(world$geom)
@@ -97,6 +101,11 @@ plot(asia, add = TRUE, col = "red") # add = TRUE добавляет карту �
 
 Отберите страны с населением меньше 10000000 человек и выделите их на карте мира синим цветом.
 
+```{r}
+small_c = world %>% filter(pop < 10000000)
+plot(world$geom)
+plot(small_c, add = TRUE, col = "blue")
+```
 
 
 Можно еще и агрегировать данные! Например, посмотрим на кол-во населения по континентам.
@@ -132,6 +141,17 @@ plot(world_unempl["unemployment"])
 *Ваша очередь:*
 Оставьте в датасете World Bank только страну и уровень грамотности (literacy), соедините получившийся датасет с world. Агрегируйте уровень грамотности до среднего по субрегиону и отразите результат на карте.
 
+```{r}
+literacy = worldbank_df %>% select(name, literacy)
+class(literacy)
+
+world_literacy = left_join(world, literacy, by = c("name_long" = "name"))
+class(world_literacy)
+world_agg3 = aggregate(world_literacy["literacy"], by = list(world_literacy$subregion),
+                       FUN = mean, na.rm = TRUE)
+
+plot(world_agg3)
+```
 
 
 Можно посчитать расстояния между странами (между их центрами) (требуется lwgeom)
@@ -384,9 +404,9 @@ ggplot() +
 6) Наложить сеть на карту: точки места, связи между ними - посещение одним человеком
 
 ```{r}
-travels = read_csv("./travels.csv")
+travels = read_csv("~/shared/minor3_2019/1-DigitalHumanities/maps/travels.csv")
 
-places = read_tsv("./Places.tsv")
+places = read_tsv("~/shared/minor3_2019/1-DigitalHumanities/maps/Places.tsv")
 places = tidyr::separate(places, Coordinates, into = c("lat", "lon"), sep = ",")
 ```
 
@@ -396,7 +416,8 @@ travels1 = travels %>% left_join(places, by = c("place_name" = "Place name"))
 ```
 
 ```{r}
-g = graph_from_data_frame(travels1)
+library(igraph)
+g = igraph::graph_from_data_frame(travels1)
 g = igraph::simplify(g)
 
 bipartite.mapping(g)
@@ -483,6 +504,9 @@ m <- leaflet(data = places1) %>% setView(lng = 12.496366, lat = 41.902782, zoom 
 m %>% addTiles() %>% 
   addCircles(~lon, ~lat, popup = ~as.character(places1$place), label = ~as.character(places1$place), color = ~pal(community), radius = 5)
 ```
+
+
+
 
 
 

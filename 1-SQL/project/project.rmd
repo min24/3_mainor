@@ -1,71 +1,122 @@
-
 ```{r}
 library(RSQLite)
 con <- DBI::dbConnect(SQLite(), "BankChurn.db")
+con1 = DBI::dbConnect(SQLite(), "EmployeeChurn.db")
 ```
-
 ```{r}
 dbListTables(con)
-
+dbListTables(con1)
 ```
 ```{r}
 library(dplyr)
 churn = dbGetQuery(con, "SELECT * FROM churn")
 churn = churn %>% dplyr::select(-CustomerId, -Surname)
-churn$CountryId = as.factor(churn$CountryId)
-churn$Gender = as.factor(churn$Gender)
+cities = dbGetQuery(con1, "SELECT * FROM cities")
+departments = dbGetQuery(con1, "SELECT * FROM departments")
+info = dbGetQuery(con1, "SELECT * FROM info")
+```
+```{r}
+summary(churn)
+```
+```{r}
+ggplot(churn %>% filter(CountryId=="jd73"))+ geom_bar(aes(x = Exited))
+churn %>% filter(CountryId=="jd73") %>% nrow()
 ```
 
+
+#Model 1: ctree
 ```{r}
+for (var in names(churn)[c(2,3,5,7,8,9,11)]){
+  churn[[var]] = as.factor(churn[[var]])
+}
+
 library(partykit)
 library(caret)
+set.seed(1)
 ind = createDataPartition(churn$Exited, p = 0.8, list = F)
 train = churn[ind,]
 test = churn[-ind,]
-```
 
+tree_model = ctree(Exited~., data = train)
 
-```{r}
-train = churn[ind,]
+tree_pred = predict(tree_model, newdata = test)
 
-tree_model = ctree(data=train, Exited~.)
-
-tree_pred = predict(tree_model, data=train)
-a = mean(tree_pred)
-tree_pred = ifelse(tree_pred > a, 1, 0)
-tree_pred = as.factor(tree_pred)
-train$Exited = as.factor(train$Exited)
-
-confusionMatrix(tree_pred, train$Exited)
+confusionMatrix(tree_pred, test$Exited)
 
 ```
 
-
-
-
-```{r}
-churn1 = churn %>% select(CreditScore, CountryId, Gender, Age, Tenure, Balance, EstimatedSalary, Exited)
-
-```
+#Model 2: ctree
 
 ```{r}
-library(partykit)
-library(caret)
-churn = churn %>% filter(CountryId=="jd73")
+churn1 = churn
+churn1$Balance = log(churn1$Balance+1)
+churn1$EstimatedSalary = log(churn1$EstimatedSalary)
+
+
 set.seed(1)
 ind = createDataPartition(churn1$Exited, p = 0.8, list = F)
-train = churn1[ind,]
-test = churn1[-ind,]
+train1 = churn1[ind,]
+test1 = churn1[-ind,]
+
+tree_model1 = ctree(Exited~., data = train1)
+
+tree_pred1 = predict(tree_model1,newdata=test1)
+
+confusionMatrix(tree_pred1, test1$Exited)
 ```
 ```{r}
-train = churn1[ind,]
-tree_model = ctree(data=train, Exited~.)
-tree_pred = predict(tree_model, data=train)
-a = mean(tree_pred)
-tree_pred = ifelse(tree_pred > a, 1, 0)
-tree_pred = as.factor(tree_pred)
-train$Exited = as.factor(train$Exited)
-confusionMatrix(tree_pred, train$Exited)
+library(vip)
+vi(tree_model)
+vip(tree_model1)
+```
+
+
+# Model 3: Logit
+
+```{r}
+model.log = train(Exited~., data = train, method = "glm", family = binomial(link = "logit"))
+
+logit_pred = predict(model.log, newdata = test)
+confusionMatrix(logit_pred, test$Exited)
+```
+
+# Model 4: Logit1
+```{r}
+model.log1 = train(Exited~., data = train1, method = "glm", family = binomial(link = "logit"))
+
+logit_pred1 = predict(model.log1, newdata = test1)
+predTest.log2 = predict(model.log1, test1, type = "raw")
+
+confusionMatrix(logit_pred1, test1$Exited)
+```
+
+
+
+
+# Model 5: Linear
+
+```{r}
+model_linear = lm(Exited~., data = train)
+linear_pred = predict(model_linear, newdata = test)
+test$linear = linear_pred
+source("~/shared/minor2_2018/1-intro/lab09-ratings+gini/compute_gini.R")
+gini_find_split(data = test, real = Exited, variable = linear)
+test$pred = ifelse(test$linear>1.36275025363485, 1, 0)
+test$pred = as.factor(test$pred)
+confusionMatrix(test$pred, test$Exited)
+```
+
+# Model 6: Linear1
+
+```{r}
+model_linear1 = lm(Exited~., data = train1)
+linear_pred1 = predict(model_linear1, newdata = test1)
+test1$linear = linear_pred1
+source("~/shared/minor2_2018/1-intro/lab09-ratings+gini/compute_gini.R")
+gini_find_split(data = test, real = Exited, variable = linear)
+test1$pred = ifelse(test1$linear>1.36275025363485, 1, 0)
+test1$pred = as.factor(test1$pred)
+confusionMatrix(test1$pred, test1$Exited)
 ```
 ```{r}
 library(vip)
@@ -73,12 +124,25 @@ vi(tree_model)
 vip(tree_model)
 ```
 
-```{r}
-summary(churn)
-```
 
 ```{r}
-ggplot(churn %>% filter(CountryId=="jd73"))+ geom_bar(aes(x = Exited))
-churn %>% filter(CountryId=="jd73") %>% nrow()
+pmax(100, pmin(1000, 0.6* OS_dependent_getrlimit_or_equivalent()))
+
+
+library(randomForest)
+set.seed(1)
+model.rf=randomForest(Exited~.,data=train, mtry=5, importance=TRUE)
+predTrain.rf = predict(model.rf, train)
+predTest.rf = predict(model.rf, test)
+```
+
+Точность предсказания
+
+```{r}
+
+accuracyTrain.rf = confusionMatrix(predTrain.rf, credit.train$Status, positive = "good")$overall["Accuracy"]
+accuracyTest.rf = confusionMatrix(predTest.rf, credit.test$Status, positive = "good")$overall["Accuracy"]
+accuracyTrain.rf
+accuracyTest.rf
 ```
 

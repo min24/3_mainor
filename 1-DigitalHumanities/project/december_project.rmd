@@ -1,0 +1,104 @@
+
+```{r}
+library(readr)
+```
+```{r}
+user1 = read.csv("~/shared/minor3_2019/1-DigitalHumanities/project/users1.csv")
+
+```
+
+
+```{r}
+library(dplyr)
+newdata = user1 %>% select(X.id, artname, traname, artid, traid) %>% group_by(X.id, artid, artname, traname) %>% summarise(count=n())
+artists = newdata %>% group_by(artid, artname) %>% summarise(count = n())
+```
+
+```{r}
+write.csv(artists, "artists.csv")
+
+#install.packages("httr")
+library("httr")
+library("stringr")
+f = function(x){
+  x = str_remove(x, 'href=\"/tag/')
+  x = str_remove(x, '\"\n')
+  return(x)
+}
+get_genre = function(artname){
+  artname = stringr::str_replace_all(artname, " ", "+")
+  link = stringr::str_c("https://www.last.fm/music", artname, sep = "/")
+  a = httr::GET(link)
+  webpage = content(a, "text", encoding = "ISO-8859-1")
+  tags = str_extract_all(webpage, 'href="/tag/(.*?)"\n')
+  tags = Map(f, tags)
+  tags = tags[[1]]
+  tags = unique(tags)
+  tags1 = paste(tags, collapse=", ")
+  return(tags1)
+}
+```
+
+```{r}
+start.time <- Sys.time()
+get_genre(artists$artname[349])
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+```
+
+```{r}
+artists = read.csv("artists.csv")
+artists = artists %>% select(-X)
+#artists$genre = ""
+for(i in 1:nrow(artists)){
+artists$genre[i] = ifelse(artists$genre[i]=="",get_genre(artists$artname[i]), artists$genre[i])
+}
+write.csv(artists, "artists.csv")
+artists = read.csv("artists.csv")
+```
+```{r}
+get_genre(artists$artname[419])
+get_genre("Circus Joy")
+
+```
+
+`
+
+
+
+
+
+```{r}
+library(dplyr)
+library(ggplot2)
+a = user1 %>% group_by(X.id) %>% summarise(age = mean(age))
+a = a %>% group_by(age) %>% summarise(count=n())
+ggplot(a)+geom_bar(aes(x=age, y=count), stat = "identity")+
+  xlab("Age")+
+  ylab("Number of users")+
+  ggtitle("Distribution of users by age")+
+  theme_bw()
+```
+
+```{r}
+b = user1 %>% group_by(X.id) %>% summarise(country = country[1])
+b = b%>% group_by(country) %>% summarise(count=n())
+ggplot(b)+geom_bar(aes(x=country, y=count), stat = "identity")+
+  xlab("Country")+
+  ylab("Number of users")+
+  ggtitle("Distribution of users by countries")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 60))
+```
+```{r}
+c = user1 %>% group_by(X.id, traid) %>% summarise(count=n()) %>% arrange(-count)
+c = c %>% group_by(X.id) %>% summarise(count = n()) %>% arrange(-count)
+ggplot(c)+geom_histogram(aes(x=count), bins=40)+
+  xlab("Number of track")+
+  ylab("Number of user")+
+  ggtitle("Distribution of users by number of track")+
+  theme_bw()
+```
+
+
