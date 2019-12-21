@@ -1,0 +1,99 @@
+---
+title: "Аналитика: повторение"
+output: html_document
+---
+
+### Что было
+
+* доступ к данным во внешней базе, без необходимости загружать файл полностью в память
+* основы SQL
+* популярные задачи бизнес-аналитики: отток клиентов и удовлетворенность
+* визуализация с помощью дэшбордов (`flexdashboard`)
+* интерактивные визуализации (`plotly`)
+
+### Задание
+
+Сегодня объединим несколько тем в одном примере. Анализировать будем ту же базу, с которой начинали -- базу chinook про магазин, в котором можно покупать треки. 
+
+![](https://www.sqlitetutorial.net/wp-content/uploads/2015/11/sqlite-sample-database-color.jpg)
+
+Подключаем библиотеки
+
+```{r}
+library(RSQLite)
+library(plotly)
+library(DBI)
+```
+
+Создаем соединение
+
+```{r}
+con <- DBI::dbConnect(SQLite(), "~/shared/minor3_2019/1-SQL/2-practice-sql/chinook.db")
+```
+
+Посмотрим на таблицы
+
+```{r}
+dbListTables(con)
+```
+
+```{r}
+dbListFields(con, "invoices")
+```
+
+Посчитаем медианную сумму, потраченную клиентом
+
+```{r}
+res = dbGetQuery(con, "SELECT customers.CustomerId AS CustomerId, SUM(Total) AS TotalSum
+                 FROM customers INNER JOIN invoices 
+                 ON customers.CustomerId = invoices.CustomerId
+                 GROUP BY customers.CustomerId")
+
+medianSum = median(res$TotalSum)
+```
+
+Оставим только клиентов, которые потратили больше этой медианной суммы (вспомним про запросы с параметрами). И посчитаем, какие жанры самые популярные
+
+```{r}
+res = dbGetQuery(con, "SELECT genres.Name AS Genre, COUNT() AS num
+                 FROM
+                 ((((SELECT customers.CustomerId AS CustId, SUM(Total) AS TotalSum
+                 FROM customers INNER JOIN invoices 
+                 ON customers.CustomerId = invoices.CustomerId
+                 GROUP BY customers.CustomerId
+                 HAVING TotalSum > ?)
+                 INNER JOIN invoices 
+                   ON CustId = invoices.CustomerId)
+                     INNER JOIN invoice_items
+                     ON invoices.InvoiceId = invoice_items.InvoiceId)
+                       INNER JOIN tracks
+                       ON invoice_items.TrackId = tracks.TrackId)
+                         INNER JOIN genres
+                         ON tracks.GenreId = genres.GenreId
+                 GROUP BY genres.GenreId
+                 ORDER BY num DESC
+                 LIMIT 10", params = medianSum)
+```
+
+* Определите, есть ли альбомы, в которых треки разных жанров. Сколько таких альбомов?
+
+```{r}
+
+```
+
+* Есть ли треки, которые входят в несколько альбомов
+```{r}
+
+```
+
+* Отличается ли количество заказов для треков, которые входят в разножанровые альбомы, и тех, которые есть только в одножанровых альбовам?
+```{r}
+
+```
+
+* Отличаются ли цены на треки, входящие в несколько альбомов? / входящие в альбомы с треками разных жанров?
+```{r}
+
+```
+
+* Выразите результаты анализа в дэшборде. Используйте хотя бы один интерактивный график.

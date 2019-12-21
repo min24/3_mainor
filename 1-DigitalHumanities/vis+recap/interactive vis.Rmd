@@ -1,0 +1,201 @@
+---
+title: Maps
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Начнем с интерактивной визуализации.
+Сегодня будем учиться рисовать интерактивные сети с помощью *visNetwork* и продолжим немного с интерактивными картами с *leaflet*.
+Работаем с данными о пользователях и посещаемых ими локациях. Сделаем сеть локаций, которые связаны, если их посещал один человек.
+```{r}
+library(readr)
+library(dplyr)
+
+loc2 = read_csv("~/shared/minor3_2019/1-DigitalHumanities/vis+recap/locations_users.csv")
+
+ll= select(loc2, location, user)
+ll = na.omit(ll)
+
+
+library(igraph)
+ll.net = graph_from_data_frame(ll)
+g = igraph::simplify(ll.net)
+
+# bipartite.mapping(g)
+
+V(g)$type <- bipartite_mapping(g)$type
+
+proj <- bipartite_projection(g)
+
+# проекция с людьми
+proj1 = proj$proj1
+
+plot(proj1)
+
+degree = degree(proj1)
+hist(degree)
+
+# уберем узлы с очень большим degree
+V(proj1)$degree = degree(proj1, mode = 'total')
+proj11=delete_vertices(proj1,V(proj1)$degree >30)
+
+# и очень маленьким degree
+proj11=delete_vertices(proj11,V(proj11)$degree < 4)
+
+# посмотрим
+library(ggraph)
+ggraph(proj11) + 
+      geom_node_point(aes(size = degree(proj11))) + 
+      geom_edge_link(alpha = 0.3) +
+      theme_void()
+```
+
+Вытащим таблицу с ребрами, из которого оставим только локации. Добавим к ним широту и долготу
+```{r}
+edges = as.data.frame(get.edgelist(proj11))
+
+e1 = as.data.frame(edges$V1)
+e2 = as.data.frame(edges$V2)
+names(e2) = "edges$V1"
+
+ee = rbind(e1, e2)
+ee = distinct(ee)
+names(ee) = "location"
+
+ee = ee %>% left_join(loc2, by = "location") %>% select(location, long, lat) %>% distinct()
+```
+
+#### Начнем с сетей
+
+## Visnetwork
+
+```{r}
+library(visNetwork)
+
+# определеяем файлики связей (колонки должны называться from и to)
+vis.edges = edges
+names(vis.edges) = c("from", "to")
+
+
+# определяем файлик узлов
+vis.nodes = ee
+
+# сделаем локации в Японии квадратными, в Австралии - круглыми, а в Америке - треугольными. Остальные сделаем ромбами
+vis.nodes$shape = ifelse(vis.nodes$lat >30 & vis.nodes$lat < 44 & vis.nodes$long >130 & vis.nodes$long < 145,"square", 
+                  ifelse(vis.nodes$lat < -12 & vis.nodes$lat > -34 & vis.nodes$long >130 & vis.nodes$long < 151, "round",
+                  ifelse(vis.nodes$lat > 25 & vis.nodes$lat < 48 & vis.nodes$long < -71 & vis.nodes$long > -123,"triangle", "diamond")))
+
+
+# то же самое с цветами: Япония - желтый, Австралия - фиолетовый, Америка - синий, остальное - зеленый
+vis.nodes$color= ifelse(vis.nodes$shape == "square", "yellow",
+                  ifelse(vis.nodes$shape == "round", "purple",
+                  ifelse(vis.nodes$shape == "triangle", "blue", "green")))
+
+vis.nodes$title = vis.nodes$location
+
+# колонка с узлами должна называться id
+vis.nodes = select(vis.nodes, location, shape, color, title)
+names(vis.nodes)[1] = "id"
+```
+
+Рисуем
+```{r}
+network = visNetwork(vis.nodes, vis.edges, height = "500px", width = "100%")
+network
+
+# можно сохранить как html
+# htmlwidgets::saveWidget(network, "network.html")
+```
+
+Можно сделать по группам
+```{r}
+# добавим к исходному файлу с узлами (без форм, цвета и тд) принадлежность к группе. 
+# например, пусть Япония и Австралия будут в одной группе, Америка - в другой и все остальное - в отдельной.
+vis.nodes1 = ee
+
+vis.nodes1$group = ifelse(vis.nodes1$lat >30 & vis.nodes1$lat < 44 & vis.nodes1$long >130 & vis.nodes1$long < 145,"A", 
+                  ifelse(vis.nodes1$lat < -12 & vis.nodes1$lat > -34 & vis.nodes1$long >130 & vis.nodes1$long < 151, "A",
+                  ifelse(vis.nodes1$lat > 25 & vis.nodes1$lat < 48 & vis.nodes1$long < -71 & vis.nodes1$long > -123,"B", "C")))
+
+vis.nodes1 = select(vis.nodes1, location, group)
+names(vis.nodes1)[1] = "id"
+
+visNetwork(vis.nodes1, vis.edges, width = "100%") %>% 
+  # группа А будет розовыми квадратами с тенью
+  visGroups(groupname = "A", color = "green", shape = "square", 
+            shadow = list(enabled = TRUE)) %>% 
+  # группа B будет красными треугольниками
+  visGroups(groupname = "B", color = "red", shape = "triangle") %>% 
+  # группа С будет темно-синими кружочками
+  visGroups(groupname = "С", color = "darkblue", shape = "round")
+```
+
+
+#### А теперь карты
+
+## Leaflet
+```{r}
+library(ggfortify)
+library(plotly)
+library(ggplot2)
+library(ggmap)
+library(rgdal)
+library(sp)
+
+MapDir <- "~/minor_dh/maps/maps"
+# загружаем шейпфайл
+owd<-getwd()
+setwd(MapDir)
+wmap = readOGR(dsn = "./", "TM_WORLD_BORDERS-0.3")
+setwd(owd)
+plot(wmap)
+
+ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group), col = "white") + coord_map()  +
+  geom_point(data = ee, aes(x = long, y = lat), colour = "red") + 
+  theme_nothing()
+
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>% 
+  addPolylines(data=ee, lng = ~long, lat = ~lat, weight = 0.5) %>% 
+  addCircles(data=ee, lng = ~long, lat = ~lat, col = "red")
+
+```
+
+
+Можно добавить кастомные иконки вместо обычных точек
+```{r}
+# ?makeIcon
+# ?iconList
+cat = makeIcon("~/shared/minor3_2019/1-DigitalHumanities/vis+recap/catto.png", iconWidth = 24,iconHeight = 24)
+
+leaflet() %>%
+  addTiles() %>% 
+  addPolylines(data=ee, lng = ~long, lat = ~lat, weight = 0.5) %>% 
+  addMarkers(data=ee, lng = ~long, lat = ~lat,icon = ~cat)
+
+# добавим попапы
+leaflet() %>%
+  addTiles() %>% 
+  addPolylines(data=ee, lng = ~long, lat = ~lat, weight = 0.5) %>% 
+  addMarkers(data=ee, lng = ~long, lat = ~lat, 
+             popup = ~paste0("Location",location, "<br>",
+                           "Lat:", lat, "<br>",
+                           "Long: ", long, "<br>"))
+
+
+# и можно картиночку в попапы
+cat = "https://i.pinimg.com/originals/50/5a/15/505a15ddc7c227b3f646c1d069c4bea5.jpg"
+
+ee$cat = "thing"
+
+leaflet() %>%
+  addTiles %>%
+  addCircleMarkers(data = ee, lng =~long, lat = ~lat,
+                   popup = paste0("<img src = ", cat, ">"))
+
+  
+```
+
