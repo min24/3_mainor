@@ -1,20 +1,39 @@
+---
+title: "december_project"
+author: "lnguen_1"
+date: "24/12/2019"
+output: 'html_document'
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+
 ```{r}
+library(caret)
 library(RSQLite)
 con <- DBI::dbConnect(SQLite(), "BankChurn.db")
-con1 = DBI::dbConnect(SQLite(), "EmployeeChurn.db")
 ```
 ```{r}
 library(dplyr)
 churn = dbGetQuery(con, "SELECT * FROM churn")
 churn = churn %>% dplyr::select(-CustomerId, -Surname)
-cities = dbGetQuery(con1, "SELECT * FROM cities")
-departments = dbGetQuery(con1, "SELECT * FROM departments")
-info = dbGetQuery(con1, "SELECT * FROM info")
+country = dbGetQuery(con, "SELECT * FROM country")
 ```
+## Исследуйте разные подгруппы клиентов/сотрудников. Выделите подгруппу, которая представляет наибольший интерес, обоснуйте свой выбор
 
 ```{r}
-ggplot(churn %>% filter(CountryId=="jd73"))+ geom_bar(aes(x = Exited))
-churn %>% filter(CountryId=="jd73") %>% nrow()
+data1 = dbGetQuery(con, "SELECT Country, Exited 
+           FROM (churn LEFT JOIN country 
+           ON churn.COuntryId == country.CountryId)")
+data1$Exited = ifelse(data1$Exited == 1, "Yes", "No")
+ggplot(data1)+ 
+  geom_bar(aes(x = Exited), fill = "#123456")+
+      facet_grid(~Country)+
+  theme_bw()+
+  ggtitle("Distribution of client exited from bank service by countries")+ 
+  ylab("Count")
 ```
 ```{r}
 for (var in names(churn)[c(2,3,5,7,8,9,11)]){
@@ -27,36 +46,24 @@ ind = createDataPartition(churn$Exited, p = 0.8, list = F)
 train = churn[ind,]
 test = churn[-ind,]
 
-churn1 = churn
-churn1$Balance = log(churn1$Balance+1)
-churn1$EstimatedSalary = log(churn1$EstimatedSalary)
-
-
-set.seed(1)
-ind = createDataPartition(churn1$Exited, p = 0.8, list = F)
-train1 = churn1[ind,]
-test1 = churn1[-ind,]
-
 ```
+
+## Постройте модель для предсказания оттока (любым методом на ваш выбор)
 
 
 ### Model 1: ctree
 ```{r}
 tree_model = ctree(Exited~., data = train)
-tree_model1 = ctree(Exited~., data = train1)
-
 ```
 
 ### Model 2: Logit
 ```{r}
 logit_model = train(Exited~., data = train, method = "glm", family = binomial(link = "logit"))
-logit_model1 = train(Exited~., data = train1, method = "glm", family = binomial(link = "logit"))
 ```
 ### Model 3: Linear
 
 ```{r}
 linear_model = lm(Exited~., data = train)
-linear_model1 = lm(Exited~., data = train1)
 
 ```
 
@@ -66,7 +73,6 @@ linear_model1 = lm(Exited~., data = train1)
 library(randomForest)
 set.seed(1)
 rf_model= randomForest(Exited~.,data=train, mtry=5, importance=TRUE)
-rf_model1= randomForest(Exited~.,data=train1, mtry=5, importance=TRUE)
 
 ```
 
@@ -75,7 +81,6 @@ rf_model1= randomForest(Exited~.,data=train1, mtry=5, importance=TRUE)
 library(gbm)
 set.seed(1)
 boost_model = caret::train(Exited~., data=train, method = "gbm", verbose = F) 
-boost_model1 = caret::train(Exited~., data=train1, method = "gbm", verbose = F) 
 
 ```
 
@@ -86,26 +91,95 @@ get_acc = function(model, test){
     a = confusionMatrix(test$pred, test$Exited)
     return(a$overall["Accuracy"])
   }else{
-    source("F:/Github/Mainor_2/1_seminars/11_13_lab09_rating+gini/compute_gini.R")
+    source("~/Mainor_2/1_seminars/11_13_lab09_rating+gini/compute_gini.R")
     gini = gini_find_split(data = test, real = Exited, variable = pred)
+    gini = as.numeric(stringr::str_remove(gini, "Best split at "))
     test$pred1 = ifelse(test$pred>gini, 1, 0)
     test$pred1 = as.factor(test$pred1)
     b = confusionMatrix(test$pred1, test$Exited)
     return(b$overall["Accuracy"])
   }
 }
+
 ```
 
 ```{r}
-get_acc(tree_model, test)
-get_acc(tree_model1, test1)
-get_acc(logit_model, test)
-get_acc(logit_model1, test1)
-get_acc(linear_model, test)
-get_acc(linear_model1, test1)
-get_acc(rf_model, test)
-get_acc(rf_model1, test1)
-get_acc(boost_model, test)
-get_acc(boost_model1, test1)
+paste("Accuracy of tree model is:", get_acc(tree_model, test))
+paste("Accuracy of logit model is:", get_acc(logit_model, test))
+paste("Accuracy of linear model is:", get_acc(linear_model, test))
+paste("Accuracy of random-forest model is:", get_acc(rf_model, test))
+paste("Accuracy of boosting model is:", get_acc(boost_model, test))
+```
+
+## Выявите основные факторы, которые значимы для предсказания оттока согласно этой модели
+
+```{r}
+# Осмотрю модель Gradient Boosting
+library(vip)
+vip(boost_model)
+# Age, NumOfProduct2, NumOfProduct3, IsActiveMember1, Balance, COuntryIdJd73 значимы для предсказания оттока согласно этой модели
+```
+
+
+## Предложите, какие действия могла бы предпринять компания, чтобы предотвратить/уменьшить отток. Обоснуйте свои предложения
+
+
+
+Приведенная выше диаграмма отражает, что Age, NumberOfProduct, IsActivaMember являются наиболее важными переменными, влияющими на результаты прогнозирования Exited / NoExited. Поэтому у меня было несколько предложений для банка:
+1. Предложение соответствующих пакетов услуг для стимулирования клиентов использовать многие продукты и услуги клиентов.
+2. Ориентируйтесь на клиентов моложе 44 лет
+3. Сосредоточьтесь на клиентах-женщинах, потому что они чаще отказываются от банковских услуг, чем мужчины.
+
+#### Пример объяснения с данными, на которых была построена модель:
+```{r}
+library(plotly)
+library(lime)
+explain_boost = lime(x = train, model = boost_model)
+explain_ex_boost = lime::explain(x = test[1,], 
+                           explainer = explain_boost,
+                           n_features = 8,
+                           n_labels = 2)
+a = plot_features(explain_ex_boost)
+ggplotly(a)
+```
+
+
+
+
+## Протестируйте с помощью предсказаний эффект от ваших предложений
+
+#### Во первых, проверяю в группе клиентов, у которых есть больше 1 NumOfProducts, Accuracy = 93,23%, больше чем 86.95, и большинство людей не уходили (Exited = 0)
+```{r}
+
+test1 = test %>% filter(NumOfProducts != 0 & NumOfProducts != 1)
+test1$pred = predict(boost_model, newdata = test1)
+confusionMatrix(test1$pred, test1$Exited)
+```
+#### Во вторых, проверяю в группе клиентов, которому меньше 44 года, Accuracy = 88,52%, больше чем 86.95%, и большинство людей не уходили (Exited = 0).
+```{r}
+
+test2 = test %>% filter(Age<44)
+test2$pred = predict(boost_model, newdata = test2)
+confusionMatrix(test2$pred, test2$Exited)
+```
+
+#### Во третьих, проверяю в группе женькой клиентов, Accuracy = 84.79%, меньше чем 86,95%
+```{r}
+test3 = test %>% filter(Gender == "Female")
+test3$pred = predict(boost_model, newdata = test3)
+confusionMatrix(test3$pred, test3$Exited)
+```
+
+#### Во третьих, проверяю в группе мужской клиентов, Accuracy = 88,64%, больше чем 86,95%
+
+```{r}
+test4 = test %>% filter(Gender == "Male")
+test4$pred = predict(boost_model, newdata = test4)
+confusionMatrix(test4$pred, test4$Exited)
+
+```
+```{r}
+dbDisconnect(con)
+
 ```
 

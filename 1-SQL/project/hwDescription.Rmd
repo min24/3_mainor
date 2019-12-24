@@ -2,6 +2,8 @@
 title: 'SQL: HW'
 output: html_document
 ---
+```{r}
+```
 
 ## Задание на проект
 

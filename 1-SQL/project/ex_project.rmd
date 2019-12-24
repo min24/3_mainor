@@ -1,0 +1,78 @@
+---
+title: "Churn Store Statistics"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+---
+```{r}
+library(plotly)
+library(flexdashboard)
+library(ggplot2)
+library(DBI)
+library(RSQLite)
+con <- DBI::dbConnect(SQLite(), "BankChurn.db")
+library(dplyr)
+churn = dbGetQuery(con, "SELECT * FROM churn")
+churn = churn %>% dplyr::select(-CustomerId, -Surname)
+country = dbGetQuery(con, "SELECT * FROM country")
+for (var in names(churn)[c(2,3,5,7,8,9,11)]){
+  churn[[var]] = as.factor(churn[[var]])
+}
+
+```
+
+
+Column {data-width=450}
+-----------------------------------------------------------------------
+
+```{r}
+data1 = dbGetQuery(con, "SELECT Country, Exited 
+           FROM (churn LEFT JOIN country 
+           ON churn.COuntryId == country.CountryId)")
+print(paste("NoExited/Exited in France = ", round(nrow(data1 %>% filter(Country == "France" & Exited == 0))/nrow(data1 %>% filter(Country == "France" & Exited == 1)), 2)))
+print(paste("NoExited/Exited in Germany = ", round(nrow(data1 %>% filter(Country == "France" & Exited == 0))/nrow(data1 %>% filter(Country == "Germany" & Exited == 1)), 2)))
+print(paste("NoExited/Exited in Spain = ", round(nrow(data1 %>% filter(Country == "France" & Exited == 0))/nrow(data1 %>% filter(Country == "Spain" & Exited == 1)), 2)))
+```
+
+### Distribution of bank's clients in different countries
+```{r}
+data1$Exited = ifelse(data1$Exited == 1, "Yes", "No")
+ggplot(data1)+ 
+  geom_bar(aes(x = Exited), fill = "#123456")+
+      facet_grid(~Country)+
+  theme_bw()+
+  ggtitle("Distribution of client exited from bank service by countries")+ 
+  ylab("Count")
+```
+
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+### Prediction model of outflow (Gradient boosting model)
+
+```{r}
+library(gbm)
+library(caret)
+set.seed(1)
+ind = createDataPartition(churn$Exited, p = 0.8, list = F)
+train = churn[ind,]
+test = churn[-ind,]
+boost_model = caret::train(Exited~., data=train, method = "gbm", verbose = F) 
+b = confusionMatrix(predict(boost_model, newdata = test), as.factor(test$Exited))
+b$table
+b$overall["Accuracy"]
+```
+
+Importances of variables in model Gradient Boosting
+```{r}
+library(vip)
+g = vip(boost_model)
+ggplotly(g)
+```
+
+
+
+
+
+

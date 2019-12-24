@@ -1,6 +1,16 @@
+---
+title: "december_project"
+author: "lnguen_1"
+date: "24/12/2019"
+output: 'html_document'
+---
+
+
 
 ```{r}
 library(readr)
+library(dplyr)
+
 ```
 ```{r}
 user1 = read.csv("~/shared/minor3_2019/1-DigitalHumanities/project/users1.csv")
@@ -9,68 +19,72 @@ user1 = read.csv("~/shared/minor3_2019/1-DigitalHumanities/project/users1.csv")
 
 
 ```{r}
-library(dplyr)
-newdata = user1 %>% select(X.id, artname, traname, artid, traid) %>% group_by(X.id, artid, artname, traname) %>% summarise(count=n())
-artists = newdata %>% group_by(artid, artname) %>% summarise(count = n())
+newdata = user1 %>% select(X.id, gender, age, country, artname, traname, artid, traid) %>% group_by(X.id, artname,gender, age, country) %>% summarise(count=n())
 ```
-
-```{r}
-write.csv(artists, "artists.csv")
-
-#install.packages("httr")
-library("httr")
-library("stringr")
-f = function(x){
-  x = str_remove(x, 'href=\"/tag/')
-  x = str_remove(x, '\"\n')
-  return(x)
-}
-get_genre = function(artname){
-  artname = stringr::str_replace_all(artname, " ", "+")
-  link = stringr::str_c("https://www.last.fm/music", artname, sep = "/")
-  a = httr::GET(link)
-  webpage = content(a, "text", encoding = "ISO-8859-1")
-  tags = str_extract_all(webpage, 'href="/tag/(.*?)"\n')
-  tags = Map(f, tags)
-  tags = tags[[1]]
-  tags = unique(tags)
-  tags1 = paste(tags, collapse=", ")
-  return(tags1)
-}
-```
-
-```{r}
-start.time <- Sys.time()
-get_genre(artists$artname[349])
-end.time <- Sys.time()
-time.taken <- end.time - start.time
-time.taken
-```
-
-```{r}
-artists = read.csv("artists.csv")
-artists = artists %>% select(-X)
-#artists$genre = ""
-for(i in 1:nrow(artists)){
-artists$genre[i] = ifelse(artists$genre[i]=="",get_genre(artists$artname[i]), artists$genre[i])
-}
-write.csv(artists, "artists.csv")
-artists = read.csv("artists.csv")
-```
-```{r}
-get_genre(artists$artname[419])
-get_genre("Circus Joy")
-
-```
-
-`
-
-
-
 
 
 ```{r}
-library(dplyr)
+# artists = newdata %>% group_by(artname) %>% summarise(count = n())
+# artists$genre = ""
+# artists$genre = as.character(artists$genre)
+# artists$artname = as.character(artists$artname)
+# artists$nchar = Map(nchar, artists$artname)
+# artists = artists %>% filter(nchar<500)
+# artists = artists %>% dplyr::select(-count) %>% na.omit()
+```
+
+```{r}
+# 
+# library("httr")
+# library("stringr")
+# f = function(x){
+#   x = str_remove(x, 'href=\"/tag/')
+#   x = str_remove(x, '\"\n')
+#   return(x)
+# }
+
+# Функция get_genre возьмет данные про жанге из сайта last.fm
+# get_genre = function(artname){
+#     artname = str_replace_all(artname, " ", "+")
+#   link = stringr::str_c("https://www.last.fm/music", artname, sep = "/")
+#   a = httr::GET(link)
+#   webpage = content(a, "text", encoding = "ISO-8859-1")
+#   
+#   tags = str_extract_all(webpage, 'href="/tag/(.*?)"\n')
+#   tags = Map(f, tags)
+#   tags = tags[[1]]
+#   tags = unique(tags)
+#   tags1 = paste(tags, collapse=", ")
+#   return(tags1)
+# }
+```
+
+```{r}
+# artists = read.csv("artists.csv")
+# artists = artists %>% select(-X)
+# 
+# Не загрузите эту петлю, она работает в течение 20-30 часов ...
+# for(i in 1:nrow(artists)){
+# artists$genre[i] = get_genre(artists$artname[i])
+# }
+# 
+# write.csv(artists, "artists.csv")
+# copy_artists = artists
+# write.csv(copy_artists, "copy_artists.csv")
+```
+
+```{r}
+library(stringr)
+artists = read.csv("artists.csv") %>% select(-X)
+newdata = newdata %>% left_join(artists, key = "artname")
+newdata = na.omit(newdata)
+newdata = newdata %>% filter(genre != "")
+newdata$genre = stringr::str_replace_all(newdata$genre, ",", "")
+
+
+```
+
+```{r}
 library(ggplot2)
 a = user1 %>% group_by(X.id) %>% summarise(age = mean(age))
 a = a %>% group_by(age) %>% summarise(count=n())
@@ -91,14 +105,10 @@ ggplot(b)+geom_bar(aes(x=country, y=count), stat = "identity")+
   theme_bw()+
   theme(axis.text.x = element_text(angle = 60))
 ```
-```{r}
-c = user1 %>% group_by(X.id, traid) %>% summarise(count=n()) %>% arrange(-count)
-c = c %>% group_by(X.id) %>% summarise(count = n()) %>% arrange(-count)
-ggplot(c)+geom_histogram(aes(x=count), bins=40)+
-  xlab("Number of track")+
-  ylab("Number of user")+
-  ggtitle("Distribution of users by number of track")+
-  theme_bw()
-```
+
+
+
+
+
 
 
