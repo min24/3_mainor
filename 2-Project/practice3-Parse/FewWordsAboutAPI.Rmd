@@ -1,0 +1,205 @@
+---
+title: "Few words about API"
+output: html_document
+---
+
+#### Комментарий про проект
+
+Проект должен состоять не только из отбора по условию Т.е. вариант, который просто фильтрует по условиям, несколько не то, что ожидается. Одним из путей развития может быть выдача не только полностью подходящих вариантов, но и вариантов “вас может заинтересовать”. Например, ищутся не идентичные, а похожие выдачи (см. меры схожести и кластеризацию, даже какие-то сети и связи или предсказания, при этом там может быть еще и какая-то предобработка признаков). Другими словами, оценки пользователей и метод коллаборативной фильтрации － это не обязательно, но какая-то модель или изученный метод － нужно.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Немного про API
+
+API - application programming interface, набор функций предоставляемых программой или сервисом для использования во внешних программах.
+
+Нас интересуют API веб-сервисов, упрощающие получения данных.
+
+Например [API VK](https://vk.com/dev/first_guide).
+
+API веб-сервисов обычно строятся на том, что вы делаете запрос (открываете страничку со специальным адресом) и получаете ответ в машино-читаемом виде.
+
+Попробуйте открыть страничку [https://api.vk.com/method/users.get?user_id=48523&v=5.52](https://api.vk.com/method/users.get?user_id=48523&v=5.52)
+
+Вы видите ответ в специальном формате.
+
+Как строится эта ссылка?
+
+* `https://api.vk.com/method/` - запрос в API
+* `users.get` - метод. Бывают очень разные https://vk.com/dev/methods
+* `?...` - параметры метода (см. в документации). Разные параметры объединяются через `&`
+
+Например, что значит `user_id=48523&v=5.52`?
+
+Все вместе -- единая строка, пробелов и лишних знаков быть **не должно**
+
+####Но нам хочется немного автоматизации
+
+Давайте сделаем запрос через код. Например так:
+
+```{r}
+require(httr)
+original.VK.response <- GET('https://api.vk.com/method/users.get?user_id=48523&v=5.52')
+VK.response.content <- content(original.VK.response, as = "parsed", "application/json") 
+VK.response.content
+```
+
+Обратите внимание на структуру ответа. Ее часто нужно преобразовывать, чтобы было удобно работать дальше
+```{r}
+res = VK.response.content$response[[1]]
+res
+res = as.data.frame(res)
+res
+```
+
+О чем важно помнить: API обычно имеет свои ограничения -- нужно аккуратно читать документацию. Например, для того же ВК:
+
+* работает тот же принцип с доступом, что и для обычного пользования ВК. 
+     * Есть информация, которую можно получить, даже не регистрируясь в ВК (имя-фамилию, например). 
+     * Есть информация, которая доступна всем пользователям ВК. 
+     * Есть информация, доступная только членам сообщества или друзьям и т.д.
+* поэтому где-то можно просто делать запрос, где-то для получения результата нужно получить так называемый access_token -- код, выдаваемый после введения логина-пароля ВК (подробнее тут <https://vk.com/dev/first_guide>)
+
+> Токен — это Ваш ключ доступа. При выполнении определенных условий человек, получивший Ваш токен, может нанести существенный ущерб Вашим данным и данным других людей. Поэтому очень важно не передавать свой токен третьим лицам. 
+
+> Поле expires_in содержит время жизни токена в секундах. 86400 секунд — это ровно сутки. Через сутки полученный токен перестанет действовать, для продолжения работы нужно будет получить новый. 
+
+* Есть ограничения на выдаваемый результат. Например, в методе newsfeed.search есть такое замечание 
+
+> для получения информации доступны только первые 1000 результатов
+
+Или ограничения на количество вызовов
+
+* newsfeed.search — 2500 вызовов в сутки; 
+* wall.search — 1000 вызовов в сутки; 
+* wall.get — 10000 вызовов в сутки.
+
+Основной вывод: читайте документацию + поиск. Заранее дать ответы на все потенциальные вопросы все равно невозможно.
+
+**Замечание про ВК и не только:** Иногда можно найти чуть более удобные обертки (пакеты) для API (но документацию по API читать все равно придется).
+Можно попробовать пакет [vkR](https://github.com/Dementiy/vkR) для VK или [RedditExtractoR](https://cran.r-project.org/web/packages/RedditExtractoR/RedditExtractoR.pdf),
+[TwitterR](https://medium.com/@GalarnykMichael/accessing-data-from-twitter-api-using-r-part1-b387a1c7d3e), [rtweet](https://cran.r-project.org/web/packages/rtweet/vignettes/intro.html)
+
+#### Не только API
+
+Не всегда у сервисов есть API. Иногда приходится работать напрямую со страницей
+
+```{r}
+library(RCurl)
+library(XML)
+u <- "http://www.google.ru/search?q=datasets"
+# parse HTML into tree structure
+doc <- htmlParse(u)
+```
+
+Получаем полный код страницы. Теперь нам в нем нужно найти необходимые элементы (ссылки на ресурсы). Для этого открываем код страницы и ищем нужное (Правая кнопка -> Посмотреть код). Видим, что ссылку можно найти под заголовком `h3`, тег ссылки `a`, параметр `href`.
+
+```{r}
+# extract url nodes using XPath. 
+attrs <- xpathApply(doc, "//h3/a", xmlAttrs, "href")
+```
+
+Нам нужны только ссылки, т.е. везде из списка выбираем только первые значения
+
+```{r}
+# extract urls
+links <- sapply(attrs, function(x) x[[1]])
+```
+
+Оставляем только строки, где есть http (убираем дополнительную выдачу -- см. пример для запроса r-project)
+```{r}
+ # ensure urls start with "http" to avoid google references to the search page
+links <- grep("http", links, fixed = TRUE, value=TRUE)
+```
+
+И можно удалить начало строки, оставив только ссылку
+
+```{r}
+library(stringr)
+links = str_replace_all(links, fixed("/url?q="), "")
+```
+
+Рассмотрим **еще один пример** подробнее.
+
+Например, хотим вытащить информацию о фильме <http://www.imdb.com/title/tt3731562/>
+
+```{r}
+URL <- "http://www.imdb.com/title/tt3731562/"
+# Download and parse HTML of IMDb page
+parsed.html <- htmlParse(URL)
+```
+
+Согласно справке функции `htmlParse`
+
+> It uses the XPath syntax and allows very powerful expressions to identify nodes of interest within a document both clearly and efficiently. The XPath language requires some knowledge, but tutorials are available on the Web and in books.
+
+Так что для формирования сложных правил нужно все-таки посмотреть какой-нибудь базовый тьюториал по XPath. Например, [этот](http://zvon.org/xxl/XPathTutorial/Output_rus/examples.html) или [этот](http://easywebscripts.net/useful/xpath.php)
+
+Открываем код страницы (Ctrl+Shift+I), ищем, где там находится нужная нам информация. Допустим, вам нужно только название. Находим его в разделе head между командами (тегами) title
+
+Тогда путь до этого значения выглядит как `/html/head/title`
+
+```{r}
+Film <- xpathSApply(parsed.html, "/html/head/title", xmlValue)
+Film
+```
+
+Чуть более сложный пример. Допустим, нужно оригинальное название. Оно есть все в том же разделе head, но в другой строке `meta property="og:title" content="Kong: Skull Island (2017)"`
+
+Строим путь /html/head/meta. Но строк с meta там много, нам нужна строка, где property="og:title". Тогда путь получается `/html/head/meta[@property = 'og:title']`. Теперь учтем, что нужное нам значение указано не между тегами, как в случае с title, а в качестве значения другого свойства (атрибута) -- content, поэтому меняем последний аргумент используемой функции. 
+
+Обратите внимание на разные типы кавычек внутри строки.
+
+```{r}
+FilmOriginal <- xpathSApply(parsed.html, "/html/head/meta[@property = 'og:title']", xmlGetAttr, "content")
+FilmOriginal
+```
+
+**Ваша очередь:** Найдите описание фильма
+
+Соединяем и усложняем: найдите ссылки на фильмы по названию james bond, а потом соберите про них информацию
+
+1) Заходим на imdb, вводим в поиск James Bond, выбираем titles, смотрим в адресной строке запрос
+
+```{r}
+URL <- "http://www.imdb.com/find?q=james%20bond&s=tt&ttype=ft&ref_=fn_ft"
+# Download and parse HTML of IMDb page
+parsed.html <- htmlParse(URL)
+```
+
+2) Теперь открываем код страницы и ищем на ней (Ctrl+F) james. Доходим до места, где начинается список. Видим, что все названия в `<td class="result_text">` 
+
+3) Нам нужно оттуда название и ссылка
+
+Название между тегами, поэтому xmlValue. Можно не указывать полный путь, а искать просто все теги, удовлетворяющие условию -- тогда запрос нужно начинать с //
+
+```{r}
+title <- xpathSApply(parsed.html, "//td[@class='result_text']", xmlValue)
+title
+```
+
+Ссылка -- в свойстве href тега `a`
+
+```{r}
+link <- xpathSApply(parsed.html, "//td[@class='result_text']/a", xmlGetAttr, "href")
+```
+
+Как дальше получить более подробную информацию про каждый фильм?
+
+**Ваша очередь:** составьте список программ Питерской Вышки <https://spb.hse.ru/education/programs>
+
+
+
+
+```{r}
+url2 = "https://spb.hse.ru/education/programs"
+parsed.html2<-htmlParse(url2) # не работает
+
+URL <- "https://spb.hse.ru/education/programs"
+progr<-GET(URL)
+parsed.html <- htmlParse(content(progr))
+
+```
+

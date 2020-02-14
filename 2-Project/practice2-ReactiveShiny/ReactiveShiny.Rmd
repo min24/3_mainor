@@ -1,0 +1,430 @@
+---
+title: "И снова Shiny"
+output: html_document
+---
+
+Сегодня мы продолжим работу с Shiny. 
+
+* рассмотрим еще раз, как преобразовать готовый код в приложение
+* посмотрим, как автоматически переносить данные (переменные, значения и т.д.) в интерфейс из датасета (а не перепечатывать вручную)
+* поговорим об оптимальности и структуре программы
+* обсудим реактивные функции
+
+В качестве примера возьмем построение дерева из лабораторной про ансамбли (на самом деле -- из любой лабораторной, где мы строили дерево) (1-MachineLearning/practice-04-recap-ensembles/ml_practice_4-ensembles.Rmd).
+
+Сразу уберем из нее части, связанные с исследованием, т.е. те, где мы смотрим на данные, строим разведочный график, пробуем разные реализации одного и того же метода, выводим в консоль результаты и т.д. Оставляем только
+
+0) загрузку библиотек (в этот чанк скидывается весь код с загрузкой библиотек, встречающийся в лабораторной)
+```{r}
+library(dplyr)
+library(caret)
+library(partykit)
+```
+
+1) загрузку данных
+```{r}
+credit = read.csv("~/shared/minor3_2019/1-MachineLearning/practice-04-recap-ensembles/CreditScore.csv")
+```
+
+2) разделение на тестовую-обучающую
+```{r}
+set.seed(1)
+test_ind = createDataPartition(credit$Status, p = 0.2, list = FALSE)
+credit.test = credit[test_ind,]
+credit.train = credit[-test_ind,]
+```
+
+3) построение дерева
+```{r}
+model.tree = ctree(Status~., data = credit.train)
+predTrain.tree = predict(model.tree, credit.train)
+predTest.tree = predict(model.tree, credit.test)
+```
+
+4) построение графика дерева
+```{r}
+plot(model.tree, type = "extended")
+```
+
+5) Расчет метрик качества
+```{r}
+accuracyTrain.tree = confusionMatrix(predTrain.tree, credit.train$Status, positive = "good")
+accuracyTest.tree = confusionMatrix(predTest.tree, credit.test$Status, positive = "good")
+```
+
+Проверим, что все работает, прогнав чанки
+
+Для красоты выделим отдельно точность, Precision, Recall, F1, 
+```{r}
+accTrain = accuracyTrain.tree$overall["Accuracy"]
+otherTrain = accuracyTrain.tree$byClass[c("Precision", "Recall", "F1")]
+# соединяем в одну строку
+train.tree = c(accTrain, otherTrain)
+train.tree
+
+#то же самое про тестовую
+accTest = accuracyTest.tree$overall["Accuracy"]
+otherTest = accuracyTest.tree$byClass[c("Precision", "Recall", "F1")]
+# соединяем в одну строку
+test.tree = c(accTest, otherTest)
+```
+И объединим результаты на тестовой и обучающей в одну таблицу
+```{r}
+results = rbind(train.tree, test.tree)
+results
+```
+
+И заменим названия строк
+```{r}
+rownames(results) = c("Обучающая", "Тестовая")
+```
+
+Теперь будем преобразовывать этот код в приложение.
+
+1) **Что хотим:** приложение, которое строит дерево для предсказания вернет ли клиент кредит. В качестве результата -- таблица с метриками на обучающей и тестовой выборке и график дерева
+2) **Что может менять пользователь:** значение set.seed + какие переменные использовать для предсказания
+
+
+####Начинаем...
+
+Интерфейс:
+
+* поле для ввода set.seed для разбиения на тестовую-обучающую
+* список для выбора переменных
+* таблица с результатами на тестовой выборке и обучающей выборке
+* поле с графиком
+
+В этот раз данные используем и в интерфейсе тоже -- нам они понадобятся в выпадающем списке для выбора, поэтому определяем их **вне** функций:
+
+```{r eval = F}
+credit = read.csv("~/shared/minor3_2019/1-MachineLearning/practice-04-recap-ensembles/CreditScore.csv")
+
+ui <- fluidPage(
+   titlePanel("Модель для предсказания статуса клиента"),
+   sidebarLayout(
+      sidebarPanel(
+         numericInput("seed",
+                     "Установите set.seed",
+                     min = 1,
+                     value = 1325),
+         selectInput("varnames",
+                     "Выберите переменные для анализа",
+                     choices = names(credit)[-1],  #удаляем Status из списка выбора
+                     multiple = TRUE)   # для выбора нескольких элементов списка
+         
+      ),
+      mainPanel(
+         tableOutput("metrics"),
+         plotOutput("tree")
+      )
+   )
+)
+```
+
+Создаем новое приложение. Вставляем код для интерфейса, код для сервера пока оставляем пустым. Запускаем, проверяем, что интерфейс именно такой, как задумано (в список выбора подгрузились названия переменных)
+ 
+Переходим к серверу: нам нужна таблица
+
+```{r eval = F}
+server <- function(input, output) {
+   
+   output$metrics <- renderTable({ })
+}
+```
+
+Чтобы построить таблицу, нам нужно выполнить все действия:
+1) выбрать только указанные пользователем переменные
+2) разделить на тестовую-обучающую
+3) построить модель
+4) сделать предсказания и свести их в таблицу
+
+```{r eval = F}
+server <- function(input, output) {
+   
+   output$metrics <- renderTable({ 
+     # выбираем переменные и добавляем Status к данным
+     currentData = dplyr::select(credit, c(input$varnames, "Status")) 
+     # разделяем на тестовую-обучающую, заменив credit на currentData, и указав set.seed, выбранный пользователем
+     set.seed(input$seed)
+     test_ind = createDataPartition(currentData$Status, p = 0.2, list = FALSE)
+     credit.test = currentData[test_ind,]
+     credit.train = currentData[-test_ind,]
+     # строим модель 
+     model.tree = ctree(Status~., data = credit.train)
+     # предсказываем
+     predTrain.tree = predict(model.tree, credit.train)
+     predTest.tree = predict(model.tree, credit.test)
+     # собираем таблицу
+     accuracyTrain.tree = confusionMatrix(predTrain.tree, credit.train$Status, positive = "good")
+     accuracyTest.tree = confusionMatrix(predTest.tree, credit.test$Status, positive = "good")
+     accTrain = accuracyTrain.tree$overall["Accuracy"]
+     otherTrain = accuracyTrain.tree$byClass[c("Precision", "Recall", "F1")]
+     train.tree = c(accTrain, otherTrain)
+     accTest = accuracyTest.tree$overall["Accuracy"]
+     otherTest = accuracyTest.tree$byClass[c("Precision", "Recall", "F1")]
+     test.tree = c(accTest, otherTest)
+     results = rbind(train.tree, test.tree)
+     rownames(results) = c("Обучающая", "Тестовая")
+
+     # не забываем последней строчкой вывести таблицу
+     results
+     })
+}
+```
+
+При запуске возникает ошибка из-за того, что не выбраны никакие переменные. Добавим в интерфейсе одну выбранную по умолчанию переменную
+
+```{r eval = F}
+...
+      selectInput("varnames",
+                  "Выберите переменные для анализа",
+                  choices = names(credit)[-1],  #удаляем Status из списка выбора
+           ->>    selected = c("Seniority"),
+                  multiple = TRUE)   # для выбора нескольких элементов списка
+...      
+
+```
+
+С таблицей все работает (результат в приложении treeTableOnly). Но у нас есть еще график! К сожалению, вставить только plot(model.tree) не получится
+
+(попробуйте запустить приложение, добавив в него только эту строку -- получите ошибку object 'model.tree' not found. А если ошибки нет, то значит, что у вас в окружении есть этот объект и приложение взяло именно его, и он не будет меняться при изменении переменных)
+
+```{r}
+server <- function(input, output) {
+   
+   output$metrics <- renderTable({ 
+     ...
+     })
+   
+   output$tree <- renderPlot({ 
+     plot(model.tree)
+     })
+}
+```
+
+Чтобы граф менялся, нам нужно повторить все действия от выбора переменных до построения модели
+
+```{r eval = F}
+server <- function(input, output) {
+   
+   output$metrics <- renderTable({ 
+     ...
+     })
+   
+   output$tree <- renderPlot({ 
+     # выбираем переменные и добавляем Status к данным
+     currentData = dplyr::select(credit, c(input$varnames, "Status")) 
+     # разделяем на тестовую-обучающую, заменив credit на currentData, и указав set.seed, выбранный пользователем
+     set.seed(input$seed)
+     test_ind = createDataPartition(currentData$Status, p = 0.2, list = FALSE)
+     credit.test = currentData[test_ind,]
+     credit.train = currentData[-test_ind,]
+     # строим модель 
+     model.tree = ctree(Status~., data = credit.train)
+     plot(model.tree)
+     })
+}
+```
+
+#### Почему так?
+shiny работает таким образом, что при изменении пользователем чего-то в input перезапускаются все функции, где этот input есть.
+
+Например, есть два элемента ввода -- цвет графика (`input$color`) и условие фильтрации данных (`input$condition`); и два элемента вывода -- график (`output$plot`) и таблица(`output$table`). В функции, описывающей построение графика (renderPlot), используются и `input$color`, и `input$condition`, а в функции, описывающей таблицу, -- только `input$condition`. 
+
+Тогда при изменении `input$condition` пересчитается и таблица, и график, а при изменении `input$color` перезапустится только функция, строящая график.
+
+Можно посмотреть вот на этом примере <https://shiny.rstudio.com/gallery/kmeans-example.html> (при изменении значений та часть кода, что пересчитывается, выделяется желтым) -- когда меняется число кластеров, код, выбирающий переменные не запускается.
+
+##### В чем проблема с нашим решением?
+
+Возвращаемся к деревьям. Все работает, но по факту модель строится два раза, что увеличивает время работы. Плюс представьте, что это была бы какая-то сложная модель, например, Random Forest, которая сама по себе считается дольше. Можно ли что-то сделать?
+
+Можно. Давайте разделим сервер на смысловые части
+
+За создание собственно таблицы с результатами отвечает только последний блок с предсказанием и метриками, поэтому его вносим внутрь функции renderTable
+
+```{r eval = F}
+server <- function(input, output) {
+   
+   output$metrics <- renderTable({
+    # предсказываем
+    predTrain.tree = predict(model.tree, credit.train)
+    predTest.tree = predict(model.tree, credit.test)
+    # собираем таблицу
+    accuracyTrain.tree = confusionMatrix(predTrain.tree, credit.train$Status, positive = "good")
+    accuracyTest.tree = confusionMatrix(predTest.tree, credit.test$Status, positive = "good")
+    accTrain = accuracyTrain.tree$overall["Accuracy"]
+    otherTrain = accuracyTrain.tree$byClass[c("Precision", "Recall", "F1")]
+    train.tree = c(accTrain, otherTrain)
+    accTest = accuracyTest.tree$overall["Accuracy"]
+    otherTest = accuracyTest.tree$byClass[c("Precision", "Recall", "F1")]
+    test.tree = c(accTest, otherTest)
+    results = rbind(train.tree, test.tree)
+    rownames(results) = c("Обучающая", "Тестовая")
+    
+    # не забываем последней строчкой вывести таблицу
+    results
+   })
+}
+```
+
+  * А куда все остальное?
+  
+  Просто вынести в начало функции server мы не можем -- там есть элементы, которые меняются от действий пользователя. С другой стороны, к выводу таблиц с результатами эти действия тоже не особо относятся.
+  
+  Для таких случаев существует функция reactive, которая реагирует на действия пользователя, но ничего не меняет в интерфейсе. Реакцию на разные действия лучше выносить в разные функции -- так эффективнее. Небольшое пояснение концепции реактивного программирования для шайни можно найти в этом туториале (https://shiny.rstudio.com/articles/reactivity-overview.html)
+  
+   * hint: загрузите пакеты ДО функции, описывающей действия сервера
+   
+```{r eval = F}
+server <- function(input, output) {
+  
+  selectedData <- reactive({
+    #выбор переменных
+  })
+  
+  trainTest = reactive({
+    # разбиение обучающая-тестовая
+  })
+
+  modeling <- reactive({
+    #построение модели
+  })
+   
+   output$metrics <- renderTable({
+    # предсказываем
+    predTrain.tree = predict(model.tree, credit.train)
+    predTest.tree = predict(model.tree, credit.test)
+    # собираем таблицу
+    accuracyTrain.tree = confusionMatrix(predTrain.tree, credit.train$Status, positive = "good")
+    accuracyTest.tree = confusionMatrix(predTest.tree, credit.test$Status, positive = "good")
+    accTrain = accuracyTrain.tree$overall["Accuracy"]
+    otherTrain = accuracyTrain.tree$byClass[c("Precision", "Recall", "F1")]
+    train.tree = c(accTrain, otherTrain)
+    accTest = accuracyTest.tree$overall["Accuracy"]
+    otherTest = accuracyTest.tree$byClass[c("Precision", "Recall", "F1")]
+    test.tree = c(accTest, otherTest)
+    results = rbind(train.tree, test.tree)
+    rownames(results) = c("Обучающая", "Тестовая")
+    
+    # не забываем последней строчкой вывести таблицу
+    results
+   })
+}
+
+```
+
+Реализуем эти функции
+
+```{r eval = F}
+server <- function(input, output) {
+   dataSelected <- reactive({
+     dplyr::select(credit, c(input$varnames, "Status")) 
+  })
+  
+  trainTest = reactive({
+    # обратите внимание: вместо currentData мы вызываем dataSelected()
+    currentData = dataSelected()
+    set.seed(input$seed)
+    test_ind = createDataPartition(currentData$Status, p = 0.2, list = FALSE)
+    test_ind # это наш результат -- индексы для разделения
+  })
+  
+  modeling <- reactive({
+    data = dataSelected()
+    credit.test = data[trainTest(),]
+    credit.train = data[-trainTest(),]
+    model.tree = ctree(Status~., data = credit.train)
+    model.tree
+  })
+
+   output$metrics <- renderTable({
+    # т.к. у нас нет прямого доступа к credit.train и credit.test, то разбиваем еще раз
+    data = dataSelected()
+    credit.test = data[trainTest(),]
+    credit.train = data[-trainTest(),]
+    # предсказываем
+    predTrain.tree = predict(modeling(), credit.train)
+    predTest.tree = predict(modeling(), credit.test)
+    # собираем таблицу
+    accuracyTrain.tree = confusionMatrix(predTrain.tree, credit.train$Status, positive = "good")
+    accuracyTest.tree = confusionMatrix(predTest.tree, credit.test$Status, positive = "good")
+    accTrain = accuracyTrain.tree$overall["Accuracy"]
+    otherTrain = accuracyTrain.tree$byClass[c("Precision", "Recall", "F1")]
+    train.tree = c(accTrain, otherTrain)
+    accTest = accuracyTest.tree$overall["Accuracy"]
+    otherTest = accuracyTest.tree$byClass[c("Precision", "Recall", "F1")]
+    test.tree = c(accTest, otherTest)
+    results = rbind(train.tree, test.tree)
+    rownames(results) = c("Обучающая", "Тестовая")
+    
+    # не забываем последней строчкой вывести таблицу
+    results
+   })
+}
+```
+
+И не забываем, что теперь часть с графиком построится проще
+```{r eval = F}
+server <- function(input, output) {
+  selectedData <- reactive({
+    #выбор переменных
+  })
+  
+  trainTest = reactive({
+    # разбиение обучающая-тестовая
+  })
+
+  modeling <- reactive({
+    #построение модели
+  })
+   output$metrics <- renderTable({ 
+     ...
+     })
+   
+   output$tree <- renderPlot({ 
+     plot(modeling(), )
+     })
+}
+```
+
+Итог можно посмотреть в treeAll.
+
+**Ваша очередь:** 
+1. Добавьте в построение графика опцию выбора варианта представления (plot(..., type = "extended"), plot(..., type = "simple"))
+
+#### Использование ранее преобразованных данных
+
+Что делать, чтобы считалось быстрее? Например, мы не хотим разрешать пользователю менять параметры данных. Тогда все преобразования лучше сделать заранее, сохранить результат с помощью save(), а затем просто использовать, а не пересчитывать
+
+Например, мы хотим попробовать разные алгоритмы классификации, но выполнять их на данных с заранее отобранными переменными. Т.е. нам нужны только `credit.train` и `credit.test`. И не важно, как мы их получили
+
+```{r}
+model.log =  train(Status~., data = credit.train, method = "glm", family = binomial(link = "logit"))
+save(credit.train, credit.test, model.tree, model.log, file = "~/appDataNew.Rdata")
+load("~/appDataNew.Rdata")
+```
+
+Переносим файл в папку с новым приложением. Загрузить объекты можно с помощью load(). И кстати, какие-то не связанные с вводом действия тоже можно выносить в отдельные функции -- см. treeSimple
+
+```{r eval = F}
+server <- function(input, output) {
+  
+  load("appDataNew.Rdata")
+
+   output$metrics <- renderTable({
+     #построение моделей
+   })
+
+}
+```
+
+**Ваша очередь:** 
+
+2. Реализуйте вычисления для разных алгоритмов классификации (логистическую регрессию, RF, Boosting и т.д. -- на ваш выбор) для простого приложения с заранее загруженными данными
+
+* hint: разные команды для разного выбора методов можно реализовать с помощью switch()
+
+3. Реализуйте п.2 (выбор из нескольких моделей), но для исходного приложения с изменением данных
+
+4. (Extra) Добавьте общую кнопку (actionButton), чтобы пересчет происходил не при каждом добавлении переменной, а при окончательном решении. Пример можно посмотреть тут <https://shiny.rstudio.com/gallery/widgets.html>

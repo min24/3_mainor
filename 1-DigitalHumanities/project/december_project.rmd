@@ -13,13 +13,13 @@ library(dplyr)
 
 ```
 ```{r}
-user1 = read.csv("~/shared/minor3_2019/1-DigitalHumanities/project/users1.csv")
+# user1 = read.csv("~/shared/minor3_2019/1-DigitalHumanities/project/users1.csv")
 
 ```
 
 
 ```{r}
-newdata = user1 %>% select(X.id, gender, age, country, artname, traname, artid, traid) %>% group_by(X.id, artname,gender, age, country) %>% summarise(count=n())
+#newdata = user1 %>% select(X.id, gender, age, country, artname, traname, artid, traid) %>% group_by(X.id, artname,gender, age, country) %>% summarise(count=n())
 ```
 
 
@@ -74,14 +74,15 @@ newdata = user1 %>% select(X.id, gender, age, country, artname, traname, artid, 
 ```
 
 ```{r}
-library(stringr)
-artists = read.csv("artists.csv") %>% select(-X)
-newdata = newdata %>% left_join(artists, key = "artname")
-newdata = na.omit(newdata)
-newdata = newdata %>% filter(genre != "")
-newdata$genre = stringr::str_replace_all(newdata$genre, ",", "")
-
-
+# library(stringr)
+# artists = read.csv("artists.csv") %>% select(-X)
+# newdata = newdata %>% left_join(artists, key = "artname")
+# newdata = na.omit(newdata)
+# newdata = newdata %>% filter(genre != "")
+# newdata$genre = stringr::str_replace_all(newdata$genre, ",", "")
+# 
+# write.csv(newdata, "newdata.csv")
+newdata = read.csv("newdata.csv")
 ```
 
 ```{r}
