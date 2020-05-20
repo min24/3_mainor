@@ -1,0 +1,172 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(recommenderlab)
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(DT)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(caret)
+library(qgraph)
+library(methods)
+library(Matrix)
+library(tidyr)
+library(textrank)
+library(qdapTools)
+library(dplyr)
+library(qdap)
+library(tm)
+library(tokenizers)
+
+books.df <- fread('books.csv', encoding = 'UTF-8')
+categories.df <- fread('categories.csv')
+authors.df <- fread('authors.csv', encoding = 'UTF-8')
+
+#Возьмем часть датасета
+set.seed(1234)
+books_sample <- sample(1:nrow(books.df), size = 20000)
+books_cut <- books.df[books_sample, ]
+
+#Cleaning
+
+authors.df$author_name<-gsub(pattern = "!",replacement = "",x = authors.df$author_name,fixed = T)
+authors.df$author_name<-gsub(pattern = "# ",replacement = "",x = authors.df$author_name,fixed = T)
+authors.df$author_name<-gsub(pattern = "#",replacement = "",x = authors.df$author_name,fixed = T)
+authors.df$author_name<-gsub(pattern = "& ",replacement = "",x = authors.df$author_name,fixed = T)
+authors.df$author_name<-gsub(pattern = "@ ",replacement = "",x = authors.df$author_name,fixed = T)
+authors.df$author_name<-gsub(pattern = "@",replacement = "",x = authors.df$author_name,fixed = T)
+
+
+remove_unnecessary_data <- function(data) {
+  data <- na.omit(data, cols="rating_avg")
+  data <- data[rating_count > 100,]
+  return(data)
+}
+
+filter_by_rating<- function(data, threshold=mean(books.df$rating_avg, na.rm = T)){
+  data <- data %>% filter(rating_avg >=  threshold)
+}
+
+library("dplyr")
+get_author_count <- function(data){
+  book_authors <- data[,c(2,3)]
+  book_authors$authors<-gsub(pattern = "[",replacement = "",x = book_authors$authors,fixed = T)
+  book_authors$authors<-gsub(pattern = "]",replacement = "",x = book_authors$authors,fixed = T)
+  book_authors <- book_authors %>% mutate(authors_count = lapply(authors, length))
+  book_authors <- book_authors %>% select(-authors)
+  
+}
+
+books_cut <- remove_unnecessary_data(books_cut)
+book_authors <- get_author_count(books_cut)
+books_cut <- filter_by_rating(books_cut)
+
+books_cut$publication_date <- as.POSIXct(books_cut$publication_date, format="%m/%d/%Y")
+books_cut$bestsellers_rank <- as.numeric(books_cut$bestsellers_rank)
+books_cut$bestsellers_rank <- replace(books_cut$bestsellers_rank, which(is.na(books_cut$bestsellers_rank)), mean(books_cut$bestsellers_rank, na.rm = T))
+books_cut$price <- as.numeric(books_cut$price)
+books_cut$price <- replace(books_cut$price, which(is.na(books_cut$price)), mean(books_cut$price, na.rm = T))
+books_cut$publication_year <- format(books_cut$publication_date,"%Y")
+books_cut$publication_year <- as.numeric(books_cut$publication_year)
+books_cut$weight <- as.numeric(books_cut$weight)
+books_cut$weight <- replace(books_cut$weight, which(is.na(books_cut$weight)), mean(books_cut$weight, na.rm = T))
+
+#Feature selection
+get_features <- function(data) {
+  data <- arrange(data, publication_date)
+  data = data %>% 
+    group_by(title) %>%
+    summarise(bestsellers_rank=mean(as.numeric(bestsellers_rank),na.rm=T),
+              lang= first(lang),
+              num_page= mean(num_page,na.rm=T),
+              price = mean(price,na.rm=T),
+              publication_year=first(publication_year),
+              rating_avg=mean(rating_avg, na.rm=T), 
+              rating_count=mean(rating_count, na.rm=T),
+              weight=mean(weight,na.rm=T))
+  data <- data %>% 
+    mutate(title_cleaned = str_trim(str_extract(title, '([0-9a-zA-Z]| |\'|,|\\.|\\*)*')),
+           title_length = str_count(title_cleaned, " ") + 1)
+  data <- left_join(data, book_authors, by='title')
+  data = data %>% mutate(digitsTitle = str_detect(data$title, "[0-9]"))
+  data$digitsTitle <- as.numeric(data$digitsTitle)
+  data$authors_count <- as.numeric(data$authors_count)
+  data <- data %>% select(-title_cleaned)
+  
+  return(data)
+}
+
+
+get_categories <- function(data) {
+  book_categories <- data[,c(2,5)]
+  book_categories$categories<-gsub(pattern = "[",replacement = "",x = book_categories$categories,fixed = T)
+  book_categories$categories<-gsub(pattern = "]",replacement = "",x = book_categories$categories,fixed = T)
+  book_categories <- book_categories %>% filter(title %in% books_cut$title)
+  book_categories <- book_categories %>% group_by(title) %>% mutate(cat=paste(categories, sep=', ', collapse = ""))
+  book_categories <- book_categories %>% select(-categories) %>% distinct()
+  dummy_categories <- cbind(book_categories, mtabulate(strsplit(book_categories$cat, ", ")))
+  dummy_categories <- dummy_categories %>% ungroup() %>% select(-cat, )
+  res <- left_join(books_cut,dummy_categories, by="title")
+  return(res)
+}
+
+get_languages <- function(data) {
+  dummy_languages <- select(data, title, lang) 
+  dummy_languages <- cbind(dummy_languages, mtabulate(dummy_languages$lang))
+  data <- left_join(data,dummy_languages, by=c("title", "lang"))
+  data <- select(data, -lang)
+  return(data)
+}
+
+books_cut <- get_features(books_cut)
+books_cut <- get_languages(books_cut)
+books_cut <- get_categories(books.df)
+books_cut <- books_cut %>% group_by(title) %>% summarise_all(funs(first))
+
+rownames(books_cut) = books_cut$title
+books_cut = books_cut %>% select(-title)
+
+#модель через функции 
+
+get_ratings <- function(threshold) {
+  books_high_ratings <- books.df %>% 
+    select(title, rating_avg, rating_count) %>% 
+    filter(rating_avg>=threshold) %>% 
+    group_by(title) %>% 
+    summarise(rating_avg=mean(rating_avg), rating_count = mean(rating_count))
+  return(books_high_ratings$title)
+}
+
+book_recommend <- function(data, book_name="Anna", N=5, rating_threshold=mean(books.df$rating_avg, na.rm = T)) {
+  good_books <- get_ratings(threshold=rating_threshold)
+  sim = lsa::cosine(t(as.matrix(data)))
+  diag(sim) = 0
+  bookSimilar = sort(sim[,book_name], decreasing = T)
+  mostSimilar = head(subset(bookSimilar, names(bookSimilar) %in% good_books), n = N)
+  print(mostSimilar)
+  result = names(mostSimilar)
+  return(result)
+}
+
+#попробуем получить рекомендацию
+
+book_recommend(books_cut,  book_name="Bacon", N=5, rating_threshold=4.3)
+
+book_recommend(books_cut,  book_name="becoming.", N=5, rating_threshold=4.5)
+
+book_recommend(books_cut,  book_name="Thrawn: Treason (Star Wars)", N=5, rating_threshold=4.0)
+
+```
+

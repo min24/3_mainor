@@ -1,0 +1,21 @@
+```{r}
+df <- data.frame(Employee = c('Jonny', 'Grey', 'Mouni'),Salary = c(23000,41000,32344))
+
+
+write.csv(df, "df.csv")
+
+df1 <- data.frame(Employee = c('duy', 'A', 'B'),Salary = c(150,6532,64))
+
+
+
+write.table( df1,  
+             file="df.csv", 
+             append = T, 
+             sep=',', 
+             row.names=T, 
+             col.names=F )
+df = read.csv("df.csv")
+df2 <- data.frame(Employee = c('efad', 'fad', 'fad'),Salary = c(150,6532,64))
+
+```
+

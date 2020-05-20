@@ -1,0 +1,271 @@
+---
+title: "И снова Shiny: про разные полезности в интерфейса"
+output: html_document
+---
+
+В качестве примера продолжаем приложение с построением дерева из practice2-ReactiveShiny -- для простоты без графика, только с таблицей результатов.
+
+Первоначальная версия приложения -- в папке treeInitial
+
+> treeInitial
+
+Интерфейс:
+
+* поле для ввода set.seed для разбиения на тестовую-обучающую
+* список для выбора переменных
+* таблица с результатами на тестовой выборке и обучающей выборке
+* текст с описанием того, сколько переменных выбрано
+
+В этот раз данные используем и в интерфейсе тоже -- нам они понадобятся в выпадающем списке для выбора, поэтому определяем их **вне** функций:
+
+```{r eval = F}
+credit = read.csv("~/shared/minor3_2019/1-MachineLearning/practice-04-recap-ensembles/CreditScore.csv")
+
+ui <- fluidPage(
+  titlePanel("Модель для предсказания статуса клиента"),
+  sidebarLayout(
+    sidebarPanel(
+      numericInput("seed",
+                   "Установите set.seed",
+                   min = 1,
+                   value = 1325),
+      selectInput("varnames",
+                  "Выберите переменные для анализа",
+                  choices = names(credit)[-1],  #удаляем Status из списка выбора
+                  selected = c("Seniority"),
+                  multiple = TRUE)   # для выбора нескольких элементов списка
+      
+    ),
+    mainPanel(
+      tableOutput("metrics"),
+      textOutput("text")
+    )
+  )
+)
+```
+ 
+Переходим к серверу: нам нужна таблица
+
+```{r eval = F}
+server <- function(input, output) {
+  
+  output$metrics <- renderTable({ 
+    # выбираем переменные и добавляем Status к данным
+    currentData = dplyr::select(credit, c(input$varnames, "Status")) 
+    # разделяем на тестовую-обучающую, заменив credit на currentData, и указав set.seed, выбранный пользователем
+    set.seed(input$seed)
+    test_ind = createDataPartition(currentData$Status, p = 0.2, list = FALSE)
+    credit.test = currentData[test_ind,]
+    credit.train = currentData[-test_ind,]
+    # строим модель 
+    model.tree = ctree(Status~., data = credit.train)
+    # предсказываем
+    predTrain.tree = predict(model.tree, credit.train)
+    predTest.tree = predict(model.tree, credit.test)
+    # собираем таблицу
+    accuracyTrain.tree = confusionMatrix(predTrain.tree, credit.train$Status, positive = "good")
+    accuracyTest.tree = confusionMatrix(predTest.tree, credit.test$Status, positive = "good")
+    accTrain = accuracyTrain.tree$overall["Accuracy"]
+    otherTrain = accuracyTrain.tree$byClass[c("Precision", "Recall", "F1")]
+    train.tree = c(accTrain, otherTrain)
+    accTest = accuracyTest.tree$overall["Accuracy"]
+    otherTest = accuracyTest.tree$byClass[c("Precision", "Recall", "F1")]
+    test.tree = c(accTest, otherTest)
+    results = rbind(train.tree, test.tree)
+    rownames(results) = c("Обучающая", "Тестовая")
+    
+    # не забываем последней строчкой вывести таблицу
+    results
+  })
+  
+  output$text <- renderText({ 
+    paste0("Выбрано переменных: ", length(input$varnames))
+  })
+}
+
+```
+
+## Добавим цвет текста
+
+> treeColor
+
+Допустим, хотим, чтобы при некоторой границе переменных в модели, надпись "Выбрано переменных:" становилась красной. Например, если переменных меньше двух (слишком мало) или больше 8. Причем эти границы регулируются пользователем. 
+
+Для регулирования в интерфейс добавим слайдер с границами с двух сторон
+
+```{r eval = F}
+   sliderInput("border", label = "Выберите границы предупреждения",
+               min = 1, # не может быть меньше 1 переменной
+               max = ncol(credit)-1, # всего количество переменных в датасете
+               value = c(2, 8) # по уолчанию ставлю значения 2 и 8
+               )
+```
+
+Кроме того, т.к. у нас теперь не просто текст, а "текст с цветом", то нужно поменять тип вывода -- не textOutput, а htmlOutput
+
+```{r eval = F}
+...
+    mainPanel(
+      tableOutput("metrics"),
+      htmlOutput("text")          # <<---
+    )
+```
+
+В сервере меняем тип вывода (renderUI вместо renderText). И оформляем текст как параграф (функция p() -- в ней можно задавать цвет). Для начала просто попробуем все покрасить красным. 
+
+*Запустите -- посмотрите*
+
+```{r eval = F}
+...
+  output$text <- renderUI({
+    textToDisplay = paste0("Выбрано переменных: ", length(input$varnames))
+    p(textToDisplay, style = 'color:red')
+  })
+```
+
+Теперь делаем так, чтобы цвет менялся по условию границ
+
+```{r eval = F}
+...
+  output$text <- renderUI({
+    num = length(input$varnames) # чтобы не повторять много раз в коде
+    textToDisplay = paste0("Выбрано переменных: ", num)
+    
+    # число выбранных переменных меньше левой границы слайдера или больше правой
+    if (num < input$border[1] | num > input$border[2]) 
+      p(textToDisplay, style = 'color:red')
+    else 
+      p(textToDisplay)
+  })
+```
+
+## Добавление новых элементов интерфейса
+
+> treeNewElements
+
+Представим, что мы не хотим каждый раз выбирать переменные, а допускаем случайный выбор. При этом лишние, не используемые элементы управления хотим скрыть. *Сценарий нашего примера: первоначально переменные выбрать нельзя, они выбираются случайно приложением. Но есть флажок "Хочу выбрать самостоятельно". Как только он появляется, появляется и поле с выбором переменных*
+
+Сначала добавим флажок "Хочу выбрать самостоятельно" в интерфейс
+
+```{r eval = F}
+...
+      checkboxInput("selfChoice", 
+                    "Хочу выбрать переменные самостоятельно",
+                    value = F),    # по умолчанию ставим, что не выбран
+```
+
+В сервере реализуем логику
+* если выбран checkBox, то переменные выбираем прежним способом
+* если не выбран -- случайно отбираем 5 переменных
+
+```{r eval = F}
+...
+  output$metrics <- renderTable({ 
+    # выбираем переменные и добавляем Status к данным
+    if (input$selfChoice)
+      variables = input$varnames # выбранные вручную переменные
+    else{
+      # из списка переменных случайно выбираем 5
+      variables = sample(names(credit)[-1], size = 5) 
+    }
+    currentData = dplyr::select(credit, c(variables, "Status"))
+    ...
+  })
+  
+  # и заодно немного меняем текст, чтобы он был актуальным
+  output$text <- renderUI({
+    if (input$selfChoice) 
+      num = length(input$varnames)    # чтобы не повторять много раз в коде
+    else num = 5
+    
+    textToDisplay = paste0("Выбрано переменных: ", num)
+    ...
+  })
+```
+
+Теперь сделаем так, чтобы в зависимости от того, какой вариант выбран, появлялись или исчезали элементы интерфейса
+
+*Сценарий: хочу, чтобы при случайном выборе переменных поле для выбора переменных не показывалось, а появлялось только тогда, когда стоит флажок "Хочу выбрать самостоятельно"*
+
+Что для этого нужно сделать:
+
+Переместить этот элемент ввода в сервер: с помощью функции renderUI создаем новый элемент интерфеса (selectInput) только в том случае, когда выбран пункт "Хочу выбрать самостоятельно"
+
+```{r eval = F}
+...
+  output$variableInputUI <- renderUI({
+    if (input$selfChoice) {
+      selectInput("varnames",
+                  "Выберите переменные для анализа",
+                  choices = names(credit)[-1],  #удаляем Status из списка выбора
+                  selected = c("Seniority"),
+                  multiple = TRUE  # для выбора нескольких элементов списка
+      )
+    }
+  })
+```
+
+А в интерфейсе заменяем этот selectInput на uiOutput (output потому что он является выводом для функции renderUI). Обратите внимание на id -- то же, что было указано при создании (output$variableInputUI)
+
+```{r eval = F}
+      ...
+      checkboxInput("selfChoice", 
+                    "Хочу выбрать переменные самостоятельно",
+                    value = F),  
+      uiOutput("variableInputUI"),     # <<------
+      sliderInput("border", 
+                  label = "Выберите границы предупреждения",
+                  min = 1, # не может быть меньше 1 переменной
+                  max = ncol(credit)-1, # всего количество переменных в датасете
+                  value = c(2, 8) # по умолчанию ставлю значения 2 и 8
+                  )
+      ...
+```
+
+## Добавление новых элементов интерфейса -- вариант 2
+
+> treeNewElementsV2
+
+Еще один способ сделать то же самое --  conditional panel
+
+В сервере ничего добавлять не нужно, в отличие от предыдущего варианта. А вот в интерфейсе добавляется conditionalPanel, состоящая из двух частей:
+* condition -- условие в форме input.<название элемента> == '<значение>'. 
+   + Если это логическая переменная (как в примере), то condition = "input.selfChoice" (без ==). 
+   + Если это число, то input.seed == 2342. 
+   + Если строка, то input.smth == 'value'
+* сам элемент (или несколько элементов), которые нужно показать/скрыть
+
+Еще одно отличие от предыдущего способа -- после переключения из состояния показать-скрыть показывается то состояние, что было перед сокрытием, а не первоначальное.
+
+```{r eval = F}
+      ...
+checkboxInput("selfChoice", 
+                    "Хочу выбрать переменные самостоятельно",
+                    value = F),  
+      conditionalPanel(         # <<---
+               condition = "input.selfChoice", 
+               selectInput("varnames",
+                           "Выберите переменные для анализа",
+                           choices = names(credit)[-1],  #удаляем Status из списка выбора
+                           selected = c("Seniority"),
+                           multiple = TRUE  # для выбора нескольких элементов списка
+               )
+               ),
+      sliderInput("border", 
+                  label = "Выберите границы предупреждения",
+                  min = 1, # не может быть меньше 1 переменной
+                  max = ncol(credit)-1, # всего количество переменных в датасете
+                  value = c(2, 8) # по уолчанию ставлю значения 2 и 8
+                  )
+      
+    ),
+      ...
+```
+
+## Пересчет по кнопке
+
+Каждый раз, когда пользователь что-то меняет в интерфейсе, происходит перезапуск функций сервера. Даже на этом маленьком примере видно, как таблица немного "зависает" при пересчете при добавлении новой переменной. Чаще всего (особенно если ввод устроен как некоторая анкета) нужно, чтобы пересчет произошел один раз, когда введены все параметры. 
+
+*Сценарий: я хочу построить модель, которая предсказывает по опыту работы, доходу и типу жилья. Если я начну вводить эти переменные, то модель будет пересчитываться с каждой новой переменной. Мне это не нужно, а нужен только итоговый результат*
+
+Это можно легко реализовать при использовании кнопки submit

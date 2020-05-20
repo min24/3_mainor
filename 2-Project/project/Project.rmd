@@ -1,0 +1,127 @@
+---
+title: "Project"
+author: "Zlodeeva V.S."
+date: "10 05 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+
+```
+
+Подгрузим данные:
+```{r}
+library(readr)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(tidyr)
+library(tidytext)
+library(stringr)
+book3 <- read_csv("book3.csv", 
+    col_types = cols(genres = col_character()))
+```
+
+```{r}
+categ <- read_excel("categ.xlsx")
+categories <- read_csv("categories.csv")
+formats <- read_csv("formats.csv")
+places <- read_csv("places.csv")
+authors <- read_csv("authors.csv")
+```
+
+Попробуем почистить данные:
+```{r}
+book=book3%>%select(-for_ages, -lang, -X1)%>%na.omit()
+
+#создадим нормальную колонку ID:
+book_ID=c(1:205842)
+book=cbind(book, book_ID)
+book=book%>%select(-id)
+```
+
+## Обрежем данные
+Так как у нас ооооочень много данных, матрица требует огромного количества памяти, поэтому обрежем их. Сделаем это по ранку бестселлеров и количеству оценок. Будем оставлять только популярные и успешные
+```{r}
+ggplot(data = book)+
+  geom_boxplot(aes(x=bestsellers_rank))
+ggplot(data = book)+
+  geom_boxplot(aes(x=rating_count))
+
+book=book%>%filter(bestsellers_rank<=1500000 | rating_count>=1000000)
+```
+
+###Разведочный анализ
+## Зависит ли рейтинг книги от цены?
+```{r}
+ggplot(data=book)+
+  geom_point(aes(x=price, y=rating_avg))+
+  stat_smooth(method = "lm", aes(x=price, y=rating_avg))+
+  ggtitle("Зависимость среднего рейтинга книги от его цены")+
+  xlab("Цена")+
+  ylab("Средний рейтинг")+
+  theme_bw()
+```
+
+## Зависит ли рейтинг книги от количетва страниц?
+```{r}
+ggplot(data=book)+
+  geom_point(aes(x=num_page, y=rating_avg))+
+  stat_smooth(method = "lm", aes(x=num_page, y=rating_avg))+
+  ggtitle("Зависимость среднего рейтинга книги от его цены")+
+  xlab("Цена")+
+  ylab("Средний рейтинг")+
+  theme_bw()
+```
+## Работа с ЖАНРАМИ
+
+```{r}
+genr=book%>%select(genres, book_ID)
+genr=genr %>% unnest_tokens(word, genres, token = stringr::str_split, pattern = ",")
+
+colnames(genr)[2] = "category_id"
+categ=categ%>%select(category_id, new_cat)
+categ$category_id=as.character(categ$category_id)
+genr=left_join(genr, categ, by="category_id")
+
+#Удалим все книги с 23 категорией
+genr=genr%>%filter(new_cat != "23")
+g=genr%>%select(-category_id)
+g=unique(g)
+g=g%>%mutate(value=1)
+g=spread(g, key = new_cat, value=value)
+g[is.na(g)]=0
+
+book=right_join(book, g, by="book_ID")
+```
+
+## Раболта с датой
+Нам понадобится только год
+```{r}
+book$publication_date=mdy(book$publication_date)
+book$year=year(book$publication_date)
+```
+
+#### Рекомендательная система 
+
+Оставим только необходимые переменные для рекоммендательной системы
+```{r}
+Book=book%>%select(-title, -description, -format, -weight, -publication_date, -url, -image, -authors, -genres)
+```
+
+  Наша рекомендация книг будет основываться на следующих переменных: год выпуска книги, его популярность (количество оценок), жанры, автор, средний рейтинг.
+```{r}
+#Также переносим параметр movie_id на нумеровку строк, так как он будет нам мешать при составлении матрицы
+rownames(Book) = Book$book_ID
+Book = Book %>% dplyr::select(-book_ID)
+
+#Строим матрицу, определяем косинусное расстояние и сразу зануляем основную диагональ (в ней похожесть будет максимальная, что нам не нужно)
+boook=as.matrix(Book)
+sim = lsa::cosine(t(boook))
+diag(sim) = 0
+
+```
+

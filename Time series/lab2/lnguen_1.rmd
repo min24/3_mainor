@@ -1,0 +1,161 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+getwd()
+dir = "F:/OneDrive - НИУ Высшая школа экономики/HSE/3_year/Временные Ряды/Lab/Lab2/"
+setwd(dir)
+
+```
+
+```{r}
+
+library("forecast")
+library("lmtest")
+library("tseries")
+library("urca")
+library("TSA")
+data1 <-read.csv("WorldIndDaily.txt", sep='\t', dec=',')
+ST = data1$Straits.Times
+ST = na.omit(ST)
+logST = log(ST)
+```
+```{r}
+d1ST<-diff(logST, differences=1)
+d2ST<-diff(logST, differences=2)
+d3ST<-diff(logST, differences=3)
+```
+
+```{r}
+plot(ST)
+plot(logST)
+plot(d1ST)
+```
+
+```{r}
+#Проверка на стационарность
+Pacf(logST)
+ur.df(logST, type="drift", lags = 1, 
+      selectlags = "Fixed")
+'нестационарен'
+
+Pacf(d1ST)
+ur.df(d1ST, type="drift", lags = 1, 
+      selectlags = "Fixed")
+'стационарен'
+```
+
+```{r}
+#строим модель ARMA
+eacf(d1ST)
+m_infl_v2_ARMA11 <- Arima(logST, c(2,1,1), include.constant =TRUE, method = c("CSS-ML"))  
+coeftest(m_infl_v2_ARMA11)
+summary(m_infl_v2_ARMA11)
+Acf(residuals(m_infl_v2_ARMA11))
+Box.test(residuals(m_infl_v2_ARMA11), lag = 7, type = c("Ljung-Box"), fitdf = 2)
+shapiro.test(residuals(m_infl_v2_ARMA11))
+
+```
+
+
+```{r}
+# Имеем: наилучшая линейная модель для et ~ iid(0, sigma), ARMA(1,1)
+# Step1 : Проверим наличие ARCH-эффекта для et^2 с помощью ACF и Льюнг-Бокс теста
+
+```
+
+```{r}
+#ARCH эффект
+Acf(residuals(m_infl_v2_ARMA11)^2)
+Box.test(residuals(m_infl_v2_ARMA11)^2, lag = 7, type = c("Ljung-Box"), fitdf = 2)
+Pacf(residuals(m_infl_v2_ARMA11)^2)
+
+```
+```{r}
+#ARCH norm
+library("rugarch")
+
+spec = ugarchspec(variance.model = list(model = 'sGARCH',garchOrder = c(15, 0)), mean.model = list(armaOrder = c(1, 1), include.mean = TRUE), distribution.model = "norm")
+garch.fit = ugarchfit(spec, d1ST)
+garch.fit 
+coef(garch.fit)
+
+
+Acf(residuals(garch.fit))
+Acf(residuals(garch.fit)^2)
+Acf(residuals(garch.fit, standardize="TRUE"))
+Acf(residuals(garch.fit, standardize="TRUE")^2)
+
+write.csv(residuals(garch.fit, standardize="TRUE"), "test_i.txt")
+stres <-read.csv("test_i.txt", sep=',', dec='.')
+shapiro.test(stres$V1)
+
+Box.test(stres$V1, lag = 8, type = c("Ljung-Box"), fitdf = 2)
+Box.test(stres$V1^2, lag = 8, type = c("Ljung-Box"), fitdf = 2)
+
+```
+
+
+```{r}
+#ARCH std
+spec = ugarchspec(variance.model = list(model = 'sGARCH',garchOrder = c(15, 0)), mean.model = list(armaOrder = c(1, 1), include.mean = TRUE), distribution.model = "std")
+garch.fit = ugarchfit(spec, d1ST)
+garch.fit 
+coef(garch.fit)
+
+
+Acf(residuals(garch.fit))
+Acf(residuals(garch.fit)^2)
+Acf(residuals(garch.fit, standardize="TRUE"))
+Acf(residuals(garch.fit, standardize="TRUE")^2)
+
+
+write.csv(residuals(garch.fit, standardize="TRUE"), "test_i.txt")
+stres <-read.csv("test_i.txt", sep=',', dec='.')
+
+Box.test(stres$V1, lag = 8, type = c("Ljung-Box"), fitdf = 2)
+Box.test(stres$V1^2, lag = 8, type = c("Ljung-Box"), fitdf = 2)
+
+
+#GARCH
+spec <- ugarchspec(variance.model = list(model = 'sGARCH',garchOrder = c(1, 2)), mean.model = list(armaOrder = c(2, 1), include.mean = TRUE), distribution.model = "norm")
+garch.fit <- ugarchfit(spec, d1CPI)
+garch.fit 
+coef(garch.fit)
+
+Acf(residuals(garch.fit))
+Acf(residuals(garch.fit)^2)
+Acf(residuals(garch.fit, standardize="TRUE"))
+Acf(residuals(garch.fit, standardize="TRUE")^2)
+
+write.csv(residuals(garch.fit, standardize="TRUE"), "test_i.txt")
+stres <-read.csv("G:/Rstudio/test_i.txt", sep=',', dec='.')
+
+Box.test(stres$V1, lag = 8, type = c("Ljung-Box"), fitdf = 3)
+Box.test(stres$V1^2, lag = 8, type = c("Ljung-Box"), fitdf = 3)
+
+```
+
+```{r}
+#прогноз
+h = 399
+prognoz <- ugarchforecast(garch.fit, n.ahead = h)
+sigma(prognoz)
+prognoz@forecast$sigmaFor
+prognoz@forecast$seriesFor
+
+#прогноз d1ST
+STforecast<-c(d1ST, prognoz@forecast$seriesFor)
+plot(STforecast)
+
+#прогноз СКО
+sigmaforecast<-c(garch.fit@fit$sigma, sigma(prognoz))
+plot(sigmaforecast)
+
+library(ggplot2)
+ggplot()+geom_line(aes(x = c(1:7793), y = garch.fit@fit$sigma))+
+  geom_line(aes(x = c(7793:(7793+h)), y = sigmaforecast[7793:(7793+h)]), col = "red")
+
+```
+

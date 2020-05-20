@@ -1,0 +1,268 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r}
+library(readr)
+lab11 = read.csv("lab11.csv", encoding = "utf-8")
+lab12 = read.csv("lab12.csv")
+lab12 = lab12 %>% na.omit()
+pop = lab12$Pop
+```
+
+```{r}
+library("forecast")
+library("lmtest")
+library("tseries")
+library("urca")
+```
+
+```{r}
+lpop = log(pop)
+Pacf(lpop) # lag = 1
+ur.df(lpop, type="drift", 
+      lags = 1, selectlags = "Fixed")
+'вывод - гипотеза о нестационарности pop
+не отклон€етс€ => нестационарны 
+=> провер€ем расчет разностей первого пор€дка'
+```
+```{r}
+d2pop_l1 <- c(0,d2pop[1:length(d2pop)-1])
+d2pop_l2 <- c(0,0,d2pop[2:length(d2pop)-2])
+d2pop_l3 <- c(0,0,0,d2pop[3:length(d2pop)-3])
+d2pop_l4 <- c(0,0,0,0,d2pop[4:length(d2pop)-4])
+d2pop_l5 <- c(0,0,0,0,0,d2pop[5:length(d2pop)-5])
+d2pop_l6 <- c(0,0,0,0,0,0,d2pop[6:length(d2pop)-6])
+d2pop_l7 <- c(0,0,0,0,0,0,0,d2pop[7:length(d2pop)-7])
+d2pop_l8 <- c(0,0,0,0,0,0,0,0,d2pop[8:length(d2pop)-8])
+d2pop_l9 <- c(0,0,0,0,0,0,0,0,0,d2pop[9:length(d2pop)-9])
+d2pop_l10 <- c(0,0,0,0,0,0,0,0,0,0,d2pop[10:length(d2pop)-10])
+```
+
+```{r}
+'расчет разностей'
+d1pop<-diff(lpop, differences=1)
+d2pop<-diff(lpop, differences=2)
+'ѕроверка на стационарность первой разностей'
+Pacf(d1pop) # Ћаг = 0, 1
+a = ur.df(d1pop, type="drift", 
+      lag = 1, selectlags = "Fixed")
+summary(a)
+
+
+ur.df(d1pop, type="drift", 
+      lag = 0, selectlags = "Fixed")
+'вывод - гипотеза о нестационарности pop
+не отклон€етс€ => нестационарны 
+=> провер€ем расчет разностей второго пор€дка'
+```
+
+```{r}
+'ѕроверка на стационарность второй разностей'
+Pacf(d2pop) # Ћаг = 0, 10
+ur.df(d2pop, type="drift", 
+      lag = 0, selectlags = "Fixed")
+'вывод - гипотеза о нестационарности pop 
+отклон€етс€ (лаг = 0) => стационарны 
+=> d2pop стационарны, можно строить ARMA модель.'
+```
+
+```{r}
+'строим модель AR'
+'в1. через функцию линейной регрессии (OLS)'
+'AR0'
+m_infl_v1_AR0=lm(d2pop~1)
+summary(m_infl_v1_AR0) # значимы коэф.
+sd(residuals(m_infl_v1_AR0))
+Acf(residuals(m_infl_v1_AR0)) # Ћаг =  10
+Box.test(residuals(m_infl_v1_AR0), 
+  lag = 4, type = c("Ljung-Box"), fitdf = 0)
+# ќстатки не имеют автокорел€ции
+
+'AR10'
+m_infl_v1_AR10=lm(d2pop~d2pop_l1+d2pop_l2+
+    d2pop_l3+d2pop_l4+d2pop_l5+d2pop_l6+
+      d2pop_l7+d2pop_l8+d2pop_l9+d2pop_l10)
+summary(m_infl_v1_AR10) # значимы коэф.
+sd(residuals(m_infl_v1_AR10))
+Acf(residuals(m_infl_v1_AR10)) # Ћаг = 10
+Box.test(residuals(m_infl_v1_AR10), lag=15,
+        type = c("Ljung-Box"), fitdf = 10)
+# ќстатки не имеют автокорел€ции
+```
+
+```{r}
+'в2. через функцию Arima пакета Forecast'
+'AR0'
+m_infl_v2_AR0 <- Arima(lpop, c(0,2,0),
+  include.constant =TRUE, method = c("CSS-ML"))  
+coeftest(m_infl_v2_AR0)
+summary(m_infl_v2_AR0)
+Acf(residuals(m_infl_v2_AR0)) 
+Box.test(residuals(m_infl_v2_AR0), lag = 4,
+    type = c("Ljung-Box"), fitdf = 0)
+# ќстатки не имеют автокорел€ции
+
+'AR10'
+m_infl_v2_AR10 <- Arima(lpop, c(10,2,0), 
+  include.constant =TRUE, method = c("CSS-ML"))  
+coeftest(m_infl_v2_AR10)
+summary(m_infl_v2_AR10)
+Acf(residuals(m_infl_v2_AR10))
+Box.test(residuals(m_infl_v2_AR10), lag = 15, 
+         type = c("Ljung-Box"), fitdf = 10)
+# ќстатки не имеют автокорел€ции
+```
+
+```{r}
+'строим модель MA'
+'MA0'
+acf(d2pop) # Lag = 0, 10
+m_infl_v2_MA0 <- Arima(lpop, c(0,2,0), 
+  include.constant =TRUE, method = c("CSS-ML"))  
+coeftest(m_infl_v2_MA0)
+summary(m_infl_v2_MA0)
+Acf(residuals(m_infl_v2_MA0)) 
+Box.test(residuals(m_infl_v2_MA0), 
+  lag = 4, type = c("Ljung-Box"), fitdf = 0)
+# ќстатки не имеют автокорел€ции
+
+'MA10'
+m_infl_v2_MA10 <- Arima(lpop, c(0,2,10), 
+  include.constant =TRUE, method = c("CSS-ML"))  
+coeftest(m_infl_v2_MA10)
+summary(m_infl_v2_MA10)
+Acf(residuals(m_infl_v2_MA10)) # Ћаг = 1
+Box.test(residuals(m_infl_v2_MA10), lag = 15, 
+          type = c("Ljung-Box"), fitdf = 10)
+# ќстатки не имеют автокорел€ции
+```
+
+```{r}
+pacf(d2pop)
+'строим модель ARMA'
+eacf(d2pop)
+m_infl_v2_ARMA00 <- Arima(lpop, c(0,2,0), include.constant =TRUE, method = c("CSS-ML"))  
+m_infl_v2_ARMA010 <- Arima(lpop, c(0,2,10), include.constant =TRUE, method = c("CSS-ML"))  
+m_infl_v2_ARMA100 <- Arima(lpop, c(10,2,0), include.constant =TRUE, method = c("CSS-ML"))  
+m_infl_v2_ARMA1010 <- Arima(lpop, c(10,2,10), include.constant =TRUE, method = c("CSS-ML"))  
+m_infl_v2_ARMA0_0_0 = Arima(lpop, c(0,0,0), include.constant =TRUE, method = c("CSS-ML"))  
+m_infl_v2_ARMA0_1_0 = Arima(lpop, c(0,1,0), include.constant =TRUE, method = c("CSS-ML"))  
+```
+
+```{r}
+
+Box.test(residuals(m_infl_v2_ARMA00), 
+    lag = 4, type = c("Ljung-Box"), fitdf = 0)
+# ќстатки не имеют автокорел€ции
+
+Box.test(residuals(m_infl_v2_ARMA010), 
+    lag = 15, type = c("Ljung-Box"), fitdf = 10)
+# ќстатки не имеют автокорел€ции
+
+Box.test(residuals(m_infl_v2_ARMA100), 
+    lag = 15, type = c("Ljung-Box"), fitdf = 10)
+# ќстатки не имеют автокорел€ции
+
+Box.test(residuals(m_infl_v2_ARMA1010), 
+    lag = 25, type = c("Ljung-Box"), fitdf = 20)
+# ќстатки имеют автокорел€ции
+
+Box.test(residuals(m_infl_v2_ARMA0_0_0), 
+    lag = 4, type = c("Ljung-Box"), fitdf = 0)
+# ќстатки имеют автокорел€ции
+
+Box.test(residuals(m_infl_v2_ARMA0_1_0), 
+    lag = 4, type = c("Ljung-Box"), fitdf = 0)
+# ќстатки имеют автокорел€ции
+```
+
+
+
+```{r}
+'сравнение моделей по AIC'
+m_infl_v2_AR0$aic
+m_infl_v2_AR10$aic
+
+m_infl_v2_MA0$aic
+m_infl_v2_MA10$aic
+
+m_infl_v2_ARMA00$aic
+m_infl_v2_ARMA010$aic
+m_infl_v2_ARMA100$aic
+m_infl_v2_ARMA1010$aic
+m_infl_v2_ARMA0_0_0$aic
+m_infl_v2_ARMA0_1_0$aic
+
+'сравнение моделей по BIC'
+m_infl_v2_AR0$bic
+m_infl_v2_AR10$bic
+
+m_infl_v2_MA0$bic
+m_infl_v2_MA10$bic
+
+m_infl_v2_ARMA00$bic
+m_infl_v2_ARMA010$bic
+m_infl_v2_ARMA100$bic
+m_infl_v2_ARMA1010$bic
+m_infl_v2_ARMA0_0_0$bic
+m_infl_v2_ARMA0_1_0$bic
+'¬ывод : самый лучший модель - m_infl_v2_ARMA00'
+summary(m_infl_v2_AR0)
+```
+
+```{r}
+'прогнозирование'
+h = 100
+forecast_ARMA00<-forecast(m_infl_v2_ARMA00, h=h)
+plot(forecast_ARMA00)
+```
+
+```{r}
+auto.arima(lpop, ic = "aic")
+auto<-auto.arima(lpop, ic = "aic")
+forecast_auto<-forecast(auto, h=h)
+plot(forecast_auto)
+```
+
+```{r}
+' ѕрогнозирование и имитаци€ модели ARMA(0,2,0)'
+h = 100
+forecast_ARMA00<-forecast(m_infl_v2_ARMA00, h=h)
+f_lpop = function(mean, sd){
+  ts.sim1 <- arima.sim(n = h-2, list())
+ts.sim1<-mean+ts.sim1*sd
+a = diffinv(ts.sim1, xi = d1pop[length(d1pop)])
+b = diffinv(a, xi = lpop[length(lpop)])
+ts.sim11 = c(lpop, b)
+plot(forecast_ARMA00)
+lines(x = c(64:(64+h)),y = ts.sim11[64:(64+h)],col="red")
+ran_walk = ts.sim11
+return(ran_walk)
+}
+ran_walk = f_lpop(mean(d2pop),sd(d2pop))
+
+f_pop = function(ran_walk){
+forecast_ARMA00_1 = forecast_ARMA00
+forecast_ARMA00_1$mean = exp(forecast_ARMA00$mean)
+forecast_ARMA00_1$lower = exp(forecast_ARMA00$lower)
+forecast_ARMA00_1$upper = exp(forecast_ARMA00$upper)
+forecast_ARMA00_1$x = exp(forecast_ARMA00$x)
+ran_walk_1 = exp(ran_walk)
+plot(forecast_ARMA00_1)
+lines(x = c(64:(64+h)),y = ran_walk_1[64:(64+h)],
+      col="red")
+}
+f_pop(ran_walk)
+
+```
+
+```{r}
+ran_walk = f_lpop(mean(d2pop),sd(d2pop))
+
+f_pop(ran_walk)
+```
+
+

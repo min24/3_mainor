@@ -1,0 +1,180 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+getwd()
+dir = "/students/lnguen_1/3_mainor/Time series/"
+setwd(dir)
+
+```
+
+```{r}
+library(dplyr)
+library(readr)
+lab11 = read.csv("lab11.csv")
+lab12 = read.csv("lab12.csv")
+lab12 = lab12 %>% na.omit()
+gdp_capita = lab12$GDP.capita
+lgdp = log(gdp_capita)
+```
+
+```{r}
+library("forecast")
+library("lmtest")
+library("tseries")
+library("urca")
+```
+
+```{r}
+plot(lgdp)
+'Проверка на стационарность lgdp'
+lgdp = log(gdp_capita)
+Pacf(lgdp)  # Лаг = 1
+ur.df(lgdp, type="drift", lags = 1, 
+      selectlags = "Fixed")
+'вывод - гипотеза о нестационарности 
+gdp_capita не отклоняется 
+=> нестационарны => проверяем расчет 
+разностей первого порядка'
+
+'расчет разностей'
+d1gdp<-diff(lgdp, differences=1)
+Pacf(d1gdp) # Нет лагов 
+ur.df(d1gdp, type="drift", lag = 0, 
+      selectlags = "Fixed")
+'Выводы - гипотеза о нестационарности 
+d1gdp  отклоняется. d1gdp стационарны, 
+можно строить ARMA модель.'
+```
+
+```{r}
+'строим модель AR'
+'в1.через функцию линейной регрессии (OLS)'
+m_infl_v1_AR0=lm(d1gdp~1)
+summary(m_infl_v1_AR0) # значимы коэф.
+sd(residuals(m_infl_v1_AR0))
+'Проверим автокорреляцию остатков: ACF 
+остатков и тест Льюнга-Бокса'
+Acf(residuals(m_infl_v1_AR0)) 
+Box.test(residuals(m_infl_v1_AR0), lag = 4,
+         type = c("Ljung-Box"), fitdf = 0)
+'Остатки не имеют автокореляции'
+
+```
+
+```{r}
+'2.через функцию Arima пакета Forecast'
+'AR0'
+m_infl_v2_AR0 <- Arima(lgdp, c(0,1,0), 
+  include.constant =TRUE, method = c("CSS-ML"))
+
+coeftest(m_infl_v2_AR0)
+summary(m_infl_v2_AR0)
+
+Acf(residuals(m_infl_v2_AR0))
+Box.test(residuals(m_infl_v2_AR0), lag = 4,
+         type = c("Ljung-Box"), fitdf = 0)
+# Остатки не имеют автокореляции
+```
+
+```{r}
+'строим модель MA'
+acf(d1gdp) # Lag = 0
+m_infl_v2_MA0 <- Arima(lgdp, c(0,1,0), 
+  include.constant =TRUE, method = c("CSS-ML"))  
+
+coeftest(m_infl_v2_MA0)
+summary(m_infl_v2_MA0)
+Acf(residuals(m_infl_v2_MA0))
+Box.test(residuals(m_infl_v2_MA0), 
+  lag = 4, type = c("Ljung-Box"), fitdf = 0)
+# Остатки не имеют автокореляции
+```
+
+```{r}
+'строим модель ARMA'
+eacf(d1gdp)
+m_infl_v2_ARMA000 = Arima(lgdp, c(0,0,0),
+  include.constant =TRUE, method = c("CSS-ML"))
+m_infl_v2_ARMA00 <- Arima(lgdp, c(0,1,0), 
+  include.constant =TRUE, method = c("CSS-ML"))  
+'Модель ARIMA(0,1,0) совпадает с моделей MA(0), AR(0)'
+
+coeftest(m_infl_v2_ARMA000)
+summary(m_infl_v2_ARMA000)
+Acf(residuals(m_infl_v2_ARMA000))
+Box.test(residuals(m_infl_v2_ARMA000), lag = 4,
+        type = c("Ljung-Box"), fitdf = 0)
+#  Остатки моделя ARIMA(0,0,0) имеют автокореляции
+```
+
+```{r}
+'сравнение моделей по AIC'
+m_infl_v2_AR0$aic
+m_infl_v2_MA0$aic
+m_infl_v2_ARMA00$aic
+m_infl_v2_ARMA000$aic
+
+'сравнение моделей по BIC'
+m_infl_v2_AR0$bic
+m_infl_v2_MA0$bic
+m_infl_v2_ARMA00$bic
+m_infl_v2_ARMA000$bic
+
+# Вывод - самый лучший модель : ARIMA(0,1,0)
+```
+
+```{r}
+
+'прогнозирование'
+h = 100
+forecast_ARMA00<-forecast(m_infl_v2_ARMA00, h=h)
+plot(forecast_ARMA00)
+```
+
+```{r}
+'функция auto.arima'
+auto.arima(lgdp, ic = "aic")
+auto<-auto.arima(lgdp, ic = "aicc")
+auto
+```
+
+```{r}
+'Прогнозирование и имитация модели ARMA(0,1,0)'
+h = 100
+forecast_ARMA00<-forecast(m_infl_v2_ARMA00, h=h)
+f_lgdp = function(mean, sd){
+  ts.sim1 <- arima.sim(n = h-1, list())
+ ts.sim1<-mean+ts.sim1*sd
+ a = diffinv(ts.sim1, xi = lgdp[length(lgdp)])
+ ts.sim11 = c(lgdp, a)
+ plot(forecast_ARMA00)
+lines(x = c(64:(64+h)),y = ts.sim11[64:(h+64)],
+      col="red")
+return(ts.sim11)
+}
+ran_walk = f_lgdp(mean(d1gdp), sd(d1gdp))
+
+
+f_gdp = function(ran_walk){
+forecast_ARMA00_1 = forecast_ARMA00
+forecast_ARMA00_1$mean = exp(forecast_ARMA00$mean)
+forecast_ARMA00_1$lower = exp(forecast_ARMA00$lower)
+forecast_ARMA00_1$upper = exp(forecast_ARMA00$upper)
+forecast_ARMA00_1$x = exp(forecast_ARMA00$x)
+ran_walk_1 = exp(ran_walk)
+plot(forecast_ARMA00_1)
+lines(x = c(64:(h+64)),y = ran_walk_1[64:(h+64)],
+      col="red")
+}
+f_gdp(ran_walk)
+
+```
+
+```{r}
+ran_walk = f_gdp(mean(d1gdp), sd(d1gdp))
+f_real(ran_walk)
+```
+

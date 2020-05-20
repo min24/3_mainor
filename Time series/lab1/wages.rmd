@@ -1,0 +1,239 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+getwd()
+dir = "~/3_mainor/Time series"
+setwd(dir)
+
+
+```{r}
+library(readr)
+lab11 = read.csv("lab11.csv", encoding = "utf-8")
+lwage_season = lab11$lwage_season
+```
+
+```{r}
+library("forecast")
+library("lmtest")
+library("tseries")
+library("urca")
+```
+`
+
+```{r}
+Pacf(lwage_season) # lag = 0, 1
+ur.df(lwage_season, type="drift",
+      lags = 1, selectlags = "Fixed")
+'вывод - гипотеза о нестационарности 
+pop не отклоняется => нестационарны 
+=> проверяем расчет разностей первого порядка'
+```
+
+
+```{r}
+'расчет разностей'
+d1wage<-diff(lwage_season, differences=1)
+'Проверка на стационарность d1wage'
+Pacf(d1wage) #lag = 0, 18
+ur.df(d1wage, type="drift", lags = 0, 
+      selectlags = "Fixed")
+'вывод - гипотеза о нестационарности d1wage 
+отклоняется, по d1wage можно строить ARMA модель'
+```
+
+```{r}
+'строим модель AR по годовой инфляции'
+d1wage_l1 <- c(0,d1wage[1:length(d1wage)-1])
+d1wage_l2 <- c(0,0,d1wage[2:length(d1wage)-2])
+d1wage_l3 <- c(0,0,0,d1wage[3:length(d1wage)-3])
+d1wage_l4 <- c(0,0,0,0,d1wage[4:length(d1wage)-4])
+d1wage_l5 <- c(0,0,0,0,0,d1wage[5:length(d1wage)-5])
+d1wage_l6 <- c(0,0,0,0,0,0,d1wage[6:length(d1wage)-6])
+d1wage_l7 <- c(0,0,0,0,0,0,0,d1wage[7:length(d1wage)-7])
+d1wage_l8 <- c(0,0,0,0,0,0,0,0,d1wage[8:length(d1wage)-8])
+d1wage_l9 <- c(0,0,0,0,0,0,0,0,0,d1wage[9:length(d1wage)-9])
+```
+
+```{r}
+'в1. через функцию линейной регрессии (OLS)'
+'AR0'
+m_infl_v1_AR0 = lm(d1wage~1)
+summary(m_infl_v1_AR0) # значимы коэф.
+sd(residuals(m_infl_v1_AR0))
+Acf(residuals(m_infl_v1_AR0)) # Лаг =  10
+Box.test(residuals(m_infl_v1_AR0), lag =4,
+        type = c("Ljung-Box"), fitdf = 0)
+# Остатки не имеют автокореляции
+```
+
+
+```{r}
+'в2. через функцию Arima пакета Forecast'
+'AR0'
+m_infl_v2_AR0 <- Arima(lwage_season, c(0,1,0),
+  include.constant =TRUE, method = c("CSS-ML"))  
+coeftest(m_infl_v2_AR0)
+summary(m_infl_v2_AR0)
+Acf(residuals(m_infl_v2_AR0))
+Box.test(residuals(m_infl_v2_AR0), lag = 4,
+         type = c("Ljung-Box"), fitdf = 0)
+# Остатки не имеют автокореляции
+```
+
+```{r}
+'строим модель MA'
+acf(d1wage)
+m_infl_v2_MA0 <- Arima(lwage_season, c(0,1,0), 
+  include.constant =TRUE, method = c("CSS-ML"))  
+coeftest(m_infl_v2_MA0)
+summary(m_infl_v2_MA0)
+Acf(residuals(m_infl_v2_MA0))
+Box.test(residuals(m_infl_v2_MA0), lag = 4, 
+         type = c("Ljung-Box"), fitdf = 0)
+# Остатки не имеют автокореляции
+```
+
+```{r}
+'строим модель ARMA'
+eacf(d1wage)
+m_infl_v2_ARMA00 <- Arima(lwage_season, c(0,1,0),
+    include.constant =TRUE, method = c("CSS-ML"))  
+Box.test(residuals(m_infl_v2_ARMA00), lag = 4,
+         type = c("Ljung-Box"), fitdf = 0)
+' Остатки не имеют автокореляции'
+
+m_infl_v2_ARMA000 = Arima(lwage_season, c(0,0,0),
+    include.constant =TRUE, method = c("CSS-ML"))
+Box.test(residuals(m_infl_v2_ARMA000), lag = 4,
+         type = c("Ljung-Box"), fitdf = 0)
+' Остатки имеют автокореляции'
+```
+
+```{r}
+'сравнение моделей по AIC'
+m_infl_v2_AR0$aic
+m_infl_v2_MA0$aic
+m_infl_v2_ARMA00$aic
+m_infl_v2_ARMA00$aic
+
+'сравнение моделей по BIC'
+m_infl_v2_AR0$bic
+m_infl_v2_MA0$bic
+m_infl_v2_ARMA00$bic
+m_infl_v2_ARMA000$bic
+'Вывод: в этой работе я нашел только 
+модель ARIMA(0,1,0) и он является самым лучшим'
+```
+
+```{r}
+'функция auto.arima'
+auto.arima(lwage_season, ic = "aic")
+auto<-auto.arima(lwage_season, ic = "aicc")
+forecast_auto<-forecast(auto, h=h)
+plot(forecast_auto)
+```
+
+
+```{r}
+
+'прогнозирование и имитация данных по ARIMA(0,1,0)'
+h = 100
+forecast_ARMA00<-forecast(m_infl_v2_ARMA00, h=h)
+
+f_lwage_ss_inf = function(mean, sd){
+  ts.sim1 <- arima.sim(n = h-1, list())
+ts.sim1<-mean+ts.sim1*sd
+a = diffinv(ts.sim1, xi = lwage_season[length(lwage_season)])
+ran_walk = c(lwage_season, a)
+plot(forecast_ARMA00)
+lines(x = c(74:(h+74)),y = ran_walk[74:(h+74)],col="red")
+return(ran_walk)
+}
+```
+
+```{r}
+# прогноз логарифм ЗП в постоянных ценах скорректированный на сезонность.
+ran_walk = f_lwage_ss_inf(mean(d1wage), sd(d1wage))
+```
+
+```{r}
+# сезонность логарифма зарплаты
+a = lab11$index_seasonarity
+# сезонность (логарифма зарплаты + его прогнозы)
+seasonality = c(a, 1:h) 
+for(i in 75:(h+74)){
+  j = i
+  while(j>72){j = j-72}
+  seasonality[i] = a[j]
+}
+
+# прогноз логарифма ЗП в постоянных ценах
+f_lwage_inf = function(ran_walk){
+forecast_ARMA00_1 = forecast_ARMA00
+forecast_ARMA00_1$mean = forecast_ARMA00$mean+seasonality[75:(h+74)]
+forecast_ARMA00_1$lower = forecast_ARMA00$lower+seasonality[75:(h+74)]
+forecast_ARMA00_1$upper = forecast_ARMA00$upper+seasonality[75:(h+74)]
+forecast_ARMA00_1$x = forecast_ARMA00$x + seasonality[1:74]
+ran_walk_ss = ran_walk+seasonality[1:(h+74)]
+plot(forecast_ARMA00_1)
+lines(x = c(74:(h+74)),y = ran_walk_ss[74:(74+h)],col="red")
+}
+f_lwage_inf(ran_walk)
+```
+
+```{r}
+# прогноз ЗП в постоянных ценах
+f_wage_inf = function(ran_walk){
+  forecast_ARMA00_1 = forecast_ARMA00
+forecast_ARMA00_1$mean = forecast_ARMA00$mean+seasonality[75:(h+74)]
+forecast_ARMA00_1$lower = forecast_ARMA00$lower+seasonality[75:(h+74)]
+forecast_ARMA00_1$upper = forecast_ARMA00$upper+seasonality[75:(h+74)]
+forecast_ARMA00_1$x = forecast_ARMA00$x + seasonality[1:74]
+ran_walk_ss = ran_walk+seasonality[1:(h+74)]
+
+forecast_ARMA00_1_1 = forecast_ARMA00_1
+forecast_ARMA00_1_1$mean = exp(forecast_ARMA00_1$mean)
+forecast_ARMA00_1_1$upper = exp(forecast_ARMA00_1$upper)
+forecast_ARMA00_1_1$lower = exp(forecast_ARMA00_1$lower)
+forecast_ARMA00_1_1$x = exp(forecast_ARMA00_1$x)
+ran_walk_ss_exp = exp(ran_walk_ss)
+plot(forecast_ARMA00_1_1)
+lines(x = c(74:(h+74)),y = ran_walk_ss_exp[74:(h+74)],col="red")
+}
+f_wage_inf(ran_walk)
+```
+
+
+```{r}
+# прогноз логарифма ЗП в текущим ценах
+inf_m = 1.045^(1/12)
+month_before = -73:0
+month_after = 1:h
+month = c(month_before, month_after)
+f_wage = function(ran_walk){
+forecast_ARMA00_1 = forecast_ARMA00
+forecast_ARMA00_1$mean = forecast_ARMA00$mean+seasonality[75:(h+74)]
+forecast_ARMA00_1$lower = forecast_ARMA00$lower+seasonality[75:(h+74)]
+forecast_ARMA00_1$upper = forecast_ARMA00$upper+seasonality[75:(h+74)]
+forecast_ARMA00_1$x = forecast_ARMA00$x + seasonality[1:74]
+ran_walk_ss = ran_walk+seasonality[1:(h+74)]
+
+forecast_ARMA00_1_1 = forecast_ARMA00_1
+forecast_ARMA00_1_1$mean = (exp(forecast_ARMA00_1$mean))*(inf_m^month_after)
+forecast_ARMA00_1_1$upper = (exp(forecast_ARMA00_1$upper))*(inf_m^month_after)
+forecast_ARMA00_1_1$lower = (exp(forecast_ARMA00_1$lower))*(inf_m^month_after)
+forecast_ARMA00_1_1$x = (exp(forecast_ARMA00_1$x))*(inf_m^month_before)
+ran_walk_ss_exp_inf = (exp(ran_walk_ss))*(inf_m^month)
+
+plot(forecast_ARMA00_1_1)
+lines(x = c(74:(h+74)),y = ran_walk_ss_exp_inf[74:(h+74)],col="red")
+}
+f_wage(ran_walk)
+```
+
+
+
+

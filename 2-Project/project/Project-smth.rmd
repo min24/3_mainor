@@ -1,0 +1,190 @@
+---
+title: "Project"
+author: "Zlodeeva V.S."
+date: "10 05 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Подгрузим данные:
+```{r}
+library(readr)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(tidyr)
+library(tidytext)
+library(readxl)
+library(stringr)
+book3 <- read_csv("book3.csv", 
+    col_types = cols(genres = col_character()))
+categ <- read_excel("categ.xlsx")
+categories <- read_csv("categories.csv")
+authors <- read_csv("authors.csv")
+users <- read_excel("users.xlsx")
+```
+
+Попробуем почистить данные:
+```{r}
+book=book3%>%select(-for_ages, -lang, -X1)%>%na.omit()
+
+#book=book%>%mutate(entry=ifelse(for_ages=="10+" | for_ages=="11+" | for_ages=="12-Jun" | for_ages=="12-Sep" | for_ages=="12+" | for_ages=="13+" | for_ages=="8+" | for_ages=="9+" | for_ages=="8-Jun", "8+", ifelse(for_ages=="14+" | for_ages=="15+" | for_ages=="17-Dec" | for_ages=="18+" | for_ages=="20-20"| for_ages=="22+", "14+", "0+")))
+
+#b=book%>%group_by(entry)%>% count()
+```
+
+## Обрежем данные
+Так как у нас ооооочень много данных, матрица требует огромного количества памяти, поэтому обрежем их. Сделаем это по ранку бестселлеров и количеству оценок. Будем оставлять только популярные и успешные
+```{r}
+#Построим графики, чтобы понять как обрезать
+#ggplot(data = book)+
+#  geom_histogram(aes(x=bestsellers_rank))
+book=book%>%filter(bestsellers_rank<=1000000)
+book=book%>%filter(rating_count>=4000)
+
+#ggplot(data = book)+
+#  geom_histogram(aes(x=rating_count))
+```
+
+```{r}
+#создадим нормальную колонку ID:
+book_ID=c(1:9191)
+book=cbind(book, book_ID)
+book=book%>%select(-id)
+
+#Из-за ранка бестсселеров некоторые книги повторяются, исправим это
+b=book%>%group_by(title)%>%count()%>%filter(n>1)
+bo=book%>%select(book_ID, title, bestsellers_rank)
+a=b$title
+b2=book%>%group_by(title)%>%count()%>%filter(n==1)
+bo2=bo%>%filter(title %in% b2$title)
+bo=bo%>%filter(title %in% a)
+bb=bo%>%select(-book_ID)
+bb=group_by(bb, title)
+bb=bb%>%summarise(min=min(bestsellers_rank))%>%select(min)
+
+bo=bo%>%filter(bestsellers_rank %in% bb$min)
+
+bo=full_join(bo, bo2)
+
+book=book%>%filter(book_ID %in% bo$book_ID)
+
+#От даты выпуска нам нужен только год
+class(book$publication_date)
+book$publication_date = as.Date(book$publication_date)
+book$publication_date=mdy(book$publication_date)
+book$year=year(book$publication_date)
+
+#Создадим датасет где будут написаны: название, автор, url, image
+Discr=book%>%select(book_ID, authors,url, title, description, image)
+
+#Добавим нормальное название авторов к этой таблице
+Discr$authors=str_replace_all(Discr$authors,"[^[1-9][:space: ] , ]", "")
+Discr=Discr%>% unnest_tokens(word, authors, token = stringr::str_split, pattern = ",")
+colnames(Discr)[6]="authors"
+colnames(authors)[1]="authors"
+authors$authors=as.character(authors$authors)
+Discr=left_join(Discr, authors, by="authors")
+
+
+#нам не понадобятся некоторые переменные, поэтому удалим их
+book=book%>%select(-title, -description, -format, -weight, -publication_date, -url, -image, -authors)
+
+```
+Проблема в том, что некоторые строчки повторяются из-за описания или еще чего...надо это исправить!
+
+
+## Работа с ЖАНРАМИ
+
+```{r}
+genr=book%>%select(genres, book_ID)
+genr=genr %>% unnest_tokens(word, genres, token = stringr::str_split, pattern = ",")
+
+colnames(genr)[2] = "category_id"
+categ=categ%>%select(category_id, new_cat)
+categ$category_id=as.character(categ$category_id)
+genr=left_join(genr, categ, by="category_id")
+genr=genr%>%select(-category_id)
+genr=unique(genr)
+
+book=right_join(book, genr, by="book_ID")
+book=select(book, -genres)
+```
+
+
+
+```{r eval=FALSE, include=FALSE}
+## Зависит ли рейтинг книги от цены?
+ggplot(data=book)+
+  geom_point(aes(x=price, y=rating_avg))+
+  stat_smooth(method = "lm", aes(x=price, y=rating_avg))+
+  ggtitle("Зависимость среднего рейтинга книги от его цены")+
+  xlab("Цена")+
+  ylab("Средний рейтинг")+
+  theme_bw()
+```
+
+```{r eval=FALSE, include=FALSE}
+## Зависит ли рейтинг книги от количетва страниц?
+ggplot(data=book)+
+  geom_point(aes(x=num_page, y=rating_avg))+
+  stat_smooth(method = "lm", aes(x=num_page, y=rating_avg))+
+  ggtitle("Зависимость среднего рейтинга книги от количества страниц")+
+  xlab("Количество страниц")+
+  ylab("Средний рейтинг")+
+  theme_bw()
+```
+
+## Часть, где пользователь фильтрует нужные ему характеристики - фильтруем имеющиеся данные 
+```{r}
+#book=book%>%filter()
+```
+
+## Часть, где пользователю выдаются книги на оценивание
+```{r}
+
+```
+
+
+#### Рекомендательная система 
+
+```{r}
+#Расширим датафрейм
+book=book%>%mutate(value=1)
+book=spread(book, key = new_cat, value=value)
+book[is.na(book)]=0
+```
+
+  Наша рекомендация книг будет основываться на следующих переменных: год выпуска книги, его популярность (количество оценок), жанры, автор, средний рейтинг.
+```{r}
+#Также переносим параметр movie_id на нумеровку строк, так как он будет нам мешать при составлении матрицы
+rownames(book) = book$book_ID
+book = book %>% dplyr::select(-book_ID)
+
+#Строим матрицу, определяем косинусное расстояние и сразу зануляем основную диагональ (в ней похожесть будет максимальная, что нам не нужно)
+sim = lsa::cosine(t(as.matrix(book)))
+diag(sim) = 0
+
+#Если у пользователя несколько фильмов с оценкой 5
+user = users %>% filter(user_id == 1234 & rating == 5)
+user
+user$book_ID
+
+filter(Discr, book_ID==123)%>%dplyr::select(title, book_ID, description, url, image, author_name)
+#Рекомендуем:
+mostSimilar = head(sort(sim[,as.character(user$book_ID)], decreasing = T), n = 3)
+mostSimilar
+
+#Посоветуем сразу несколько книг:
+a = which(sim[,as.character(user$book_ID)] %in% mostSimilar, arr.ind = TRUE)
+rows = a %% dim(sim)[1]
+rows
+result = rownames(sim)[rows]
+result
+class(result)= "integer"
+filter(Discr,book_ID %in% result) %>% dplyr::select(title, book_ID, description, url, image, author_name)
+```
+

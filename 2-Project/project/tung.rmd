@@ -1,0 +1,58 @@
+```{r}
+install.packages("vkR")
+install.packages("devtools")
+devtools::install_github("Dementiy/vkR")
+library("vkR")
+vkOAuth(7362911, 'groups, wall')
+key = 'f338556bf338556bf338556b1af348c298ff338f338556bad474ba60f1b0baaa21ea4f2'
+vkR::setAccessToken(key)
+install.packages('plyr')
+library("plyr")
+
+### tvrain (id = "-17568841" ), "конституция"
+post = wallSearch(domain = 'tvrain', query = "конституция",owners_only = "1", count = "100", v = "5.103")
+
+# Создать фрейм данных
+a = wallGetComments(owner_id = "-17568841", post_id = "5987734",need_likes = "1", count ="100", v ="5.103")
+data =jsonlite::flatten(a$items)
+data = data %>% dplyr::select(id,from_id, post_id,owner_id, text, date,likes.count,likes.user_likes, likes.can_like, thread.count)
+
+```
+```{r}
+#
+for (i in 1:100) {
+a1 = wallGetComments(owner_id = "-17568841", post_id = as.character(post$items$id[i]), need_likes = "1", count ="100", v ="5.103")
+b1 = jsonlite::flatten(a1$items) %>% dplyr::select(id,from_id, post_id,owner_id, text, date,likes.count,likes.user_likes, likes.can_like, thread.count)
+data = rbind(data,b1)
+}
+data.rain = distinct(data)
+
+### rt_russian (id = "-40316705" ), "конституция"
+post.rt = wallSearch(domain = 'rt_russian', query = "конституция",owners_only = "1", count = "100", v = "5.103")
+
+# Создать фрейм данных
+a.rt = wallGetComments(owner_id = "-40316705", post_id = "34816778",need_likes = "1", count ="100", v ="5.103")
+data.rt =jsonlite::flatten(a.rt$items)
+data.rt = data.rt %>% dplyr::select(id,from_id, post_id,owner_id, text, date,likes.count,likes.user_likes, likes.can_like, thread.count)
+
+```
+
+```{r}
+#
+for (i in 1:100) {
+a1.rt = wallGetComments(owner_id = "-40316705", post_id = as.character(post.rt$items$id[i]), need_likes = "1", count ="100", v ="5.103")
+b1.rt = jsonlite::flatten(a1.rt$items) %>% dplyr::select(id,from_id, post_id,owner_id, text, date,likes.count,likes.user_likes, likes.can_like, thread.count)
+data.rt = rbind(data.rt,b1.rt)
+}
+data.rt = distinct(data.rt)
+
+con<-file('data_rain.csv',encoding="UTF-8")
+write.csv(data.rain, file=con)
+write.csv(data.rt, "data.rt.csv")
+```
+
+```{r}
+library(readr)
+dataset <- read_csv("data_rain.csv")
+```
+
